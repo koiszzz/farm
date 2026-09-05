@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "frame_contract": {
+	"source_grid": [4, 3],
+	"runtime_frame_px": [32, 48],
+	"rows": ["down", "left", "right"],
+	"columns": ["idle", "walk_a", "walk_b", "use"],
+	"shared_with": ["player", "npc"]
+  },
+  "layer_order_back_to_front": ["body", "ears", "clothes", "eyes", "nose", "mouth", "hair"],
+  "attributes": {
+	"skin": {
+	  "layer": "body",
+	  "method": "palette_swap",
+	  "options": ["porcelain", "fair", "warm_beige", "golden", "olive", "brown", "deep_brown", "umber"],
+	  "default": "warm_beige"
+	},
+	"hair": { "layer": "hair", "source": "hair_options_source_v1.png", "grid": [4, 2], "count": 8, "colors": ["black", "brown", "chestnut", "blonde", "red", "silver", "blue_black", "purple"] },
+	"eyes": { "layer": "eyes", "source": "face_feature_options_source_v1.png", "count": 8, "colors": ["brown", "blue", "green", "hazel", "gray", "amber"] },
+	"nose": { "layer": "nose", "source": "face_feature_options_source_v1.png", "count": 4 },
+	"mouth": { "layer": "mouth", "source": "face_feature_options_source_v1.png", "count": 4 },
+	"ears": { "layer": "ears", "source": "face_feature_options_source_v1.png", "count": 8 },
+	"clothes": { "layer": "clothes", "source": "basic_clothes_source_v1.png", "grid": [4, 2], "count": 8 }
+  },
+  "preview": { "portrait_px": [96, 144], "in_world_frame_px": [32, 48] },
+  "save_shape": { "skin": "warm_beige", "hair": 0, "hair_color": "brown", "eyes": 0, "eye_color": "brown", "nose": 0, "mouth": 0, "ears": 0, "clothes": 0 }
+}

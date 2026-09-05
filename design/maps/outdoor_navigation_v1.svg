@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="620" viewBox="0 0 1440 620">
+  <style>
+    text { font-family: "Microsoft YaHei", sans-serif; fill: #263238; }
+    .title { font-size: 24px; font-weight: 700; }
+    .label { font-size: 14px; font-weight: 700; }
+    .small { font-size: 12px; }
+    .grid { stroke: #ffffff; stroke-opacity: .28; stroke-width: 1; }
+    .outline { stroke: #263238; stroke-width: 2; }
+  </style>
+  <rect width="1440" height="620" fill="#f5f0df"/>
+  <text class="title" x="56" y="38">户外地图导航标注 v1 — 绿色/金色可行走，红色/蓝色不可行走</text>
+
+  <g transform="translate(56 58)">
+    <rect x="0" y="0" width="16" height="16" fill="#91c65b"/><text class="small" x="22" y="13">草地：可移动</text>
+    <rect x="155" y="0" width="16" height="16" fill="#e1b65f"/><text class="small" x="177" y="13">道路/桥：可移动</text>
+    <rect x="333" y="0" width="16" height="16" fill="#9b673f" stroke="#fff" stroke-dasharray="3 2"/><text class="small" x="355" y="13">耕地：无作物可移动</text>
+    <rect x="560" y="0" width="16" height="16" fill="#c95d58"/><text class="small" x="582" y="13">建筑/围栏：阻挡</text>
+    <rect x="735" y="0" width="16" height="16" fill="#55b8de"/><text class="small" x="757" y="13">水：阻挡</text>
+    <rect x="865" y="0" width="16" height="16" fill="#ad6cc0"/><text class="small" x="887" y="13">交互站位</text>
+    <rect x="1005" y="0" width="16" height="16" fill="#e176a8"/><text class="small" x="1027" y="13">出口</text>
+  </g>
+
+  <!-- Farm: 40 x 30 grid, 14 px per tile -->
+  <text class="title" x="56" y="106">农场户外（40×30）</text>
+  <g id="farm_outdoor" transform="translate(56 116)">
+    <rect class="outline" width="560" height="420" fill="#91c65b"/>
+    <path d="M0 196 H168 L238 154 L308 196 H392 L448 140 H560" fill="none" stroke="#e1b65f" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect class="outline" x="42" y="210" width="182" height="126" fill="#9b673f" stroke="#fff" stroke-dasharray="6 4"/>
+    <rect class="outline" x="140" y="28" width="154" height="112" fill="#c95d58"/><text class="label" x="170" y="86">农舍</text>
+    <rect class="outline" x="378" y="224" width="182" height="168" fill="#55b8de"/><text class="label" x="443" y="311">池塘</text>
+    <rect x="322" y="70" width="112" height="14" fill="#c95d58"/><text class="small" x="325" y="64">北侧围栏</text>
+    <rect x="28" y="196" width="14" height="154" fill="#c95d58"/>
+    <rect x="42" y="336" width="182" height="14" fill="#c95d58"/>
+    <rect class="outline" x="308" y="126" width="28" height="28" fill="#c95d58"/><text class="small" x="294" y="174">出货箱</text>
+    <rect class="outline" x="210" y="140" width="14" height="14" fill="#ad6cc0"/><text class="small" x="181" y="168">农舍门</text>
+    <rect class="outline" x="308" y="154" width="28" height="14" fill="#ad6cc0"/>
+    <rect class="outline" x="336" y="140" width="14" height="14" fill="#ad6cc0"/>
+    <rect class="outline" x="0" y="182" width="14" height="42" fill="#e176a8"/><text class="small" x="18" y="190">→ 城镇</text>
+    <text class="small" x="56" y="278">耕作区</text>
+  </g>
+
+  <!-- Town: 48 x 32 grid, 14 px per tile -->
+  <text class="title" x="712" y="106">城镇广场（48×32）</text>
+  <g id="town_square" transform="translate(712 116)">
+    <rect class="outline" width="672" height="448" fill="#91c65b"/>
+    <rect x="168" y="140" width="378" height="196" fill="#e1b65f"/>
+    <rect x="308" y="0" width="70" height="224" fill="#e1b65f"/>
+    <rect x="98" y="168" width="252" height="70" fill="#e1b65f"/>
+    <rect x="406" y="168" width="168" height="70" fill="#e1b65f"/>
+    <rect x="56" y="308" width="112" height="42" fill="#e1b65f"/>
+    <rect x="532" y="350" width="84" height="42" fill="#e1b65f"/>
+    <rect class="outline" x="70" y="28" width="154" height="126" fill="#c95d58"/><text class="label" x="104" y="96">杂货店</text>
+    <rect class="outline" x="280" y="28" width="126" height="98" fill="#c95d58"/><text class="label" x="306" y="82">诊所</text>
+    <rect class="outline" x="476" y="28" width="140" height="126" fill="#c95d58"/><text class="label" x="512" y="96">咖啡馆</text>
+    <rect class="outline" x="294" y="238" width="70" height="70" fill="#c95d58"/><text class="small" x="301" y="279">喷泉</text>
+    <rect class="outline" x="462" y="252" width="56" height="28" fill="#c95d58"/><text class="small" x="457" y="299">公告板</text>
+    <rect x="0" y="266" width="70" height="182" fill="#55b8de"/><rect x="602" y="252" width="70" height="196" fill="#55b8de"/>
+    <rect class="outline" x="140" y="154" width="14" height="14" fill="#ad6cc0"/><rect class="outline" x="336" y="126" width="14" height="14" fill="#ad6cc0"/><rect class="outline" x="532" y="154" width="14" height="14" fill="#ad6cc0"/><rect class="outline" x="476" y="280" width="28" height="14" fill="#ad6cc0"/>
+    <rect class="outline" x="588" y="294" width="14" height="42" fill="#e176a8"/><text class="small" x="536" y="290">→ 农场</text>
+    <path d="M140 168 L196 196 L252 196 L252 280 L196 280" fill="none" stroke="#7d4d9a" stroke-width="4" stroke-dasharray="7 5"/>
+    <path d="M140 168 L196 168 L196 210 L140 210" fill="none" stroke="#7d4d9a" stroke-width="4" stroke-dasharray="7 5"/>
+    <path d="M98 322 L140 322 L168 308 L168 266" fill="none" stroke="#7d4d9a" stroke-width="4" stroke-dasharray="7 5"/>
+    <text class="small" x="15" y="438">紫色虚线：NPC 巡逻路线，仅经过可行走格</text>
+  </g>
+</svg>
