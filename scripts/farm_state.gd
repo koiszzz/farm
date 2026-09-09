@@ -21,6 +21,22 @@ const DEFAULT_CROPS := {
 	"turnip": {"grow_days": 3, "sell_price": 28, "seed_price": 12, "seasons": [0, 2], "label": "芜菁"},
 	"tomato": {"grow_days": 5, "sell_price": 52, "seed_price": 30, "seasons": [1], "regrow": 3, "label": "番茄"},
 	"pumpkin": {"grow_days": 7, "sell_price": 95, "seed_price": 45, "seasons": [2], "label": "南瓜"},
+	"cauliflower": {"grow_days": 12, "sell_price": 175, "seed_price": 80, "seasons": [0], "label": "花椰菜"},
+	"potato": {"grow_days": 6, "sell_price": 80, "seed_price": 50, "seasons": [0], "label": "马铃薯"},
+	"green_bean": {"grow_days": 10, "sell_price": 40, "seed_price": 60, "seasons": [0], "regrow": 3, "label": "青豆"},
+	"strawberry": {"grow_days": 8, "sell_price": 120, "seed_price": 100, "seasons": [0], "regrow": 4, "label": "草莓"},
+	"blueberry": {"grow_days": 13, "sell_price": 75, "seed_price": 80, "seasons": [1], "regrow": 4, "label": "蓝莓"},
+	"corn": {"grow_days": 14, "sell_price": 90, "seed_price": 150, "seasons": [1, 2], "regrow": 4, "label": "玉米"},
+	"pepper": {"grow_days": 5, "sell_price": 40, "seed_price": 40, "seasons": [1], "regrow": 3, "label": "辣椒"},
+	"melon": {"grow_days": 12, "sell_price": 250, "seed_price": 80, "seasons": [1], "label": "甜瓜"},
+	"cranberry": {"grow_days": 7, "sell_price": 75, "seed_price": 240, "seasons": [2], "regrow": 5, "label": "蔓越莓"},
+	"eggplant": {"grow_days": 5, "sell_price": 60, "seed_price": 20, "seasons": [2], "regrow": 5, "label": "茄子"},
+	"yam": {"grow_days": 10, "sell_price": 160, "seed_price": 60, "seasons": [2], "label": "山药"},
+	"bok_choy": {"grow_days": 4, "sell_price": 80, "seed_price": 50, "seasons": [2], "label": "小白菜"},
+	"powdermelon": {"grow_days": 7, "sell_price": 60, "seed_price": 30, "seasons": [3], "label": "冬瓜"},
+	"winter_root": {"grow_days": 7, "sell_price": 100, "seed_price": 45, "seasons": [3], "label": "冬根"},
+	"snow_yam": {"grow_days": 9, "sell_price": 120, "seed_price": 55, "seasons": [3], "label": "雪山药"},
+	"crystal_berry": {"grow_days": 10, "sell_price": 150, "seed_price": 70, "seasons": [3], "regrow": 4, "label": "水晶莓"},
 }
 
 

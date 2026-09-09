@@ -1,0 +1,83 @@
+{
+  "average_stream_microseconds": 7528,
+  "cached_object_nodes": 164,
+  "display_server": "Windows",
+  "max_stream_microseconds": 21804,
+  "samples": [
+    {
+      "cell": [
+        61,
+        70
+      ],
+      "collision_microseconds": 20978,
+      "collision_nodes": 512,
+      "microseconds": 21804,
+      "object_nodes": 59,
+      "world_microseconds": 826
+    },
+    {
+      "cell": [
+        68,
+        70
+      ],
+      "collision_microseconds": 3377,
+      "collision_nodes": 512,
+      "microseconds": 3838,
+      "object_nodes": 59,
+      "world_microseconds": 461
+    },
+    {
+      "cell": [
+        75,
+        70
+      ],
+      "collision_microseconds": 3947,
+      "collision_nodes": 512,
+      "microseconds": 4546,
+      "object_nodes": 59,
+      "world_microseconds": 599
+    },
+    {
+      "cell": [
+        82,
+        70
+      ],
+      "collision_microseconds": 4048,
+      "collision_nodes": 512,
+      "microseconds": 4543,
+      "object_nodes": 59,
+      "world_microseconds": 495
+    },
+    {
+      "cell": [
+        89,
+        70
+      ],
+      "collision_microseconds": 4605,
+      "collision_nodes": 512,
+      "microseconds": 5117,
+      "object_nodes": 59,
+      "world_microseconds": 512
+    },
+    {
+      "cell": [
+        96,
+        70
+      ],
+      "collision_microseconds": 4837,
+      "collision_nodes": 512,
+      "microseconds": 5321,
+      "object_nodes": 59,
+      "world_microseconds": 484
+    }
+  ],
+  "walk_frames": {
+    "frame_count": 1081,
+    "max_microseconds": 22953,
+    "p95_microseconds": 11809,
+    "p99_microseconds": 12503,
+    "spikes_over_25ms": [],
+    "travelled_cells": 48
+  },
+  "world_object_entries": 164
+}

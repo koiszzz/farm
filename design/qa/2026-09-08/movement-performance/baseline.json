@@ -1,0 +1,6 @@
+{
+  "environment": "Godot 4.7.1 headless, Windows",
+  "average_stream_microseconds": 185188,
+  "max_stream_microseconds": 241734,
+  "note": "Original full object and collision rebuild measured before the movement optimization."
+}

@@ -116,12 +116,26 @@ func _run() -> void:
 	scene.autosave_enabled = false
 	root.add_child(scene)
 	await process_frame
+	expect(scene.inventory_state.capacity == 25 and scene.inventory_state.hotbar.size() == 10, "scene starts with a 25-slot backpack and ten-slot hotbar")
+	scene.farm.harvest_inventory["parsnip"] = 2
+	scene.farm.inventory_changed.emit("harvest", "parsnip", 2)
+	expect(scene.inventory_state.assign_hotbar("food:parsnip", 9), "harvest can be assigned to hotbar key 0")
+	scene.energy = 50
+	scene._use_hotbar(9)
+	expect(scene.energy == 70 and scene.farm.get_harvest_count("parsnip") == 1, "hotbar food is eaten immediately")
+	scene.homestead.resources.wood = 1
+	scene._sync_inventory()
+	scene.inventory_state.assign_hotbar("material:wood", 8)
+	scene._use_hotbar(8)
+	expect(scene.homestead.resources.wood == 1, "non-tool non-food hotbar item cannot be used")
 	scene._change_map("farm_outdoor", Vector2i(4, 14))
 	scene.player.set_pose("down", "idle")
 	scene.current_tool = "hoe"
 	scene._farm_action()
+	scene.actor_action.advance(1.0)
 	scene.current_tool = "seed"
 	scene._farm_action()
+	scene.actor_action.advance(1.0)
 	scene.player.set_pose("left", "idle")
 	scene._begin_move(Vector2i.DOWN)
 	expect(scene.player.facing == "down" and not scene.moving, "player can face an occupied crop without walking into it")
@@ -130,6 +144,7 @@ func _run() -> void:
 	expect(scene.collision_root.has_node("Obstacle_4_15"), "loaded mature crop has collision")
 	scene.current_tool = "harvest"
 	scene._farm_action()
+	scene.actor_action.advance(1.0)
 	expect(not scene.collision_root.has_node("Obstacle_4_15"), "harvesting removes crop collision immediately")
 	scene.farm.restore(farm.snapshot())
 	scene.village.restore(village.snapshot())
@@ -139,6 +154,17 @@ func _run() -> void:
 	scene._physics_process(8.0)
 	expect(scene.clock_minutes == old_clock, "calendar pauses time")
 	scene._open_inventory()
+	expect(scene.inventory_panel.visible and scene.inventory_panel.backpack_grid.get_child_count() == scene.inventory_state.capacity, "inventory opens as a grid with every backpack slot")
+	var tool_slot: int = scene.inventory_state.backpack.find("tool:hoe")
+	scene.inventory_panel.cursor_area = "backpack"
+	scene.inventory_panel.cursor_index = tool_slot
+	var info_key := InputEventKey.new()
+	info_key.keycode = KEY_I
+	info_key.pressed = true
+	scene.inventory_panel.handle_key(info_key)
+	expect(scene.inventory_panel.detail_card.visible and scene.inventory_panel.detail_title.text == "锄头", "I opens details only for the hovered or selected item")
+	expect(scene._hotbar_index_for_key(KEY_1) == 0 and scene._hotbar_index_for_key(KEY_0) == 9, "number keys map from 1 through 0 across all ten hotbar slots")
+	scene.inventory_panel.close()
 	scene._open_people()
 	scene._open_shop()
 	scene._open_dialogue("florist")
@@ -161,7 +187,7 @@ func _run() -> void:
 			legal_route = legal_route and scene.navigation.is_walkable("town_square", from) and from.distance_to(to) <= 1.0
 		expect(legal_route, "NPC full loop uses adjacent walkable cells")
 	for index in 500: scene._update_npcs(0.016)
-	expect(scene.npcs.size() == 3, "NPC movement remains valid")
+	expect(scene.npcs.size() == Village.PEOPLE.size(), "expanded festival population remains valid")
 	var actor: String = "florist"
 	scene.player_body.position = scene.npcs[actor].node.position + Vector2(0, 30)
 	expect(scene._nearby_npc_actor() == actor, "NPC interaction follows actual moving position")
@@ -181,12 +207,17 @@ func _run() -> void:
 	scene.clock_minutes = 820
 	var saved_farm: Dictionary = scene.farm.snapshot()
 	var saved_village: Dictionary = scene.village.snapshot()
+	var saved_inventory: Dictionary = scene.inventory_state.snapshot()
 	expect(scene._save_game(), "save writes successfully")
 	expect(scene._save_game(), "save replaces atomically with backup")
+	var legacy_save: Dictionary = scene._read_save(scene.save_path)
+	legacy_save.erase("inventory_layout")
+	expect(scene._valid_save(legacy_save), "older saves without a grid layout remain compatible")
 	scene.farm.reset()
 	scene.village.bonds.clear()
 	scene._load_game()
 	expect(scene.farm.snapshot() == saved_farm and scene.village.snapshot() == saved_village, "disk load restores farm and relationships")
+	expect(scene.inventory_state.snapshot() == saved_inventory, "disk load restores backpack positions, expansion and hotbar assignments")
 	expect(scene.energy == 42 and scene.clock_minutes == 820 and scene.current_map_id == "town_square", "disk load restores time, energy and location")
 	var damaged := FileAccess.open(scene.save_path, FileAccess.WRITE)
 	damaged.store_string("{broken")

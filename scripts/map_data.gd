@@ -87,6 +87,16 @@ func load_from_json(path: String = DEFAULT_PATH) -> bool:
 	_loaded = true
 	return true
 
+func build_contiguous_world() -> void:
+	preload("res://scripts/valley_world_builder.gd").build(self)
+
+func to_contiguous_world(map_id: String, cell: Vector2i) -> Vector2i:
+	return preload("res://scripts/valley_world_builder.gd").to_world(map_id, cell)
+
+func zone_at(map_id: String, cell: Vector2i) -> String:
+	if map_id == "valley_world": return preload("res://scripts/valley_world_builder.gd").zone_at(cell)
+	return map_id
+
 
 func is_loaded() -> bool:
 	return _loaded
@@ -247,6 +257,7 @@ func _build_map(raw_map: Dictionary) -> void:
 		"spawn": _as_cell(raw_map.get("spawn", [])),
 		"cells": cells,
 		"npc_routes": {},
+		"objects": raw_map.get("objects", []).duplicate(true),
 	}
 	_apply_records(map, raw_map.get("surfaces", []), "surface")
 	_apply_records(map, raw_map.get("blocked", []), "blocked")
@@ -281,6 +292,7 @@ func _apply_records(map: Dictionary, raw_records, group: String) -> void:
 				"blocked":
 					# `solid` and `water` remain separate so resolution_order is meaningful.
 					layers[record_class] = record_class
+					layers["blocked_id"] = str(record.get("id", ""))
 				"interaction", "exit":
 					layers[group] = record_class
 					layers["%s_record" % group] = record.duplicate(true)

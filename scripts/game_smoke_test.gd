@@ -30,28 +30,33 @@ func _run() -> void:
 	scene._begin_move(Vector2i.RIGHT)
 	scene._update_player_movement(0.06)
 	_expect(scene.player.action == "walk_b", "walking within one cell should advance to a second animation frame")
-	scene._update_player_movement(0.06)
+	scene._update_player_movement(scene.MOVE_SECONDS - 0.06)
 	_expect(scene.player_cell == Vector2i(18, 16), "a normal movement must not trigger a scene exit or reset the player position")
 	_expect(scene.current_map_id == "farm_outdoor", "a normal movement must remain in the same outdoor scene")
+	_expect(not scene.moving and scene.player.action == "idle", "finishing a movement must return to idle")
+	_expect(scene.player._body.texture.resource_path.ends_with("farmer_idle_v1.png"), "stopping after movement must show dedicated standing art")
 	# The player stands above the authored crop plot and operates on the facing cell.
 	scene.player_cell = Vector2i(4, 14)
 	scene.player.set_pose("down", "idle")
 	scene.current_tool = "hoe"
 	scene._farm_action()
+	scene.actor_action.advance(1.0)
 	_expect(scene.farm.get_cell_state(Vector2i(4, 15)).get("tilled", false), "hoe input should till only the faced authored field cell")
 	scene.current_tool = "seed"
 	scene._farm_action()
+	scene.actor_action.advance(1.0)
 	_expect(scene.farm.is_crop_occupied(Vector2i(4, 15)), "seed input should plant on the tilled faced cell")
 	scene.current_tool = "water"
 	scene._farm_action()
+	scene.actor_action.advance(1.0)
 	_expect(scene.farm.get_cell_state(Vector2i(4, 15)).get("watered", false), "water input should water the faced planted cell")
 	scene._advance_day(false)
 	_expect(scene.farm.day == 2, "sleep input should advance the farm day")
 
-	scene._change_map("town_square", Vector2i(42, 22))
+	scene._change_map("town_square", Vector2i(41, 22))
 	_expect(scene.current_map_id == "town_square", "scene transition should enter town")
-	_expect(scene.player_cell == Vector2i(42, 22), "town safe arrival must match navigation data")
-	_expect(scene.npcs.size() == 3, "town should spawn all three routed NPCs")
+	_expect(scene.player_cell == Vector2i(41, 22), "town safe arrival must match navigation data")
+	_expect(scene.npcs.size() == scene.VillageScript.PEOPLE.size(), "town should spawn the expanded morning population")
 
 	scene._change_map("farm_outdoor", Vector2i(1, 14))
 	_expect(scene.current_map_id == "farm_outdoor", "scene transition should return to farm")

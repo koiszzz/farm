@@ -1,165 +1,2717 @@
 {
   "version": 1,
-  "grid": { "tile_px": 32, "coordinates": "origin is top-left; x increases right; y increases down" },
-  "resolution_order": ["exit", "interaction", "solid", "water", "crop_occupied", "surface"],
+  "grid": {
+    "tile_px": 32,
+    "coordinates": "origin is top-left; x increases right; y increases down"
+  },
+  "resolution_order": [
+    "exit",
+    "interaction",
+    "solid",
+    "water",
+    "crop_occupied",
+    "surface"
+  ],
   "classes": {
-    "grass": { "walkable": true, "label": "可行走草地" },
-    "path": { "walkable": true, "label": "主路径" },
-    "tillable": { "walkable": true, "label": "可耕种土地；作物占用后禁止行走" },
-    "solid": { "walkable": false, "label": "建筑、树干、围栏、石头等实体障碍" },
-    "water": { "walkable": false, "label": "水面" },
-    "interaction": { "walkable": true, "label": "可站立并触发交互" },
-    "exit": { "walkable": true, "label": "场景出口" }
+    "grass": {
+      "walkable": true,
+      "label": "可行走草地"
+    },
+    "path": {
+      "walkable": true,
+      "label": "主路径"
+    },
+    "tillable": {
+      "walkable": true,
+      "label": "可耕种土地；作物占用后禁止行走"
+    },
+    "solid": {
+      "walkable": false,
+      "label": "建筑、树干、围栏、石头等实体障碍"
+    },
+    "water": {
+      "walkable": false,
+      "label": "水面"
+    },
+    "interaction": {
+      "walkable": true,
+      "label": "可站立并触发交互"
+    },
+    "exit": {
+      "walkable": true,
+      "label": "场景出口"
+    }
   },
   "maps": [
     {
       "id": "farm_outdoor",
-      "size_tiles": [40, 30],
-      "spawn": [17, 16],
+      "size_tiles": [
+        64,
+        44
+      ],
+      "spawn": [
+        17,
+        16
+      ],
       "surfaces": [
-        { "id": "farm_grass", "class": "grass", "rect": [0, 0, 40, 30] },
-        { "id": "farm_main_path", "class": "path", "points": [[0, 14], [12, 14], [12, 11], [17, 11], [17, 14], [28, 14], [28, 10], [39, 10]] },
-        { "id": "farm_cultivation", "class": "tillable", "rect": [3, 15, 13, 9] }
+        {
+          "id": "farm_grass",
+          "class": "grass",
+          "rect": [
+            0,
+            0,
+            64,
+            44
+          ]
+        },
+        {
+          "id": "farm_main_path",
+          "class": "path",
+          "points": [
+            [
+              0,
+              14
+            ],
+            [
+              12,
+              14
+            ],
+            [
+              12,
+              11
+            ],
+            [
+              17,
+              11
+            ],
+            [
+              17,
+              14
+            ],
+            [
+              28,
+              14
+            ],
+            [
+              28,
+              10
+            ],
+            [
+              39,
+              10
+            ]
+          ]
+        },
+        {
+          "id": "farm_cultivation",
+          "class": "tillable",
+          "rect": [
+            3,
+            15,
+            13,
+            9
+          ]
+        },
+        {
+          "id": "v2_riverside_lane",
+          "class": "path",
+          "points": [
+            [
+              28,
+              14
+            ],
+            [
+              42,
+              14
+            ],
+            [
+              42,
+              20
+            ],
+            [
+              63,
+              20
+            ]
+          ]
+        },
+        {
+          "id": "v2_south_garden_lane",
+          "class": "path",
+          "points": [
+            [
+              17,
+              14
+            ],
+            [
+              17,
+              29
+            ],
+            [
+              45,
+              29
+            ],
+            [
+              45,
+              20
+            ]
+          ]
+        },
+        {
+          "id": "v2_front_porch",
+          "class": "path",
+          "rect": [
+            14,
+            10,
+            3,
+            2
+          ]
+        }
       ],
       "blocked": [
-        { "id": "farmhouse", "class": "solid", "rect": [10, 2, 11, 8] },
-        { "id": "pond", "class": "water", "rect": [27, 16, 13, 12] },
-        { "id": "north_fence", "class": "solid", "rect": [23, 5, 8, 1] },
-        { "id": "crop_plot_fence_west", "class": "solid", "rect": [2, 14, 1, 11] },
-        { "id": "crop_plot_fence_south", "class": "solid", "rect": [3, 24, 13, 1] },
-        { "id": "shipping_box", "class": "solid", "rect": [22, 9, 2, 2] }
+        {
+          "id": "farmhouse",
+          "class": "solid",
+          "rect": [
+            10,
+            7,
+            11,
+            3
+          ]
+        },
+        {
+          "id": "pond",
+          "class": "water",
+          "rect": [
+            27,
+            16,
+            13,
+            12
+          ]
+        },
+        {
+          "id": "north_fence",
+          "class": "solid",
+          "rect": [
+            23,
+            5,
+            8,
+            1
+          ]
+        },
+        {
+          "id": "crop_plot_fence_west",
+          "class": "solid",
+          "rect": [
+            2,
+            14,
+            1,
+            11
+          ]
+        },
+        {
+          "id": "crop_plot_fence_south",
+          "class": "solid",
+          "rect": [
+            3,
+            24,
+            13,
+            1
+          ]
+        },
+        {
+          "id": "shipping_box",
+          "class": "solid",
+          "rect": [
+            22,
+            10,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "v2_well",
+          "class": "solid",
+          "rect": [
+            24,
+            9,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_0",
+          "class": "solid",
+          "rect": [
+            4,
+            6,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_1",
+          "class": "solid",
+          "rect": [
+            7,
+            8,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_2",
+          "class": "solid",
+          "rect": [
+            34,
+            7,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_3",
+          "class": "solid",
+          "rect": [
+            39,
+            6,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_4",
+          "class": "solid",
+          "rect": [
+            45,
+            8,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_5",
+          "class": "solid",
+          "rect": [
+            52,
+            7,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_6",
+          "class": "solid",
+          "rect": [
+            59,
+            9,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_7",
+          "class": "solid",
+          "rect": [
+            6,
+            30,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_8",
+          "class": "solid",
+          "rect": [
+            11,
+            34,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_9",
+          "class": "solid",
+          "rect": [
+            24,
+            35,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_10",
+          "class": "solid",
+          "rect": [
+            31,
+            33,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_11",
+          "class": "solid",
+          "rect": [
+            39,
+            37,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_12",
+          "class": "solid",
+          "rect": [
+            49,
+            35,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_13",
+          "class": "solid",
+          "rect": [
+            56,
+            31,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_14",
+          "class": "solid",
+          "rect": [
+            60,
+            38,
+            1,
+            1
+          ]
+        }
       ],
       "interactions": [
-        { "id": "farmhouse_door", "class": "interaction", "rect": [15, 10, 1, 1], "target": "farmhouse_interior" },
-        { "id": "shipping_box_front", "class": "interaction", "rect": [22, 11, 2, 1], "target": "shipping_box" },
-        { "id": "well_front", "class": "interaction", "rect": [24, 10, 1, 1], "target": "well" }
+        {
+          "id": "farmhouse_door",
+          "class": "interaction",
+          "rect": [
+            15,
+            10,
+            1,
+            1
+          ],
+          "target": "farmhouse_interior"
+        },
+        {
+          "id": "shipping_box_front",
+          "class": "interaction",
+          "rect": [
+            22,
+            11,
+            2,
+            1
+          ],
+          "target": "shipping_box"
+        },
+        {
+          "id": "well_front",
+          "class": "interaction",
+          "rect": [
+            24,
+            10,
+            1,
+            1
+          ],
+          "target": "well"
+        }
       ],
       "exits": [
-        { "id": "farm_to_town", "class": "exit", "rect": [0, 13, 1, 3], "target": "town_square", "arrival": [42, 22] }
+        {
+          "id": "farm_to_town",
+          "class": "exit",
+          "rect": [
+            0,
+            13,
+            1,
+            3
+          ],
+          "target": "town_square",
+          "arrival": [
+            41,
+            22
+          ]
+        },
+        {
+          "id": "farm_to_riverside",
+          "class": "exit",
+          "rect": [
+            63,
+            19,
+            1,
+            3
+          ],
+          "target": "riverside",
+          "arrival": [
+            2,
+            15
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "farmhouse",
+          "atlas": "buildings",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            10,
+            2,
+            11,
+            8
+          ]
+        },
+        {
+          "id": "shipping_box",
+          "atlas": "props",
+          "index": [
+            0,
+            1
+          ],
+          "visual_rect": [
+            22,
+            9,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "v2_well",
+          "atlas": "props",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            24,
+            8,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "tree_farm_0",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            3,
+            3,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_1",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            6,
+            5,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_2",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            33,
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_3",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            38,
+            3,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_4",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            44,
+            5,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_5",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            51,
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_6",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            58,
+            6,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_7",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            5,
+            27,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_8",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            10,
+            31,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_9",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            23,
+            32,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_10",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            30,
+            30,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_11",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            38,
+            34,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_12",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            48,
+            32,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_13",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            55,
+            28,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_farm_14",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            35,
+            3,
+            4
+          ]
+        }
       ]
     },
     {
       "id": "town_square",
-      "size_tiles": [48, 32],
-      "spawn": [42, 22],
+      "size_tiles": [
+        48,
+        32
+      ],
+      "spawn": [
+        41,
+        22
+      ],
       "surfaces": [
-        { "id": "town_grass", "class": "grass", "rect": [0, 0, 48, 32] },
-        { "id": "town_plaza", "class": "path", "rect": [18, 13, 12, 6] },
-        { "id": "town_north_street", "class": "path", "rect": [22, 9, 5, 5] },
-        { "id": "town_west_street", "class": "path", "rect": [7, 12, 11, 3] },
-        { "id": "town_east_street", "class": "path", "rect": [30, 12, 11, 3] },
-        { "id": "town_south_lane", "class": "path", "rect": [23, 19, 3, 9] },
-        { "id": "west_bridge", "class": "path", "rect": [4, 22, 8, 3] },
-        { "id": "east_bridge", "class": "path", "rect": [38, 21, 6, 3] }
+        {
+          "id": "town_grass",
+          "class": "grass",
+          "rect": [
+            0,
+            0,
+            48,
+            32
+          ]
+        },
+        {
+          "id": "town_plaza",
+          "class": "path",
+          "rect": [
+            18,
+            13,
+            12,
+            6
+          ]
+        },
+        {
+          "id": "town_north_street",
+          "class": "path",
+          "rect": [
+            22,
+            9,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "town_west_street",
+          "class": "path",
+          "rect": [
+            7,
+            12,
+            11,
+            3
+          ]
+        },
+        {
+          "id": "town_east_street",
+          "class": "path",
+          "rect": [
+            30,
+            12,
+            11,
+            3
+          ]
+        },
+        {
+          "id": "town_south_lane",
+          "class": "path",
+          "rect": [
+            23,
+            19,
+            3,
+            9
+          ]
+        },
+        {
+          "id": "west_bridge",
+          "class": "path",
+          "rect": [
+            4,
+            22,
+            8,
+            3
+          ]
+        },
+        {
+          "id": "east_bridge",
+          "class": "path",
+          "rect": [
+            38,
+            21,
+            6,
+            3
+          ]
+        }
       ],
       "blocked": [
-        { "id": "general_store", "class": "solid", "rect": [5, 2, 11, 9] },
-        { "id": "clinic", "class": "solid", "rect": [20, 2, 9, 7] },
-        { "id": "cafe", "class": "solid", "rect": [34, 2, 10, 9] },
-        { "id": "fountain", "class": "solid", "rect": [21, 17, 5, 5] },
-        { "id": "notice_board", "class": "solid", "rect": [33, 18, 4, 2] },
-        { "id": "west_river", "class": "water", "rect": [0, 19, 5, 13] },
-        { "id": "east_river", "class": "water", "rect": [43, 18, 5, 14] }
+        {
+          "id": "general_store",
+          "class": "solid",
+          "rect": [
+            5,
+            8,
+            11,
+            3
+          ]
+        },
+        {
+          "id": "clinic",
+          "class": "solid",
+          "rect": [
+            20,
+            6,
+            9,
+            3
+          ]
+        },
+        {
+          "id": "cafe",
+          "class": "solid",
+          "rect": [
+            34,
+            8,
+            10,
+            3
+          ]
+        },
+        {
+          "id": "fountain",
+          "class": "solid",
+          "rect": [
+            22,
+            19,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "notice_board",
+          "class": "solid",
+          "rect": [
+            33,
+            19,
+            4,
+            1
+          ]
+        },
+        {
+          "id": "west_river",
+          "class": "water",
+          "rect": [
+            0,
+            19,
+            5,
+            13
+          ]
+        },
+        {
+          "id": "east_river",
+          "class": "water",
+          "rect": [
+            43,
+            18,
+            5,
+            14
+          ]
+        }
       ],
       "interactions": [
-        { "id": "store_door", "class": "interaction", "rect": [10, 11, 1, 1], "target": "general_store_interior" },
-        { "id": "clinic_door", "class": "interaction", "rect": [24, 9, 1, 1], "target": "clinic_interior" },
-        { "id": "cafe_door", "class": "interaction", "rect": [38, 11, 1, 1], "target": "cafe_interior" },
-        { "id": "notice_board_front", "class": "interaction", "rect": [34, 20, 2, 1], "target": "notice_board" }
+        {
+          "id": "store_door",
+          "class": "interaction",
+          "rect": [
+            10,
+            11,
+            1,
+            1
+          ],
+          "target": "general_store_interior"
+        },
+        {
+          "id": "clinic_door",
+          "class": "interaction",
+          "rect": [
+            24,
+            9,
+            1,
+            1
+          ],
+          "target": "clinic_interior"
+        },
+        {
+          "id": "cafe_door",
+          "class": "interaction",
+          "rect": [
+            38,
+            11,
+            1,
+            1
+          ],
+          "target": "cafe_interior"
+        },
+        {
+          "id": "notice_board_front",
+          "class": "interaction",
+          "rect": [
+            34,
+            20,
+            2,
+            1
+          ],
+          "target": "notice_board"
+        }
       ],
       "exits": [
-        { "id": "town_to_farm", "class": "exit", "rect": [42, 21, 1, 3], "target": "farm_outdoor", "arrival": [1, 12] }
+        {
+          "id": "town_to_farm",
+          "class": "exit",
+          "rect": [
+            42,
+            21,
+            1,
+            3
+          ],
+          "target": "farm_outdoor",
+          "arrival": [
+            1,
+            12
+          ]
+        }
       ],
       "npc_routes": [
-        { "actor": "florist", "points": [[10, 12], [14, 14], [18, 14], [18, 22], [14, 22]] },
-        { "actor": "shopkeeper", "points": [[10, 12], [14, 12], [14, 15], [10, 15]] },
-        { "actor": "fisherman", "points": [[7, 23], [10, 23], [12, 22], [12, 19]] }
+        {
+          "actor": "florist",
+          "points": [
+            [
+              10,
+              12
+            ],
+            [
+              14,
+              14
+            ],
+            [
+              18,
+              14
+            ],
+            [
+              18,
+              22
+            ],
+            [
+              14,
+              22
+            ]
+          ]
+        },
+        {
+          "actor": "shopkeeper",
+          "points": [
+            [
+              10,
+              12
+            ],
+            [
+              14,
+              12
+            ],
+            [
+              14,
+              15
+            ],
+            [
+              10,
+              15
+            ]
+          ]
+        },
+        {
+          "actor": "fisherman",
+          "points": [
+            [
+              7,
+              23
+            ],
+            [
+              10,
+              23
+            ],
+            [
+              12,
+              22
+            ],
+            [
+              12,
+              19
+            ]
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "general_store",
+          "atlas": "buildings",
+          "index": [
+            1,
+            0
+          ],
+          "visual_rect": [
+            5,
+            2,
+            11,
+            9
+          ]
+        },
+        {
+          "id": "clinic",
+          "atlas": "buildings",
+          "index": [
+            0,
+            1
+          ],
+          "visual_rect": [
+            20,
+            2,
+            9,
+            7
+          ]
+        },
+        {
+          "id": "cafe",
+          "atlas": "buildings",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            34,
+            2,
+            10,
+            9
+          ]
+        },
+        {
+          "id": "fountain",
+          "atlas": "props",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            21,
+            17,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "notice_board",
+          "atlas": "props",
+          "index": [
+            3,
+            0
+          ],
+          "visual_rect": [
+            33,
+            17,
+            4,
+            3
+          ]
+        }
       ]
     },
     {
       "id": "farmhouse_interior",
-      "size_tiles": [36, 20],
-      "spawn": [18, 16],
+      "size_tiles": [
+        36,
+        20
+      ],
+      "spawn": [
+        18,
+        16
+      ],
       "surfaces": [
-        { "id": "wood_floor", "class": "path", "rect": [0, 0, 36, 20] }
+        {
+          "id": "wood_floor",
+          "class": "path",
+          "rect": [
+            0,
+            0,
+            36,
+            20
+          ]
+        }
       ],
       "blocked": [
-        { "id": "north_wall", "class": "solid", "rect": [0, 0, 36, 2] },
-        { "id": "west_wall", "class": "solid", "rect": [0, 2, 2, 18] },
-        { "id": "east_wall", "class": "solid", "rect": [34, 2, 2, 18] },
-        { "id": "south_wall_left", "class": "solid", "rect": [0, 18, 17, 2] },
-        { "id": "south_wall_right", "class": "solid", "rect": [19, 18, 17, 2] },
-        { "id": "bed", "class": "solid", "rect": [3, 3, 7, 6] },
-        { "id": "bookshelf", "class": "solid", "rect": [10, 3, 3, 5] },
-        { "id": "fireplace", "class": "solid", "rect": [16, 3, 5, 5] },
-        { "id": "kitchen", "class": "solid", "rect": [24, 3, 8, 5] },
-        { "id": "dining_table", "class": "solid", "rect": [23, 10, 6, 5] },
-        { "id": "chest", "class": "solid", "rect": [4, 13, 4, 3] }
+        {
+          "id": "north_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            0,
+            36,
+            4
+          ]
+        },
+        {
+          "id": "west_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            4,
+            7,
+            16
+          ]
+        },
+        {
+          "id": "east_wall",
+          "class": "solid",
+          "rect": [
+            30,
+            4,
+            6,
+            16
+          ]
+        },
+        {
+          "id": "south_wall_left",
+          "class": "solid",
+          "rect": [
+            7,
+            18,
+            10,
+            2
+          ]
+        },
+        {
+          "id": "south_wall_right",
+          "class": "solid",
+          "rect": [
+            19,
+            18,
+            11,
+            2
+          ]
+        },
+        {
+          "id": "door_boundary",
+          "class": "solid",
+          "rect": [
+            17,
+            19,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "bed",
+          "class": "solid",
+          "rect": [
+            8,
+            6,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "bookshelf",
+          "class": "solid",
+          "rect": [
+            12,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "fireplace",
+          "class": "solid",
+          "rect": [
+            17,
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "kitchen",
+          "class": "solid",
+          "rect": [
+            24,
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "stove",
+          "class": "solid",
+          "rect": [
+            27,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "dining_table",
+          "class": "solid",
+          "rect": [
+            24,
+            11,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "chair",
+          "class": "solid",
+          "rect": [
+            24,
+            12,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "chest",
+          "class": "solid",
+          "rect": [
+            8,
+            14,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "plant",
+          "class": "solid",
+          "rect": [
+            28,
+            15,
+            1,
+            1
+          ]
+        }
       ],
       "interactions": [
-        { "id": "bedside", "class": "interaction", "rect": [10, 8, 1, 1], "target": "bed" },
-        { "id": "chest_front", "class": "interaction", "rect": [6, 16, 1, 1], "target": "chest" },
-        { "id": "fireplace_front", "class": "interaction", "rect": [18, 8, 1, 1], "target": "fireplace" }
+        {
+          "id": "bedside",
+          "class": "interaction",
+          "rect": [
+            10,
+            8,
+            1,
+            1
+          ],
+          "target": "bed"
+        },
+        {
+          "id": "chest_front",
+          "class": "interaction",
+          "rect": [
+            9,
+            15,
+            1,
+            1
+          ],
+          "target": "chest"
+        },
+        {
+          "id": "fireplace_front",
+          "class": "interaction",
+          "rect": [
+            18,
+            6,
+            1,
+            1
+          ],
+          "target": "fireplace"
+        }
       ],
       "exits": [
-        { "id": "farmhouse_to_farm", "class": "exit", "rect": [17, 17, 2, 1], "target": "farm_outdoor", "arrival": [15, 10] }
+        {
+          "id": "farmhouse_to_farm",
+          "class": "exit",
+          "rect": [
+            17,
+            17,
+            2,
+            1
+          ],
+          "target": "farm_outdoor",
+          "arrival": [
+            15,
+            11
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "bed",
+          "atlas": "furniture",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            8,
+            5,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "bookshelf",
+          "atlas": "furniture",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            12,
+            3,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "fireplace",
+          "atlas": "furniture",
+          "index": [
+            0,
+            1
+          ],
+          "visual_rect": [
+            17,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "kitchen",
+          "atlas": "furniture",
+          "index": [
+            0,
+            2
+          ],
+          "visual_rect": [
+            24,
+            4,
+            3,
+            2
+          ]
+        },
+        {
+          "id": "stove",
+          "atlas": "furniture",
+          "index": [
+            1,
+            2
+          ],
+          "visual_rect": [
+            27,
+            4,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "dining_table",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            24,
+            10,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "chair",
+          "atlas": "furniture",
+          "index": [
+            3,
+            0
+          ],
+          "visual_rect": [
+            24,
+            12,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "chest",
+          "atlas": "furniture",
+          "index": [
+            2,
+            2
+          ],
+          "visual_rect": [
+            8,
+            13,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "plant",
+          "atlas": "furniture",
+          "index": [
+            3,
+            1
+          ],
+          "visual_rect": [
+            28,
+            14,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "rug",
+          "atlas": "furniture",
+          "index": [
+            2,
+            1
+          ],
+          "visual_rect": [
+            16,
+            11,
+            4,
+            3
+          ],
+          "ground": true
+        }
       ]
     },
     {
       "id": "general_store_interior",
-      "size_tiles": [36, 20],
-      "spawn": [18, 16],
-      "surfaces": [{ "id": "store_floor", "class": "path", "rect": [0, 0, 36, 20] }],
-      "blocked": [
-        { "id": "north_wall", "class": "solid", "rect": [0, 0, 36, 2] },
-        { "id": "west_wall", "class": "solid", "rect": [0, 2, 2, 18] },
-        { "id": "east_wall", "class": "solid", "rect": [34, 2, 2, 18] },
-        { "id": "south_wall_left", "class": "solid", "rect": [0, 18, 17, 2] },
-        { "id": "south_wall_right", "class": "solid", "rect": [19, 18, 17, 2] },
-        { "id": "back_shelves", "class": "solid", "rect": [3, 2, 30, 4] },
-        { "id": "counter", "class": "solid", "rect": [14, 6, 9, 3] },
-        { "id": "left_goods", "class": "solid", "rect": [2, 8, 5, 8] },
-        { "id": "right_goods", "class": "solid", "rect": [30, 8, 4, 7] }
+      "size_tiles": [
+        36,
+        20
       ],
-      "interactions": [{ "id": "shop_counter_front", "class": "interaction", "rect": [18, 9, 1, 1], "target": "shop_counter" }],
-      "exits": [{ "id": "store_to_town", "class": "exit", "rect": [17, 17, 2, 1], "target": "town_square", "arrival": [10, 12] }]
+      "spawn": [
+        18,
+        16
+      ],
+      "surfaces": [
+        {
+          "id": "store_floor",
+          "class": "path",
+          "rect": [
+            0,
+            0,
+            36,
+            20
+          ]
+        }
+      ],
+      "blocked": [
+        {
+          "id": "north_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            0,
+            36,
+            4
+          ]
+        },
+        {
+          "id": "west_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            4,
+            7,
+            16
+          ]
+        },
+        {
+          "id": "east_wall",
+          "class": "solid",
+          "rect": [
+            30,
+            4,
+            6,
+            16
+          ]
+        },
+        {
+          "id": "south_wall_left",
+          "class": "solid",
+          "rect": [
+            7,
+            18,
+            10,
+            2
+          ]
+        },
+        {
+          "id": "south_wall_right",
+          "class": "solid",
+          "rect": [
+            19,
+            18,
+            11,
+            2
+          ]
+        },
+        {
+          "id": "door_boundary",
+          "class": "solid",
+          "rect": [
+            17,
+            19,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "back_shelves",
+          "class": "solid",
+          "rect": [
+            9,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "seed_shelf",
+          "class": "solid",
+          "rect": [
+            13,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "supply_shelf",
+          "class": "solid",
+          "rect": [
+            22,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "counter",
+          "class": "solid",
+          "rect": [
+            17,
+            8,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "left_goods",
+          "class": "solid",
+          "rect": [
+            8,
+            11,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "right_goods",
+          "class": "solid",
+          "rect": [
+            26,
+            11,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "plant",
+          "class": "solid",
+          "rect": [
+            27,
+            15,
+            1,
+            1
+          ]
+        }
+      ],
+      "interactions": [
+        {
+          "id": "shop_counter_front",
+          "class": "interaction",
+          "rect": [
+            18,
+            9,
+            1,
+            1
+          ],
+          "target": "shop_counter"
+        }
+      ],
+      "exits": [
+        {
+          "id": "store_to_town",
+          "class": "exit",
+          "rect": [
+            17,
+            17,
+            2,
+            1
+          ],
+          "target": "town_square",
+          "arrival": [
+            10,
+            12
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "back_shelves",
+          "atlas": "furniture",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            9,
+            3,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "seed_shelf",
+          "atlas": "furniture",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            13,
+            3,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "supply_shelf",
+          "atlas": "furniture",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            22,
+            3,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "counter",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            17,
+            6,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "left_goods",
+          "atlas": "furniture",
+          "index": [
+            2,
+            2
+          ],
+          "visual_rect": [
+            8,
+            10,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "right_goods",
+          "atlas": "furniture",
+          "index": [
+            2,
+            2
+          ],
+          "visual_rect": [
+            26,
+            10,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "plant",
+          "atlas": "furniture",
+          "index": [
+            3,
+            1
+          ],
+          "visual_rect": [
+            27,
+            14,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "rug",
+          "atlas": "furniture",
+          "index": [
+            2,
+            1
+          ],
+          "visual_rect": [
+            16,
+            11,
+            4,
+            3
+          ],
+          "ground": true
+        }
+      ]
     },
     {
       "id": "clinic_interior",
-      "size_tiles": [36, 20],
-      "spawn": [18, 16],
-      "surfaces": [{ "id": "clinic_floor", "class": "path", "rect": [0, 0, 36, 20] }],
-      "blocked": [
-        { "id": "north_wall", "class": "solid", "rect": [0, 0, 36, 2] },
-        { "id": "west_wall", "class": "solid", "rect": [0, 2, 2, 18] },
-        { "id": "east_wall", "class": "solid", "rect": [34, 2, 2, 18] },
-        { "id": "south_wall_left", "class": "solid", "rect": [0, 18, 17, 2] },
-        { "id": "south_wall_right", "class": "solid", "rect": [19, 18, 17, 2] },
-        { "id": "medicine_and_sink", "class": "solid", "rect": [5, 2, 15, 4] },
-        { "id": "exam_area", "class": "solid", "rect": [22, 3, 9, 4] },
-        { "id": "waiting_bench", "class": "solid", "rect": [2, 9, 4, 5] },
-        { "id": "reception", "class": "solid", "rect": [12, 12, 12, 3] }
+      "size_tiles": [
+        36,
+        20
       ],
-      "interactions": [{ "id": "clinic_counter_front", "class": "interaction", "rect": [18, 15, 1, 1], "target": "clinic_counter" }],
-      "exits": [{ "id": "clinic_to_town", "class": "exit", "rect": [17, 17, 2, 1], "target": "town_square", "arrival": [24, 9] }]
+      "spawn": [
+        18,
+        16
+      ],
+      "surfaces": [
+        {
+          "id": "clinic_floor",
+          "class": "path",
+          "rect": [
+            0,
+            0,
+            36,
+            20
+          ]
+        }
+      ],
+      "blocked": [
+        {
+          "id": "north_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            0,
+            36,
+            4
+          ]
+        },
+        {
+          "id": "west_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            4,
+            7,
+            16
+          ]
+        },
+        {
+          "id": "east_wall",
+          "class": "solid",
+          "rect": [
+            30,
+            4,
+            6,
+            16
+          ]
+        },
+        {
+          "id": "south_wall_left",
+          "class": "solid",
+          "rect": [
+            7,
+            18,
+            10,
+            2
+          ]
+        },
+        {
+          "id": "south_wall_right",
+          "class": "solid",
+          "rect": [
+            19,
+            18,
+            11,
+            2
+          ]
+        },
+        {
+          "id": "door_boundary",
+          "class": "solid",
+          "rect": [
+            17,
+            19,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "medicine_and_sink",
+          "class": "solid",
+          "rect": [
+            10,
+            5,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "medicine_shelf",
+          "class": "solid",
+          "rect": [
+            15,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "exam_area",
+          "class": "solid",
+          "rect": [
+            24,
+            6,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "exam_bed",
+          "class": "solid",
+          "rect": [
+            27,
+            6,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "waiting_bench",
+          "class": "solid",
+          "rect": [
+            8,
+            11,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "waiting_chair",
+          "class": "solid",
+          "rect": [
+            8,
+            13,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "reception",
+          "class": "solid",
+          "rect": [
+            17,
+            14,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "plant",
+          "class": "solid",
+          "rect": [
+            27,
+            15,
+            1,
+            1
+          ]
+        }
+      ],
+      "interactions": [
+        {
+          "id": "clinic_counter_front",
+          "class": "interaction",
+          "rect": [
+            18,
+            15,
+            1,
+            1
+          ],
+          "target": "clinic_counter"
+        }
+      ],
+      "exits": [
+        {
+          "id": "clinic_to_town",
+          "class": "exit",
+          "rect": [
+            17,
+            17,
+            2,
+            1
+          ],
+          "target": "town_square",
+          "arrival": [
+            24,
+            9
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "medicine_and_sink",
+          "atlas": "furniture",
+          "index": [
+            0,
+            2
+          ],
+          "visual_rect": [
+            10,
+            4,
+            3,
+            2
+          ]
+        },
+        {
+          "id": "medicine_shelf",
+          "atlas": "furniture",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            15,
+            3,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "exam_area",
+          "atlas": "furniture",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            24,
+            5,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "exam_bed",
+          "atlas": "furniture",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            27,
+            5,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "waiting_bench",
+          "atlas": "furniture",
+          "index": [
+            3,
+            0
+          ],
+          "visual_rect": [
+            8,
+            11,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "waiting_chair",
+          "atlas": "furniture",
+          "index": [
+            3,
+            0
+          ],
+          "visual_rect": [
+            8,
+            13,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "reception",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            17,
+            12,
+            3,
+            3
+          ]
+        },
+        {
+          "id": "plant",
+          "atlas": "furniture",
+          "index": [
+            3,
+            1
+          ],
+          "visual_rect": [
+            27,
+            14,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "rug",
+          "atlas": "furniture",
+          "index": [
+            2,
+            1
+          ],
+          "visual_rect": [
+            16,
+            11,
+            4,
+            3
+          ],
+          "ground": true
+        }
+      ]
     },
     {
       "id": "cafe_interior",
-      "size_tiles": [36, 20],
-      "spawn": [18, 16],
-      "surfaces": [{ "id": "cafe_floor", "class": "path", "rect": [0, 0, 36, 20] }],
-      "blocked": [
-        { "id": "north_wall", "class": "solid", "rect": [0, 0, 36, 2] },
-        { "id": "west_wall", "class": "solid", "rect": [0, 2, 2, 18] },
-        { "id": "east_wall", "class": "solid", "rect": [34, 2, 2, 18] },
-        { "id": "south_wall_left", "class": "solid", "rect": [0, 18, 17, 2] },
-        { "id": "south_wall_right", "class": "solid", "rect": [19, 18, 17, 2] },
-        { "id": "coffee_bar", "class": "solid", "rect": [10, 3, 17, 4] },
-        { "id": "left_tables", "class": "solid", "rect": [3, 8, 6, 8] },
-        { "id": "right_tables", "class": "solid", "rect": [27, 8, 6, 8] }
+      "size_tiles": [
+        36,
+        20
       ],
-      "interactions": [{ "id": "cafe_counter_front", "class": "interaction", "rect": [18, 7, 1, 1], "target": "cafe_counter" }],
-      "exits": [{ "id": "cafe_to_town", "class": "exit", "rect": [17, 17, 2, 1], "target": "town_square", "arrival": [38, 11] }]
+      "spawn": [
+        18,
+        16
+      ],
+      "surfaces": [
+        {
+          "id": "cafe_floor",
+          "class": "path",
+          "rect": [
+            0,
+            0,
+            36,
+            20
+          ]
+        }
+      ],
+      "blocked": [
+        {
+          "id": "north_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            0,
+            36,
+            4
+          ]
+        },
+        {
+          "id": "west_wall",
+          "class": "solid",
+          "rect": [
+            0,
+            4,
+            7,
+            16
+          ]
+        },
+        {
+          "id": "east_wall",
+          "class": "solid",
+          "rect": [
+            30,
+            4,
+            6,
+            16
+          ]
+        },
+        {
+          "id": "south_wall_left",
+          "class": "solid",
+          "rect": [
+            7,
+            18,
+            10,
+            2
+          ]
+        },
+        {
+          "id": "south_wall_right",
+          "class": "solid",
+          "rect": [
+            19,
+            18,
+            11,
+            2
+          ]
+        },
+        {
+          "id": "door_boundary",
+          "class": "solid",
+          "rect": [
+            17,
+            19,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "coffee_bar",
+          "class": "solid",
+          "rect": [
+            17,
+            6,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "coffee_stove",
+          "class": "solid",
+          "rect": [
+            20,
+            6,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "shelf",
+          "class": "solid",
+          "rect": [
+            12,
+            5,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "left_table",
+          "class": "solid",
+          "rect": [
+            9,
+            10,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "left_chair",
+          "class": "solid",
+          "rect": [
+            9,
+            11,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "left_table_back",
+          "class": "solid",
+          "rect": [
+            9,
+            14,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "right_table",
+          "class": "solid",
+          "rect": [
+            25,
+            10,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "right_chair",
+          "class": "solid",
+          "rect": [
+            25,
+            11,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "right_table_back",
+          "class": "solid",
+          "rect": [
+            25,
+            14,
+            2,
+            1
+          ]
+        },
+        {
+          "id": "plant",
+          "class": "solid",
+          "rect": [
+            27,
+            6,
+            1,
+            1
+          ]
+        }
+      ],
+      "interactions": [
+        {
+          "id": "cafe_counter_front",
+          "class": "interaction",
+          "rect": [
+            18,
+            7,
+            1,
+            1
+          ],
+          "target": "cafe_counter"
+        }
+      ],
+      "exits": [
+        {
+          "id": "cafe_to_town",
+          "class": "exit",
+          "rect": [
+            17,
+            17,
+            2,
+            1
+          ],
+          "target": "town_square",
+          "arrival": [
+            38,
+            11
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "coffee_bar",
+          "atlas": "furniture",
+          "index": [
+            0,
+            2
+          ],
+          "visual_rect": [
+            17,
+            5,
+            3,
+            2
+          ]
+        },
+        {
+          "id": "coffee_stove",
+          "atlas": "furniture",
+          "index": [
+            1,
+            2
+          ],
+          "visual_rect": [
+            20,
+            5,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "shelf",
+          "atlas": "furniture",
+          "index": [
+            1,
+            1
+          ],
+          "visual_rect": [
+            12,
+            3,
+            2,
+            3
+          ]
+        },
+        {
+          "id": "left_table",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            9,
+            9,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "left_chair",
+          "atlas": "furniture",
+          "index": [
+            3,
+            0
+          ],
+          "visual_rect": [
+            9,
+            11,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "left_table_back",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            9,
+            13,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "right_table",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            25,
+            9,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "right_chair",
+          "atlas": "furniture",
+          "index": [
+            3,
+            0
+          ],
+          "visual_rect": [
+            25,
+            11,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "right_table_back",
+          "atlas": "furniture",
+          "index": [
+            2,
+            0
+          ],
+          "visual_rect": [
+            25,
+            13,
+            2,
+            2
+          ]
+        },
+        {
+          "id": "plant",
+          "atlas": "furniture",
+          "index": [
+            3,
+            1
+          ],
+          "visual_rect": [
+            27,
+            5,
+            1,
+            2
+          ]
+        },
+        {
+          "id": "rug",
+          "atlas": "furniture",
+          "index": [
+            2,
+            1
+          ],
+          "visual_rect": [
+            16,
+            11,
+            4,
+            3
+          ],
+          "ground": true
+        }
+      ]
+    },
+    {
+      "id": "riverside",
+      "size_tiles": [
+        48,
+        32
+      ],
+      "spawn": [
+        2,
+        15
+      ],
+      "surfaces": [
+        {
+          "id": "river_grass",
+          "class": "grass",
+          "rect": [
+            0,
+            0,
+            48,
+            32
+          ]
+        },
+        {
+          "id": "river_walk",
+          "class": "path",
+          "rect": [
+            0,
+            14,
+            21,
+            3
+          ]
+        },
+        {
+          "id": "bank_walk",
+          "class": "path",
+          "rect": [
+            20,
+            7,
+            3,
+            20
+          ]
+        }
+      ],
+      "blocked": [
+        {
+          "id": "river_water",
+          "class": "water",
+          "rect": [
+            24,
+            0,
+            24,
+            32
+          ]
+        },
+        {
+          "id": "tree_river_0",
+          "class": "solid",
+          "rect": [
+            3,
+            5,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_1",
+          "class": "solid",
+          "rect": [
+            8,
+            7,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_2",
+          "class": "solid",
+          "rect": [
+            14,
+            5,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_3",
+          "class": "solid",
+          "rect": [
+            17,
+            10,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_4",
+          "class": "solid",
+          "rect": [
+            3,
+            23,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_5",
+          "class": "solid",
+          "rect": [
+            8,
+            27,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_6",
+          "class": "solid",
+          "rect": [
+            15,
+            24,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_river_7",
+          "class": "solid",
+          "rect": [
+            18,
+            30,
+            1,
+            1
+          ]
+        }
+      ],
+      "interactions": [],
+      "exits": [
+        {
+          "id": "riverside_to_farm",
+          "class": "exit",
+          "rect": [
+            0,
+            14,
+            1,
+            3
+          ],
+          "target": "farm_outdoor",
+          "arrival": [
+            62,
+            20
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "id": "tree_river_0",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            2,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_1",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            7,
+            4,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_2",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            13,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_3",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            16,
+            7,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_4",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            2,
+            20,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_5",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            7,
+            24,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_6",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            14,
+            21,
+            3,
+            4
+          ]
+        },
+        {
+          "id": "tree_river_7",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            17,
+            27,
+            3,
+            4
+          ]
+        }
+      ]
     }
   ]
 }

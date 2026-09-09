@@ -8,28 +8,92 @@ extends Node2D
 const TILE_SIZE := 32.0
 const TERRAIN_ART: Texture2D = preload("res://assets/art/runtime_generated/terrain_atlas_v2.png")
 const TERRAIN_GRID := Vector2i(4, 2)
-const FARMHOUSE_ART: Texture2D = preload("res://assets/art/runtime_generated/farmhouse_front_v3.png")
+const SOFT_TERRAIN: Texture2D = preload("res://assets/art/runtime_generated/terrain_atlas_v5.png")
+const BUILDINGS_ART: Texture2D = preload("res://assets/art/runtime_generated/village_buildings_v4.png")
+const PROPS_ART: Texture2D = preload("res://assets/art/runtime_generated/village_props_v4.png")
 const ROAD_ART: Texture2D = preload("res://assets/art/runtime_generated/road_transitions_v3.png")
 const ROAD_GRID := Vector2i(4, 4)
-const FARMHOUSE_INTERIOR_ART: Texture2D = preload("res://assets/art/concepts/farmhouse_interior_key_art_v1.png")
-const GENERAL_STORE_INTERIOR_ART: Texture2D = preload("res://assets/art/runtime_generated/general_store_interior_v1.png")
-const CLINIC_INTERIOR_ART: Texture2D = preload("res://assets/art/runtime_generated/clinic_interior_v1.png")
-const CAFE_INTERIOR_ART: Texture2D = preload("res://assets/art/runtime_generated/cafe_interior_v1.png")
-const TOWN_CONCEPT_ART: Texture2D = preload("res://assets/art/concepts/town_square_key_art_v1.png")
 const TOOLS_ART: Texture2D = preload("res://assets/art/source_generated/mvp_tools_and_seeds_source_v1.png")
+const CROPS_ART: Texture2D = preload("res://assets/art/runtime_generated/crop_growth_v1.png")
+const CROPS_SPRING_ART: Texture2D = preload("res://assets/art/runtime_generated/crop_growth_spring_v1.png")
+const CROPS_SUMMER_ART: Texture2D = preload("res://assets/art/runtime_generated/crop_growth_summer_v1.png")
+const CROPS_FALL_ART: Texture2D = preload("res://assets/art/runtime_generated/crop_growth_fall_v1.png")
+const CROPS_WINTER_ART: Texture2D = preload("res://assets/art/runtime_generated/crop_growth_winter_v1.png")
+const CropAtlas = preload("res://scripts/sprite_atlas.gd")
+const FURNITURE_ART: Texture2D = preload("res://assets/art/source_generated/interior_furniture_source_v1.png")
+const WorldObject = preload("res://scripts/world_object.gd")
+const TerrainChunk = preload("res://scripts/world_terrain_chunk.gd")
+const FURNITURE_REGIONS := [
+	Rect2(65, 8, 225, 365), Rect2(385, 5, 320, 375), Rect2(780, 40, 320, 310), Rect2(1180, 75, 220, 260),
+	Rect2(25, 385, 295, 370), Rect2(425, 377, 285, 380), Rect2(785, 370, 290, 390), Rect2(1150, 407, 260, 311),
+	Rect2(20, 785, 370, 285), Rect2(430, 758, 280, 322), Rect2(790, 805, 295, 260), Rect2(1180, 780, 230, 275),
+]
+const DOOR_PROFILES := {
+	"farmhouse_interior": {"building_id": "farmhouse", "uv": Rect2(0.475, 0.704, 0.105, 0.221), "animation": "hinge_right", "rug": [Color("7f9b62"), Color("e4d6aa")]},
+	"general_store_interior": {"building_id": "general_store", "uv": Rect2(0.42, 0.709, 0.11, 0.218), "animation": "slide_left", "rug": [Color("6f9367"), Color("f0e3bd")]},
+	"clinic_interior": {"building_id": "clinic", "uv": Rect2(0.47, 0.618, 0.11, 0.265), "animation": "hinge_left", "rug": [Color("8fa9ad"), Color("e9e3cf")]},
+	"cafe_interior": {"building_id": "cafe", "uv": Rect2(0.42, 0.633, 0.11, 0.253), "animation": "double_fold", "rug": [Color("b76043"), Color("f0d8af")]},
+}
+var raised_objects: Array[Sprite2D] = []
+var _all_raised_objects: Array[Sprite2D] = []
+var object_nodes: Array[Sprite2D] = []
+var _object_cache: Dictionary = {}
+var _source_images: Dictionary = {}
+var _door_layer: Node2D
+var _door_cells: Array[Vector2i] = []
+var _terrain_chunks: Dictionary = {}
+var _pending_terrain_chunks: Array[Vector2i] = []
+var _pending_terrain_chunk_keys: Dictionary = {}
+var _pending_terrain_releases: Array[Vector2i] = []
+var _pending_terrain_release_keys: Dictionary = {}
+var _terrain_keep_bounds := Rect2i()
 
 var navigation: MapData
 var farm_state = null
 var map_id := ""
 var origin := Vector2.ZERO
 var show_routes := false
+var active_door := Vector2i(-1, -1)
+var door_open := 0.0
+var stream_center := Vector2i.ZERO
+var stream_chunk := Vector2i(-999, -999)
+var terrain_stream_chunk := Vector2i(-999, -999)
+const STREAM_RADIUS := Vector2i(32, 22)
+const TERRAIN_CHUNK_SIZE := 2
 
 
 func configure(next_navigation: MapData, next_map_id: String, next_origin: Vector2) -> void:
+	if map_id != next_map_id:
+		_clear_object_cache()
+		_clear_terrain_chunks()
 	navigation = next_navigation
 	map_id = next_map_id
 	origin = next_origin
+	stream_center = navigation.get_spawn(map_id)
+	stream_chunk = Vector2i(-999, -999)
+	terrain_stream_chunk = Vector2i(-999, -999)
+	_door_cells.clear()
+	if not map_id.ends_with("_interior"):
+		var size := navigation.get_map_size(map_id)
+		for y in size.y:
+			for x in size.x:
+				var cell := Vector2i(x, y)
+				if str(navigation.interaction_at(map_id, cell).get("target", "")).ends_with("_interior"):
+					_door_cells.append(cell)
+	_prime_object_cache()
+	_rebuild_objects()
+	_ensure_terrain_chunks(true)
 	queue_redraw()
+
+func set_stream_center(cell: Vector2i, immediate := false) -> void:
+	stream_center = cell
+	var next_terrain_chunk := Vector2i(floori(float(cell.x) / TERRAIN_CHUNK_SIZE), floori(float(cell.y) / TERRAIN_CHUNK_SIZE))
+	if next_terrain_chunk != terrain_stream_chunk:
+		terrain_stream_chunk = next_terrain_chunk
+		_ensure_terrain_chunks(immediate)
+	var next_chunk := Vector2i(floori(float(cell.x) / 8.0), floori(float(cell.y) / 8.0))
+	if next_chunk != stream_chunk:
+		stream_chunk = next_chunk
 
 
 func _ready() -> void:
@@ -38,6 +102,14 @@ func _ready() -> void:
 
 func set_farm_state(next_farm_state) -> void:
 	farm_state = next_farm_state
+	_apply_season_tints()
+	queue_redraw()
+
+func refresh_season() -> void:
+	_apply_season_tints()
+	for chunk_value in _terrain_chunks.values():
+		var chunk: Node2D = chunk_value
+		chunk.queue_redraw()
 	queue_redraw()
 
 
@@ -58,46 +130,502 @@ func map_pixel_size() -> Vector2:
 func _draw() -> void:
 	if navigation == null or map_id.is_empty() or not navigation.has_map(map_id):
 		return
-	if map_id == "farmhouse_interior":
-		draw_texture_rect(FARMHOUSE_INTERIOR_ART, Rect2(origin, map_pixel_size()), false)
-		return
-	var interior_art := _town_interior_art()
-	if interior_art != null:
-		draw_texture_rect(interior_art, Rect2(origin, map_pixel_size()), false)
+	if map_id.ends_with("_interior"):
+		_draw_room()
 		return
 	var size := navigation.get_map_size(map_id)
-	for y in range(size.y):
-		for x in range(size.x):
-			var cell := Vector2i(x, y)
-			_draw_cell(cell)
-	_draw_snapped_buildings()
-	if farm_state != null and map_id == "town_square" and not farm_state.Calendar.festival(farm_state.day).is_empty():
+	var bounds := Rect2i(Vector2i.ZERO, size)
+	if map_id == "valley_world":
+		bounds = Rect2i(stream_center - STREAM_RADIUS, STREAM_RADIUS * 2 + Vector2i.ONE).intersection(bounds)
+		_draw_streamed_farm_plots(bounds)
+	else:
+		for y in range(bounds.position.y, bounds.end.y):
+			for x in range(bounds.position.x, bounds.end.x):
+				var cell := Vector2i(x, y)
+				_draw_cell(cell)
+	_draw_object_grounding()
+	if map_id == "farm_outdoor" or map_id == "valley_world":
+		_draw_cottage_garden()
+	_draw_wayfinding()
+	if farm_state != null and (map_id == "town_square" or map_id == "valley_world") and not farm_state.Calendar.festival(farm_state.day).is_empty():
 		_draw_festival_bunting()
 	if show_routes:
 		_draw_npc_routes()
 
 
-func _town_interior_art() -> Texture2D:
-	match map_id:
-		"general_store_interior": return GENERAL_STORE_INTERIOR_ART
-		"clinic_interior": return CLINIC_INTERIOR_ART
-		"cafe_interior": return CAFE_INTERIOR_ART
-		_: return null
+func _process(_delta: float) -> void:
+	for index in mini(1, _pending_terrain_releases.size()):
+		var release_key: Vector2i = _pending_terrain_releases.pop_front()
+		_pending_terrain_release_keys.erase(release_key)
+		var release_chunk: Node2D = _terrain_chunks.get(release_key)
+		if release_chunk != null and not _terrain_keep_bounds.intersects(release_chunk.cell_bounds):
+			remove_child(release_chunk)
+			release_chunk.queue_free()
+			_terrain_chunks.erase(release_key)
+	for index in mini(1, _pending_terrain_chunks.size()):
+		var chunk_key: Vector2i = _pending_terrain_chunks.pop_front()
+		_pending_terrain_chunk_keys.erase(chunk_key)
+		var chunk_bounds := Rect2i(chunk_key * TERRAIN_CHUNK_SIZE, Vector2i.ONE * TERRAIN_CHUNK_SIZE)
+		if not _terrain_chunks.has(chunk_key) and _terrain_keep_bounds.intersects(chunk_bounds):
+			_create_terrain_chunk(chunk_key)
+	if _door_layer != null: _door_layer.queue_redraw()
+
+
+func _clear_terrain_chunks() -> void:
+	for chunk_value in _terrain_chunks.values():
+		var chunk: Node2D = chunk_value
+		if chunk.get_parent() == self:
+			remove_child(chunk)
+		chunk.queue_free()
+	_terrain_chunks.clear()
+	_pending_terrain_chunks.clear()
+	_pending_terrain_chunk_keys.clear()
+	_pending_terrain_releases.clear()
+	_pending_terrain_release_keys.clear()
+	_terrain_keep_bounds = Rect2i()
+
+
+func _ensure_terrain_chunks(immediate: bool) -> void:
+	if navigation == null or map_id != "valley_world":
+		return
+	var map_size := navigation.get_map_size(map_id)
+	var map_bounds := Rect2i(Vector2i.ZERO, map_size)
+	var padding := Vector2i.ONE * TERRAIN_CHUNK_SIZE * 2
+	var wanted := Rect2i(stream_center - STREAM_RADIUS - padding, STREAM_RADIUS * 2 + padding * 2 + Vector2i.ONE).intersection(map_bounds)
+	_terrain_keep_bounds = Rect2i(stream_center - STREAM_RADIUS - Vector2i(12, 12), STREAM_RADIUS * 2 + Vector2i(25, 25)).intersection(map_bounds)
+	var first := Vector2i(floori(float(wanted.position.x) / TERRAIN_CHUNK_SIZE), floori(float(wanted.position.y) / TERRAIN_CHUNK_SIZE))
+	var last_cell := wanted.end - Vector2i.ONE
+	var last := Vector2i(floori(float(last_cell.x) / TERRAIN_CHUNK_SIZE), floori(float(last_cell.y) / TERRAIN_CHUNK_SIZE))
+	for chunk_y in range(first.y, last.y + 1):
+		for chunk_x in range(first.x, last.x + 1):
+			var chunk_key := Vector2i(chunk_x, chunk_y)
+			if _terrain_chunks.has(chunk_key):
+				if _pending_terrain_release_keys.has(chunk_key):
+					_pending_terrain_release_keys.erase(chunk_key)
+					_pending_terrain_releases.erase(chunk_key)
+				continue
+			if immediate:
+				if _pending_terrain_chunk_keys.has(chunk_key):
+					_pending_terrain_chunk_keys.erase(chunk_key)
+					_pending_terrain_chunks.erase(chunk_key)
+				_create_terrain_chunk(chunk_key)
+			elif not _pending_terrain_chunk_keys.has(chunk_key):
+				_pending_terrain_chunks.append(chunk_key)
+				_pending_terrain_chunk_keys[chunk_key] = true
+	for chunk_value in _terrain_chunks.keys():
+		var chunk_key: Vector2i = chunk_value
+		var chunk: Node2D = _terrain_chunks[chunk_key]
+		if _terrain_keep_bounds.intersects(chunk.cell_bounds) or _pending_terrain_release_keys.has(chunk_key):
+			continue
+		_pending_terrain_releases.append(chunk_key)
+		_pending_terrain_release_keys[chunk_key] = true
+
+
+func _create_terrain_chunk(chunk_key: Vector2i) -> void:
+	var map_bounds := Rect2i(Vector2i.ZERO, navigation.get_map_size(map_id))
+	var chunk := TerrainChunk.new()
+	chunk.name = "Terrain_%d_%d" % [chunk_key.x, chunk_key.y]
+	chunk.renderer = self
+	chunk.cell_bounds = Rect2i(chunk_key * TERRAIN_CHUNK_SIZE, Vector2i.ONE * TERRAIN_CHUNK_SIZE).intersection(map_bounds)
+	chunk.z_index = -100
+	add_child(chunk)
+	_terrain_chunks[chunk_key] = chunk
+
+
+func draw_terrain_chunk(canvas: Node2D, bounds: Rect2i) -> void:
+	if navigation == null or map_id != "valley_world":
+		return
+	var season: int = int(farm_state.Calendar.date(farm_state.day).season) if farm_state != null else 0
+	for y in range(bounds.position.y, bounds.end.y):
+		for x in range(bounds.position.x, bounds.end.x):
+			_draw_static_cell(canvas, Vector2i(x, y), season)
+
+
+func _draw_static_cell(canvas: Node2D, cell: Vector2i, season: int) -> void:
+	var layers := navigation.get_cell_layers(map_id, cell)
+	var tile_class := navigation.get_cell_class(map_id, cell)
+	var rect := Rect2(cell_to_screen(cell), Vector2.ONE * TILE_SIZE)
+	var surface := str(layers.get("surface", "grass"))
+	var terrain := Vector2i.ZERO
+	if tile_class == "water": terrain = Vector2i(1, 1)
+	elif surface == "path": terrain = Vector2i(1, 0)
+	elif surface == "tillable": terrain = Vector2i(0, 1)
+	var quadrant_size := SOFT_TERRAIN.get_size() / 2.0
+	var sample_size := quadrant_size / 8.0
+	var offset := Vector2(posmod(cell.x, 8), posmod(cell.y, 8)) * sample_size
+	canvas.draw_texture_rect_region(SOFT_TERRAIN, rect, Rect2(Vector2(terrain) * quadrant_size + offset, sample_size))
+	if tile_class == "water": _draw_static_water_bank(canvas, rect, cell)
+	if tile_class == "solid" and str(layers.get("blocked_id", "")).contains("fence"):
+		_draw_static_fence(canvas, rect, str(layers.get("blocked_id", "")).ends_with("west"))
+	if surface == "path":
+		for direction in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			if not _has_path_at(cell + direction):
+				_draw_static_path_edge(canvas, rect, cell, direction)
+	if surface == "grass" and tile_class != "water":
+		_draw_static_meadow_details(canvas, rect, cell)
+	if season == 1 and surface == "grass": canvas.draw_rect(rect, Color(0.22, 0.51, 0.18, 0.12))
+	if season == 2:
+		canvas.draw_rect(rect, Color(0.83, 0.46, 0.12, 0.35 if surface == "grass" else 0.12))
+		if (cell.x * 5 + cell.y * 3) % 13 == 0: canvas.draw_rect(Rect2(rect.position + Vector2(7, 11), Vector2(5, 3)), Color("bd6840"))
+	if season == 3:
+		canvas.draw_rect(rect, Color(0.86, 0.93, 0.96, 0.82 if surface == "grass" else 0.46))
+		if (cell.x + cell.y * 3) % 7 == 0: canvas.draw_line(rect.position + Vector2(5, 9), rect.position + Vector2(18, 7), Color("cddfe5"), 2)
+
+
+func _draw_static_water_bank(canvas: Node2D, rect: Rect2, cell: Vector2i) -> void:
+	for direction in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+		var neighbor: Vector2i = cell + direction
+		if navigation.is_in_bounds(map_id, neighbor) and navigation.get_cell_class(map_id, neighbor) == "water": continue
+		var normal := Vector2(direction)
+		var tangent := normal.orthogonal()
+		var edge := rect.get_center() + normal * 15
+		canvas.draw_line(edge - tangent * 16, edge + tangent * 16, Color("76532f"), 6)
+		canvas.draw_line(edge - tangent * 16 - normal * 3, edge + tangent * 16 - normal * 3, Color("d7a64f"), 4)
+		for notch in 5:
+			var point := edge + tangent * (-13 + notch * 7) - normal * (4 + posmod(cell.x + cell.y + notch, 3))
+			canvas.draw_circle(point, 2, Color("e5c06a"))
+	var corner_specs := [[Vector2i.LEFT, Vector2i.UP, Vector2.ZERO, Vector2(13, 0), Vector2(0, 13)], [Vector2i.RIGHT, Vector2i.UP, Vector2(32, 0), Vector2(19, 0), Vector2(32, 13)], [Vector2i.LEFT, Vector2i.DOWN, Vector2(0, 32), Vector2(13, 32), Vector2(0, 19)], [Vector2i.RIGHT, Vector2i.DOWN, Vector2(32, 32), Vector2(19, 32), Vector2(32, 19)]]
+	for spec in corner_specs:
+		if navigation.get_cell_class(map_id, cell + spec[0]) != "water" and navigation.get_cell_class(map_id, cell + spec[1]) != "water":
+			canvas.draw_colored_polygon(PackedVector2Array([rect.position + spec[2], rect.position + spec[3], rect.position + spec[4]]), Color("d7a64f"))
+
+
+func _draw_static_fence(canvas: Node2D, rect: Rect2, vertical: bool) -> void:
+	var center := rect.get_center()
+	var direction := Vector2.DOWN if vertical else Vector2.RIGHT
+	canvas.draw_rect(Rect2(center + Vector2(-4, 7), Vector2(12, 6)), Color(0.20, 0.16, 0.06, 0.22))
+	for offset in [-6, 3]:
+		var cross := direction.orthogonal() * float(offset)
+		canvas.draw_line(center - direction * 16 + cross, center + direction * 16 + cross, Color("694321"), 6)
+		canvas.draw_line(center - direction * 16 + cross - Vector2(0, 1), center + direction * 16 + cross - Vector2(0, 1), Color("bc843b"), 3)
+	canvas.draw_rect(Rect2(center - Vector2(4, 14), Vector2(9, 25)), Color("694321"))
+	canvas.draw_rect(Rect2(center - Vector2(3, 14), Vector2(6, 22)), Color("ba8038"))
+	canvas.draw_rect(Rect2(center - Vector2(3, 14), Vector2(6, 3)), Color("edbe67"))
+	canvas.draw_rect(Rect2(center + Vector2(1, -8), Vector2(1, 14)), Color("92602b"))
+	canvas.draw_rect(Rect2(center + Vector2(0, -5), Vector2(2, 2)), Color("573c29"))
+
+
+func _draw_static_path_edge(canvas: Node2D, rect: Rect2, cell: Vector2i, direction: Vector2i) -> void:
+	var normal := Vector2(direction)
+	var tangent := normal.orthogonal()
+	var middle := rect.get_center() + normal * 15
+	for index in 8:
+		var point := middle + tangent * (-14 + index * 4)
+		var depth := float(posmod(cell.x * 13 + cell.y * 7 + index * 3, 4) + 2)
+		canvas.draw_line(point - normal * depth, point + tangent * 4 - normal * depth, Color("ba8b3f"), 2)
+		canvas.draw_line(point - normal, point - normal * depth, Color("759537"), 2)
+
+
+func _draw_static_meadow_details(canvas: Node2D, rect: Rect2, cell: Vector2i) -> void:
+	var value := posmod(cell.x * 73 + cell.y * 137, 101)
+	if value > 38: return
+	var point := rect.position + Vector2(5 + value % 21, 8 + (value * 7) % 18)
+	canvas.draw_line(point, point + Vector2(-3, -4), Color("588632"), 2)
+	canvas.draw_line(point + Vector2(2, 0), point + Vector2(3, -6), Color("90b940"), 2)
+	if value < 7:
+		var petal := Color("fff1b4") if value % 2 == 0 else Color("efb1aa")
+		canvas.draw_rect(Rect2(point + Vector2(-3, -7), Vector2(6, 2)), petal)
+		canvas.draw_rect(Rect2(point + Vector2(-1, -9), Vector2(2, 6)), petal)
+		canvas.draw_rect(Rect2(point + Vector2(-1, -7), Vector2(2, 2)), Color("e5ab38"))
+
+
+func _draw_streamed_farm_plots(bounds: Rect2i) -> void:
+	if farm_state == null:
+		return
+	for cell_value in farm_state.get_plots():
+		var cell: Vector2i = cell_value
+		_draw_farm_plot(cell, Rect2(cell_to_screen(cell), Vector2.ONE * TILE_SIZE))
+
+
+func _rebuild_objects() -> void:
+	object_nodes.clear()
+	raised_objects.clear()
+	if _door_layer == null:
+		_door_layer = Node2D.new()
+		_door_layer.z_index = 2048
+		add_child(_door_layer)
+		_door_layer.draw.connect(_draw_doors)
+	for entry in navigation.get_map(map_id).get("objects", []):
+		var entry_rect: Array = entry.visual_rect
+		if map_id == "valley_world" and not Rect2i(stream_center - STREAM_RADIUS - Vector2i(12, 12), STREAM_RADIUS * 2 + Vector2i(25, 25)).intersects(Rect2i(Vector2i(int(entry_rect[0]), int(entry_rect[1])), Vector2i(int(entry_rect[2]), int(entry_rect[3])))): continue
+		var cache_key := str(entry.id)
+		var object: Sprite2D = _object_cache.get(cache_key)
+		if object == null:
+			object = _create_world_object(entry)
+			_object_cache[cache_key] = object
+		object_nodes.append(object)
+		if not entry.get("ground", false): raised_objects.append(object)
+
+
+func _clear_object_cache() -> void:
+	for object_value in _object_cache.values():
+		var object: Sprite2D = object_value
+		if object.get_parent() == self:
+			remove_child(object)
+		object.queue_free()
+	_object_cache.clear()
+	object_nodes.clear()
+	raised_objects.clear()
+	_all_raised_objects.clear()
+
+
+func _prime_object_cache() -> void:
+	for entry in navigation.get_map(map_id).get("objects", []):
+		var cache_key := str(entry.id)
+		if _object_cache.has(cache_key):
+			continue
+		var object := _create_world_object(entry)
+		_object_cache[cache_key] = object
+		if not entry.get("ground", false):
+			_all_raised_objects.append(object)
+	_apply_season_tints()
+
+
+func _apply_season_tints() -> void:
+	if farm_state == null or navigation == null or map_id.is_empty():
+		return
+	var entries_by_id: Dictionary = {}
+	for entry in navigation.get_map(map_id).get("objects", []):
+		entries_by_id[str(entry.id)] = entry
+	var season: int = farm_state.Calendar.date(farm_state.day).season
+	for cache_key in _object_cache:
+		var object: Sprite2D = _object_cache[cache_key]
+		var entry: Dictionary = entries_by_id.get(cache_key, {})
+		object.modulate = Color.WHITE
+		if entry.get("atlas", "") == "props" and (str(cache_key).contains("tree") or str(cache_key).contains("bush")):
+			if season == 2: object.modulate = Color("d78b58")
+			elif season == 3: object.modulate = Color("c8d8d5")
+
+
+func _create_world_object(entry: Dictionary) -> Sprite2D:
+		var texture: Texture2D = FURNITURE_ART
+		var grid := Vector2i(4, 3)
+		match str(entry.atlas):
+			"buildings": texture = BUILDINGS_ART; grid = Vector2i(2, 2)
+			"props": texture = PROPS_ART; grid = Vector2i(4, 2)
+		var object := WorldObject.new()
+		object.name = str(entry.id)
+		object.texture = texture
+		if entry.atlas == "buildings":
+			var roof_material := ShaderMaterial.new()
+			roof_material.shader = preload("res://assets/art/runtime_generated/warm_roof.gdshader")
+			object.material = roof_material
+		object.centered = false
+		object.region_enabled = true
+		object.region_filter_clip_enabled = true
+		var frame_size := texture.get_size() / Vector2(grid)
+		object.region_rect = Rect2(Vector2(entry.index[0], entry.index[1]) * frame_size, frame_size)
+		if entry.atlas == "furniture":
+			# This source is hand packed, not an equal-cell atlas. Explicit bounds
+			# prevent a shelf/rug from bleeding into the next row of furniture.
+			object.region_rect = FURNITURE_REGIONS[int(entry.index[1]) * 4 + int(entry.index[0])]
+		var r: Array = entry.visual_rect
+		object.position = origin + Vector2(r[0], r[1]) * TILE_SIZE
+		object.scale = Vector2(r[2], r[3]) * TILE_SIZE / object.region_rect.size
+		if entry.atlas == "furniture":
+			object.scale = Vector2.ONE * minf(object.scale.x, object.scale.y)
+			object.position += (Vector2(r[2], r[3]) * TILE_SIZE - object.region_rect.size * object.scale) * Vector2(0.5, 1)
+		object.z_index = 1 if entry.get("ground", false) else int((r[1] + r[3]) * TILE_SIZE)
+		# The old one-size-fits-all carpet is retained in authored data for save/map
+		# compatibility, but each room now draws a doorway mat from its exterior
+		# door proportions and facade palette.
+		object.visible = not (map_id.ends_with("_interior") and str(entry.id) == "rug")
+		if not _source_images.has(texture.resource_path):
+			var source := texture.get_image()
+			if source.is_compressed(): source.decompress()
+			_source_images[texture.resource_path] = source
+		object.source_image = _source_images[texture.resource_path]
+		add_child(object)
+		return object
+
+
+func is_actor_occluded(foot: Vector2) -> bool:
+	for object in _all_raised_objects:
+		if object.z_index <= int(foot.y): continue
+		if absf(object.position.x - foot.x) > 512.0 or absf(object.position.y - foot.y) > 512.0: continue
+		for offset in [Vector2(0, -36), Vector2(0, -28), Vector2(-6, -18), Vector2(6, -18), Vector2(0, -6), Vector2(0, -2)]:
+			if object.covers(foot + offset): return true
+	return false
+
+
+func _draw_room() -> void:
+	# Same 32 px world units and camera scale as outdoors. Furniture is separate
+	# art with authored footprints, leaving every visible floor aisle playable.
+	draw_rect(Rect2(origin, map_pixel_size()), Color("253330"))
+	for y in range(4, 18):
+		for x in range(7, 30):
+			var rect := Rect2(cell_to_screen(Vector2i(x, y)), Vector2.ONE * TILE_SIZE)
+			var color := Color("ad8056") if map_id != "clinic_interior" else Color("aebcad")
+			for plank in 2:
+				var start := rect.position + Vector2(0, plank * 16)
+				var shade := color.lightened(float((x / 3 + y * 3 + plank) % 5) * 0.018)
+				draw_rect(Rect2(start, Vector2(32, 16)), shade)
+				draw_line(start, start + Vector2(32, 0), color.darkened(0.23), 1)
+				draw_line(start + Vector2(0, 1), start + Vector2(32, 1), color.lightened(0.12), 1)
+				if (x + y + plank) % 3 == 0: draw_line(start, start + Vector2(0, 16), color.darkened(0.19), 1)
+				for grain in 2:
+					var offset := Vector2((x * 7 + y * 11 + grain * 13) % 20, 5 + grain * 5)
+					draw_line(start + offset, start + offset + Vector2(7, 0), shade.darkened(0.045), 1)
+	var wall := Rect2(cell_to_screen(Vector2i(7, 2)), Vector2(23, 2) * TILE_SIZE)
+	draw_rect(wall, Color("d4bf90"))
+	draw_rect(Rect2(wall.position, Vector2(wall.size.x, 9)), Color("75543d"))
+	draw_rect(Rect2(wall.position + Vector2(0, 57), Vector2(wall.size.x, 7)), Color("75543d"))
+	for x in [10, 22, 27]:
+		var window := Rect2(cell_to_screen(Vector2i(x, 2)) + Vector2(2, 14), Vector2(42, 35))
+		draw_rect(window.grow(4), Color("805b3c"))
+		draw_rect(window, Color("b9d8ca"))
+		draw_line(window.get_center() - Vector2(0, 17), window.get_center() + Vector2(0, 17), Color("eee0b4"), 3)
+	for x in [7, 30]: draw_rect(Rect2(Vector2(x * 32 - 5, 64), Vector2(6, 512)), Color("75543d"))
+	for r in [Rect2(224, 576, 320, 8), Rect2(608, 576, 352, 8)]: draw_rect(r, Color("75543d"))
+	_draw_entry_rug()
+
+
+func _draw_doors() -> void:
+	for cell in _door_cells:
+		var amount := door_open if cell == active_door else 0.0
+		if amount <= 0.0:
+			continue
+		var target := str(navigation.interaction_at(map_id, cell).get("target", ""))
+		var profile := door_profile(target)
+		var rect := door_visual_rect(cell)
+		var source := door_source_rect(target)
+		if profile.is_empty() or rect.size == Vector2.ZERO or source.size == Vector2.ZERO:
+			continue
+		_draw_animated_door(rect, source, profile, amount)
+
+
+func door_profile(target: String) -> Dictionary:
+	var profile = DOOR_PROFILES.get(target, {})
+	return profile.duplicate(true) if profile is Dictionary else {}
+
+
+func door_visual_rect(cell: Vector2i) -> Rect2:
+	if navigation == null:
+		return Rect2()
+	var target := str(navigation.interaction_at(map_id, cell).get("target", ""))
+	var profile := door_profile(target)
+	var building := _building_entry(str(profile.get("building_id", "")))
+	if building.is_empty():
+		return Rect2()
+	var values: Array = building.visual_rect
+	var building_rect := Rect2(cell_to_screen(Vector2i(int(values[0]), int(values[1]))), Vector2(float(values[2]), float(values[3])) * TILE_SIZE)
+	var uv: Rect2 = profile.uv
+	return Rect2(building_rect.position + uv.position * building_rect.size, uv.size * building_rect.size)
+
+
+func door_source_rect(target: String) -> Rect2:
+	var profile := door_profile(target)
+	var building := _building_entry(str(profile.get("building_id", "")))
+	if building.is_empty():
+		return Rect2()
+	var frame_size := BUILDINGS_ART.get_size() / Vector2(2, 2)
+	var frame_origin := Vector2(int(building.index[0]), int(building.index[1])) * frame_size
+	var uv: Rect2 = profile.uv
+	return Rect2(frame_origin + uv.position * frame_size, uv.size * frame_size)
+
+
+func entrance_rug_size(interior_id := map_id) -> Vector2:
+	var profile := door_profile(interior_id)
+	if profile.is_empty():
+		return Vector2(56, 24)
+	var exterior_width_tiles: float = {"farmhouse_interior": 11.0, "general_store_interior": 11.0, "clinic_interior": 9.0, "cafe_interior": 10.0}.get(interior_id, 10.0)
+	var uv: Rect2 = profile.uv
+	var outside_door_width := exterior_width_tiles * TILE_SIZE * uv.size.x
+	return Vector2(roundf(outside_door_width * 1.5), roundf(clampf(outside_door_width * 0.55, 20.0, 30.0)))
+
+
+func _building_entry(building_id: String) -> Dictionary:
+	if building_id.is_empty() or navigation == null:
+		return {}
+	for entry in navigation.get_map(map_id).get("objects", []):
+		var entry_id := str(entry.get("id", ""))
+		if entry_id == building_id or entry_id.ends_with("_" + building_id):
+			return entry
+	return {}
+
+
+func _draw_animated_door(rect: Rect2, source: Rect2, profile: Dictionary, amount: float) -> void:
+	_door_layer.draw_rect(rect.grow(1), Color("3b261f"))
+	_door_layer.draw_rect(rect, Color("17191a"))
+	var glow := Color("e6b568", 0.18 + amount * 0.34)
+	_door_layer.draw_rect(rect.grow(-2), glow)
+	match str(profile.animation):
+		"hinge_right":
+			var width := maxf(2.0, rect.size.x * (1.0 - amount * 0.88))
+			_draw_door_texture(Rect2(rect.end.x - width, rect.position.y, width, rect.size.y), source)
+			_door_layer.draw_line(Vector2(rect.end.x - width, rect.position.y), Vector2(rect.end.x - width, rect.end.y), Color("f2cf8a", amount * 0.65), 1)
+		"hinge_left":
+			var width := maxf(2.0, rect.size.x * (1.0 - amount * 0.88))
+			_draw_door_texture(Rect2(rect.position, Vector2(width, rect.size.y)), source)
+			_door_layer.draw_line(Vector2(rect.position.x + width, rect.position.y), Vector2(rect.position.x + width, rect.end.y), Color("d9edf0", amount * 0.55), 1)
+		"slide_left":
+			var visible_width := maxf(1.0, rect.size.x * (1.0 - amount * 0.96))
+			var source_width := source.size.x * (visible_width / rect.size.x)
+			_draw_door_texture(Rect2(rect.position, Vector2(visible_width, rect.size.y)), Rect2(source.position + Vector2(source.size.x - source_width, 0), Vector2(source_width, source.size.y)))
+		"double_fold":
+			var half_width := rect.size.x * 0.5
+			var folded_width := maxf(1.0, half_width * (1.0 - amount * 0.84))
+			var source_half := source.size.x * 0.5
+			_draw_door_texture(Rect2(rect.position, Vector2(folded_width, rect.size.y)), Rect2(source.position, Vector2(source_half, source.size.y)))
+			_draw_door_texture(Rect2(Vector2(rect.end.x - folded_width, rect.position.y), Vector2(folded_width, rect.size.y)), Rect2(source.position + Vector2(source_half, 0), Vector2(source_half, source.size.y)))
+
+
+func _draw_door_texture(destination: Rect2, source: Rect2) -> void:
+	_door_layer.draw_texture_rect_region(BUILDINGS_ART, destination, source)
+
+
+func _draw_entry_rug() -> void:
+	var profile := door_profile(map_id)
+	if profile.is_empty():
+		return
+	var size := entrance_rug_size(map_id)
+	var center := cell_center_to_screen(Vector2i(18, 17)) + Vector2(0, 3)
+	var rect := Rect2(center - size * 0.5, size)
+	var colors: Array = profile.rug
+	var style := StyleBoxFlat.new()
+	style.bg_color = colors[0]
+	style.border_color = colors[1].darkened(0.28)
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(4)
+	draw_style_box(style, rect)
+	var stripe_count := 3 if map_id in ["general_store_interior", "cafe_interior"] else 2
+	for index in stripe_count:
+		var stripe_x := rect.position.x + rect.size.x * float(index + 1) / float(stripe_count + 1)
+		draw_rect(Rect2(Vector2(stripe_x - 2, rect.position.y + 3), Vector2(4, rect.size.y - 6)), colors[1])
+	for x in range(int(rect.position.x) + 5, int(rect.end.x) - 4, 8):
+		draw_line(Vector2(x, rect.end.y), Vector2(x, rect.end.y + 3), colors[1].darkened(0.18), 1)
 
 
 func _draw_cell(cell: Vector2i) -> void:
 	var layers := navigation.get_cell_layers(map_id, cell)
 	var tile_class := navigation.get_cell_class(map_id, cell)
 	var rect := Rect2(cell_to_screen(cell), Vector2.ONE * TILE_SIZE)
-	if str(layers.get("surface", "")) == "path":
-		_draw_road_tile(rect, _road_index_for(cell))
-	else:
-		_draw_terrain_tile(rect, _terrain_index_for(cell, layers, tile_class))
-	if farm_state != null and str(layers.get("surface", "grass")) == "grass" and tile_class != "water":
+	var surface := str(layers.get("surface", "grass"))
+	var terrain := Vector2i.ZERO
+	if tile_class == "water": terrain = Vector2i(1, 1)
+	elif surface == "path": terrain = Vector2i(1, 0)
+	elif surface == "tillable": terrain = Vector2i(0, 1)
+	_draw_soft_terrain(rect, cell, terrain)
+	if tile_class == "water": _draw_water_bank(rect, cell)
+	if tile_class == "solid" and str(layers.get("blocked_id", "")).contains("fence"):
+		_draw_fence(rect, str(layers.get("blocked_id", "")).ends_with("west"))
+	if surface == "path":
+		for direction in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			if not _has_path_at(cell + direction):
+				_draw_path_edge(rect, cell, direction)
+	if surface == "grass" and tile_class != "water":
+		_draw_meadow_details(rect, cell)
+	if farm_state != null and surface == "tillable" and farm_state.get_cell_state(cell).get("watered", false):
+		draw_rect(rect, Color(0.12, 0.10, 0.08, 0.30))
+	if farm_state != null and tile_class != "water":
 		var season: int = farm_state.Calendar.date(farm_state.day).season
-		if season == 1: draw_rect(rect, Color(0.22, 0.51, 0.18, 0.12))
-		if season == 2: draw_rect(rect, Color(0.83, 0.46, 0.12, 0.35))
-		if season == 3: draw_rect(rect, Color(0.86, 0.93, 0.96, 0.78))
+		if season == 1 and surface == "grass": draw_rect(rect, Color(0.22, 0.51, 0.18, 0.12))
+		if season == 2:
+			draw_rect(rect, Color(0.83, 0.46, 0.12, 0.35 if surface == "grass" else 0.12))
+			if (cell.x * 5 + cell.y * 3) % 13 == 0: draw_rect(Rect2(rect.position + Vector2(7, 11), Vector2(5, 3)), Color("bd6840"))
+		if season == 3:
+			draw_rect(rect, Color(0.86, 0.93, 0.96, 0.82 if surface == "grass" else 0.46))
+			if (cell.x + cell.y * 3) % 7 == 0: draw_line(rect.position + Vector2(5, 9), rect.position + Vector2(18, 7), Color("cddfe5"), 2)
 	_draw_farm_plot(cell, rect)
 
 	if show_routes:
@@ -123,6 +651,101 @@ func _draw_terrain_tile(destination: Rect2, index: Vector2i) -> void:
 	var source_cell := Vector2(source_size.x / TERRAIN_GRID.x, source_size.y / TERRAIN_GRID.y)
 	var source_rect := Rect2(Vector2(index) * source_cell, source_cell)
 	draw_texture_rect_region(TERRAIN_ART, destination, source_rect)
+
+
+func _draw_soft_terrain(destination: Rect2, cell: Vector2i, quadrant: Vector2i) -> void:
+	var quadrant_size := SOFT_TERRAIN.get_size() / 2.0
+	var sample_size := quadrant_size / 8.0
+	var offset := Vector2(posmod(cell.x, 8), posmod(cell.y, 8)) * sample_size
+	draw_texture_rect_region(SOFT_TERRAIN, destination, Rect2(Vector2(quadrant) * quadrant_size + offset, sample_size))
+
+func _draw_water_bank(rect: Rect2, cell: Vector2i) -> void:
+	for direction in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+		var neighbor: Vector2i = cell + direction
+		if navigation.is_in_bounds(map_id, neighbor) and navigation.get_cell_class(map_id, neighbor) == "water": continue
+		var normal := Vector2(direction)
+		var tangent := normal.orthogonal()
+		var edge := rect.get_center() + normal * 15
+		draw_line(edge - tangent * 16, edge + tangent * 16, Color("76532f"), 6)
+		draw_line(edge - tangent * 16 - normal * 3, edge + tangent * 16 - normal * 3, Color("d7a64f"), 4)
+		for notch in 5:
+			var point := edge + tangent * (-13 + notch * 7) - normal * (4 + posmod(cell.x + cell.y + notch, 3))
+			draw_circle(point, 2, Color("e5c06a"))
+	var corner_specs := [[Vector2i.LEFT, Vector2i.UP, Vector2.ZERO, Vector2(13, 0), Vector2(0, 13)], [Vector2i.RIGHT, Vector2i.UP, Vector2(32, 0), Vector2(19, 0), Vector2(32, 13)], [Vector2i.LEFT, Vector2i.DOWN, Vector2(0, 32), Vector2(13, 32), Vector2(0, 19)], [Vector2i.RIGHT, Vector2i.DOWN, Vector2(32, 32), Vector2(19, 32), Vector2(32, 19)]]
+	for spec in corner_specs:
+		if navigation.get_cell_class(map_id, cell + spec[0]) != "water" and navigation.get_cell_class(map_id, cell + spec[1]) != "water":
+			draw_colored_polygon(PackedVector2Array([rect.position + spec[2], rect.position + spec[3], rect.position + spec[4]]), Color("d7a64f"))
+
+
+func _draw_fence(rect: Rect2, vertical: bool) -> void:
+	var center := rect.get_center()
+	var direction := Vector2.DOWN if vertical else Vector2.RIGHT
+	draw_rect(Rect2(center + Vector2(-4, 7), Vector2(12, 6)), Color(0.20, 0.16, 0.06, 0.22))
+	for offset in [-6, 3]:
+		var cross: Vector2 = direction.orthogonal() * float(offset)
+		draw_line(center - direction * 16 + cross, center + direction * 16 + cross, Color("694321"), 6)
+		draw_line(center - direction * 16 + cross - Vector2(0, 1), center + direction * 16 + cross - Vector2(0, 1), Color("bc843b"), 3)
+	draw_rect(Rect2(center - Vector2(4, 14), Vector2(9, 25)), Color("694321"))
+	draw_rect(Rect2(center - Vector2(3, 14), Vector2(6, 22)), Color("ba8038"))
+	draw_rect(Rect2(center - Vector2(3, 14), Vector2(6, 3)), Color("edbe67"))
+	draw_rect(Rect2(center + Vector2(1, -8), Vector2(1, 14)), Color("92602b"))
+	draw_rect(Rect2(center + Vector2(0, -5), Vector2(2, 2)), Color("573c29"))
+
+
+func _draw_path_edge(rect: Rect2, cell: Vector2i, direction: Vector2i) -> void:
+	var normal := Vector2(direction)
+	var tangent := normal.orthogonal()
+	var middle := rect.get_center() + normal * 15
+	for index in 8:
+		var point := middle + tangent * (-14 + index * 4)
+		var depth := float(posmod(cell.x * 13 + cell.y * 7 + index * 3, 4) + 2)
+		draw_line(point - normal * depth, point + tangent * 4 - normal * depth, Color("ba8b3f"), 2)
+		draw_line(point - normal, point - normal * depth, Color("759537"), 2)
+
+
+func _draw_meadow_details(rect: Rect2, cell: Vector2i) -> void:
+	# Stable world coordinates avoid flickering/randomizing decoration on redraw.
+	var value := posmod(cell.x * 73 + cell.y * 137, 101)
+	if value > 38: return
+	var point := rect.position + Vector2(5 + value % 21, 8 + (value * 7) % 18)
+	draw_line(point, point + Vector2(-3, -4), Color("588632"), 2)
+	draw_line(point + Vector2(2, 0), point + Vector2(3, -6), Color("90b940"), 2)
+	if value < 7:
+		var petal := Color("fff1b4") if value % 2 == 0 else Color("efb1aa")
+		draw_rect(Rect2(point + Vector2(-3, -7), Vector2(6, 2)), petal)
+		draw_rect(Rect2(point + Vector2(-1, -9), Vector2(2, 6)), petal)
+		draw_rect(Rect2(point + Vector2(-1, -7), Vector2(2, 2)), Color("e5ab38"))
+
+
+func _draw_object_grounding() -> void:
+	for entry in navigation.get_map(map_id).get("objects", []):
+		if entry.get("ground", false): continue
+		var r: Array = entry.visual_rect
+		var base := origin + Vector2(r[0], r[1] + r[3]) * TILE_SIZE
+		var width := float(r[2]) * TILE_SIZE
+		var points := PackedVector2Array([base + Vector2(width * 0.1, -9), base + Vector2(width * 0.88, -9), base + Vector2(width * 0.97, 5), base + Vector2(width * 0.2, 5)])
+		draw_colored_polygon(points, Color(0.22, 0.26, 0.08, 0.22))
+
+
+func _draw_cottage_garden() -> void:
+	# Low flowers flank the authored front door; the central approach stays clear.
+	for column in [10, 18]:
+		var cell := Vector2i(column, 10)
+		if map_id == "valley_world": cell = navigation.to_contiguous_world("farm_outdoor", cell)
+		var base := cell_to_screen(cell) + Vector2(1, 0)
+		draw_rect(Rect2(base + Vector2(2, 16), Vector2(62, 7)), Color(0.23, 0.20, 0.08, 0.22))
+		draw_rect(Rect2(base, Vector2(62, 19)), Color("694124"))
+		draw_rect(Rect2(base + Vector2(2, 2), Vector2(58, 14)), Color("a16b32"))
+		for plank in 7:
+			draw_line(base + Vector2(5 + plank * 8, 3), base + Vector2(5 + plank * 8, 15), Color("cb944b"), 2)
+		for blossom in 8:
+			var point := base + Vector2(5 + blossom * 7, 2 - (blossom % 2) * 4)
+			draw_rect(Rect2(point - Vector2(4, 2), Vector2(9, 6)), Color("3e722e"))
+			draw_rect(Rect2(point + Vector2(0, -5), Vector2(5, 6)), Color("75a43b"))
+			var color := Color("f1a6a4") if blossom % 3 != 0 else Color("fff1c0")
+			draw_rect(Rect2(point - Vector2(2, 6), Vector2(6, 2)), color)
+			draw_rect(Rect2(point - Vector2(0, 8), Vector2(2, 6)), color)
+			draw_rect(Rect2(point - Vector2(0, 6), Vector2(2, 2)), Color("edc44e"))
 
 
 func _draw_road_tile(destination: Rect2, index: Vector2i) -> void:
@@ -191,41 +814,47 @@ func _solid_terrain_index(cell: Vector2i) -> Vector2i:
 
 
 func _draw_farm_plot(cell: Vector2i, rect: Rect2) -> void:
-	if farm_state == null or map_id != "farm_outdoor":
+	if farm_state == null or (map_id != "farm_outdoor" and not (map_id == "valley_world" and navigation.zone_at(map_id, cell) == "farm_outdoor")):
 		return
 	var plot: Dictionary = farm_state.get_cell_state(cell)
 	if plot.is_empty() or not bool(plot.get("tilled", false)):
 		return
+	var soil := Color("85502c") if not plot.get("watered", false) else Color("553c2b")
+	draw_rect(rect.grow(-1), soil)
+	for row in 4:
+		var start := rect.position + Vector2(3, 5 + row * 7)
+		draw_line(start, start + Vector2(25, 0), soil.darkened(0.22), 2)
+		draw_line(start + Vector2(0, 2), start + Vector2(25, 2), soil.lightened(0.13), 1)
 	var seed_id := str(plot.get("seed", ""))
 	if seed_id.is_empty():
 		return
 	var growth: int = int(plot.get("growth", 0))
 	var mature := bool(plot.get("mature", false))
-	if mature:
-		_draw_tool_crop(rect.grow(-2), seed_id)
-		draw_circle(rect.position + Vector2(27, 5), 3, Color("ffe29a"))
-	else:
-		var center := rect.get_center() + Vector2(0, 6)
-		var height := 5.0 + minf(growth, 5) * 2.0
-		draw_line(center, center - Vector2(0, height), Color("31572d"), 2)
-		draw_circle(center + Vector2(-3, -height + 2), 3 + minf(growth, 3), Color("76b643"))
-		draw_circle(center + Vector2(4, -height), 3 + minf(growth, 3), Color("a3ce58"))
 	var definition: Dictionary = farm_state.get_crop_definition(seed_id)
 	var progress := clampf(float(growth) / float(definition.get("grow_days", 1)), 0, 1)
-	draw_rect(Rect2(rect.position + Vector2(3, 27), Vector2(26, 2)), Color("56402c"))
-	draw_rect(Rect2(rect.position + Vector2(3, 27), Vector2(26 * progress, 2)), Color("f7d875"))
+	_draw_crop_stage(rect, seed_id, 3 if mature else mini(2, int(progress * 3)))
+	if show_routes:
+		draw_rect(Rect2(rect.position + Vector2(3, 27), Vector2(26, 2)), Color("56402c"))
+		draw_rect(Rect2(rect.position + Vector2(3, 27), Vector2(26 * progress, 2)), Color("f7d875"))
 
 
 func _draw_festival_bunting() -> void:
-	var start := cell_center_to_screen(Vector2i(30, 18))
-	var finish := cell_center_to_screen(Vector2i(39, 18))
+	var start_cell := Vector2i(30, 18)
+	var finish_cell := Vector2i(39, 18)
+	if map_id == "valley_world":
+		start_cell = navigation.to_contiguous_world("town_square", start_cell)
+		finish_cell = navigation.to_contiguous_world("town_square", finish_cell)
+	var start := cell_center_to_screen(start_cell)
+	var finish := cell_center_to_screen(finish_cell)
 	draw_line(start, finish, Color("6c4c38"), 2)
 	var colors := [Color("ee9b7c"), Color("f3d677"), Color("9dc79b"), Color("9cbfce")]
 	for index in 20:
 		var point := start.lerp(finish, float(index) / 20)
 		draw_colored_polygon(PackedVector2Array([point, point + Vector2(17, 0), point + Vector2(8, 20)]), colors[index % colors.size()])
 	var event: Dictionary = farm_state.Calendar.festival(farm_state.day)
-	var sign_position := cell_to_screen(Vector2i(31, 19))
+	var sign_cell := Vector2i(31, 19)
+	if map_id == "valley_world": sign_cell = navigation.to_contiguous_world("town_square", sign_cell)
+	var sign_position := cell_to_screen(sign_cell)
 	draw_style_box(_festival_sign_style(), Rect2(sign_position, Vector2(240, 32)))
 	draw_string(ThemeDB.fallback_font, sign_position + Vector2(12, 23), "%s · F 参加" % event.name, HORIZONTAL_ALIGNMENT_LEFT, 220, 17, Color("483b34"))
 
@@ -237,27 +866,43 @@ func _festival_sign_style() -> StyleBoxFlat:
 	return style
 
 
-func _draw_snapped_buildings() -> void:
-	if map_id == "farm_outdoor":
-		_draw_art_object(Rect2i(10, 2, 11, 8), FARMHOUSE_ART, Rect2(Vector2.ZERO, FARMHOUSE_ART.get_size()))
-	elif map_id == "town_square":
-		_draw_art_object(Rect2i(5, 2, 11, 9), TOWN_CONCEPT_ART, Rect2(140, 0, 520, 420))
-		_draw_art_object(Rect2i(20, 2, 9, 7), TOWN_CONCEPT_ART, Rect2(820, 20, 340, 310))
-		_draw_art_object(Rect2i(34, 2, 10, 9), TOWN_CONCEPT_ART, Rect2(1160, 0, 480, 420))
+func _draw_wayfinding() -> void:
+	var labels: Array = []
+	if map_id == "farm_outdoor": labels = [[Vector2i(2, 12), "← 花溪镇"], [Vector2i(57, 18), "河畔 →"], [Vector2i(15, 11), "农舍"], [Vector2i(23, 12), "出货 / 水井"]]
+	elif map_id == "town_square": labels = [[Vector2i(40, 20), "农场 →"], [Vector2i(10, 12), "种子铺"], [Vector2i(24, 10), "诊所"], [Vector2i(38, 12), "咖啡馆"]]
+	elif map_id == "riverside": labels = [[Vector2i(2, 14), "← 农场"], [Vector2i(18, 17), "河岸垂钓 · 6 鱼竿"]]
+	elif map_id == "valley_world": labels = [[navigation.to_contiguous_world("town_square", Vector2i(40, 20)), "农场 →"], [Vector2i(72, 54), "溪桥林道"], [navigation.to_contiguous_world("farm_outdoor", Vector2i(15, 11)), "农舍"], [Vector2i(167, 38), "北湖"], [navigation.to_contiguous_world("riverside", Vector2i(18, 17)), "河岸垂钓"]]
+	for entry in labels:
+		var position := cell_center_to_screen(entry[0])
+		var label: String = entry[1]
+		var font := ThemeDB.fallback_font
+		var width := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 14
+		draw_style_box(_festival_sign_style(), Rect2(position - Vector2(width / 2, 14), Vector2(width, 23)))
+		draw_string(font, position + Vector2(-width / 2 + 7, 3), label, HORIZONTAL_ALIGNMENT_LEFT, width, 14, Color("483b34"))
 
 
-func _draw_art_object(cells: Rect2i, texture: Texture2D, source_rect: Rect2) -> void:
-	var rect := Rect2(cell_to_screen(cells.position), Vector2(cells.size) * TILE_SIZE)
-	draw_texture_rect_region(texture, rect, source_rect)
+static func crop_visual(seed_id: String) -> Array:
+	var texture := CROPS_ART
+	var row := int({"parsnip": 0, "turnip": 1, "tomato": 2, "pumpkin": 3}.get(seed_id, 0))
+	var groups := {
+		"cauliflower": [CROPS_SPRING_ART, 0], "potato": [CROPS_SPRING_ART, 1], "green_bean": [CROPS_SPRING_ART, 2], "strawberry": [CROPS_SPRING_ART, 3],
+		"blueberry": [CROPS_SUMMER_ART, 0], "corn": [CROPS_SUMMER_ART, 1], "pepper": [CROPS_SUMMER_ART, 2], "melon": [CROPS_SUMMER_ART, 3],
+		"cranberry": [CROPS_FALL_ART, 0], "eggplant": [CROPS_FALL_ART, 1], "yam": [CROPS_FALL_ART, 2], "bok_choy": [CROPS_FALL_ART, 3],
+		"powdermelon": [CROPS_WINTER_ART, 0], "winter_root": [CROPS_WINTER_ART, 1], "snow_yam": [CROPS_WINTER_ART, 2], "crystal_berry": [CROPS_WINTER_ART, 3],
+	}
+	if groups.has(seed_id):
+		texture = groups[seed_id][0]
+		row = int(groups[seed_id][1])
+	return [texture, row]
 
-
-func _draw_tool_crop(destination: Rect2, seed_id: String) -> void:
-	var source_size := TOOLS_ART.get_size()
-	var source_cell := Vector2(source_size.x / 4.0, source_size.y / 2.0)
-	var crop_indices := {"parsnip": Vector2i(1, 1), "turnip": Vector2i(1, 1), "tomato": Vector2i(2, 1), "pumpkin": Vector2i(3, 1)}
-	var crop_index: Vector2i = Vector2i(crop_indices.get(seed_id, Vector2i(1, 1)))
-	var source_rect := Rect2(Vector2(crop_index) * source_cell, source_cell)
-	draw_texture_rect_region(TOOLS_ART, destination, source_rect)
+func _draw_crop_stage(destination: Rect2, seed_id: String, stage: int) -> void:
+	var visual: Array = crop_visual(seed_id)
+	var texture: Texture2D = visual[0]
+	var row: int = visual[1]
+	var frame: Dictionary = CropAtlas.frame(texture, Vector2i(4, 4), stage, row)
+	var scale := 30.0 / (texture.get_height() / 4.0)
+	var point: Vector2 = destination.get_center() + Vector2(0, 10) + Vector2(frame.offset) * scale
+	draw_texture_rect_region(texture, Rect2(point, frame.region.size * scale), frame.region)
 
 
 func _draw_npc_routes() -> void:

@@ -1,0 +1,17 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 560.76 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 3050 4GB Laptop GPU
+
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/tree_behind.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/tree_front.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/house_behind.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/fountain_behind.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/farm_back.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/door_open.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/water_action.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/town.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/interior.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/general_store_interior.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/clinic_interior.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/cafe_interior.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/riverside_fishing.png
+FRAMEBUFFER res://design/qa/2026-09-06/spatial/world_map.png
