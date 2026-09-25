@@ -5,6 +5,7 @@ var art: Texture2D
 var model
 var navigation
 var farm
+var animals
 var home_cell := Vector2i(21, 11)
 var world_map_id := "farm_outdoor"
 var cell := Vector2i(21, 11)
@@ -21,6 +22,8 @@ var cached_path: Array[Vector2i] = []
 var cached_path_index := 0
 var cached_goal := Vector2i(-999, -999)
 var cached_mode := ""
+var _grids: Dictionary = {}
+var _crop_cells: Dictionary = {}
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -33,13 +36,33 @@ func _ready() -> void:
 	target = position
 
 func rebuild_grid() -> void:
-	grid.region = Rect2i(Vector2i.ZERO, navigation.get_map_size(world_map_id))
-	grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
-	grid.update()
-	for y in grid.region.size.y:
-		for x in grid.region.size.x:
-			var p := Vector2i(x, y)
-			grid.set_point_solid(p, not navigation.is_walkable(world_map_id, p, farm.is_crop_occupied(p)))
+	if not _grids.has(world_map_id):
+		var created := AStarGrid2D.new()
+		created.region = Rect2i(Vector2i.ZERO, navigation.get_map_size(world_map_id))
+		created.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+		created.update()
+		for y in created.region.size.y:
+			for x in created.region.size.x:
+				var p := Vector2i(x, y)
+				created.set_point_solid(p, not navigation.is_walkable(world_map_id, p))
+		_grids[world_map_id] = created
+	grid = _grids[world_map_id]
+	# Restore old dynamic cells, then overlay the current persisted farm plots.
+	for cell_value in _crop_cells.get(world_map_id, []):
+		grid.set_point_solid(cell_value, not navigation.is_walkable(world_map_id, cell_value))
+	var occupied: Array[Vector2i] = []
+	if world_map_id == farm.map_id:
+		for cell_value in farm.get_plots():
+			if grid.is_in_boundsv(cell_value) and farm.is_field_occupied(cell_value):
+				grid.set_point_solid(cell_value, true)
+				occupied.append(cell_value)
+	if animals != null and animals.coop_built:
+		for local_cell in animals.structure_cells():
+			var animal_cell: Vector2i = navigation.to_contiguous_world("farm_outdoor", local_cell) if world_map_id == "valley_world" else local_cell
+			if grid.is_in_boundsv(animal_cell):
+				grid.set_point_solid(animal_cell, true)
+				if animal_cell not in occupied: occupied.append(animal_cell)
+	_crop_cells[world_map_id] = occupied
 	_clear_cached_path()
 
 func reset_home() -> void:
@@ -90,7 +113,7 @@ func tick(delta: float, player_position: Vector2, minutes: int) -> void:
 				if cached_path_index < cached_path.size():
 					target = Vector2(cached_path[cached_path_index]) * 32 + Vector2(16, 16)
 					cached_path_index += 1
-	z_index = int(position.y)
+	z_index = clampi(int(position.y), -4096, 4096)
 	if art != null:
 		var row := int({"down": 0, "left": 1, "right": 2, "up": 3}[facing])
 		var frame: Dictionary = Atlas.frame(art, Vector2i(4, 4), int(elapsed * 9) % 4 if walking else 0, row)
@@ -115,4 +138,4 @@ func _draw() -> void:
 		var p := Vector2(-4, -38 - sin(elapsed * 6) * 2)
 		draw_colored_polygon(PackedVector2Array([p, p + Vector2(4, -3), p + Vector2(8, 0), p + Vector2(8, 4), p + Vector2(4, 9), p + Vector2(0, 4)]), Color("ed7891"))
 	if sleeping and cell == home_cell and not walking:
-		draw_string(ThemeDB.fallback_font, Vector2(5, -24), "z Z", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color("fff2c9"))
+		draw_arc(Vector2(9, -28), 5, PI * 0.25, PI * 1.75, 12, Color("fff2c9"), 2)

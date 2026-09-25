@@ -1,0 +1,31 @@
+{
+	"character_creator_visible_on_first_frame": false,
+	"cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+	"display": "Windows",
+	"engine": "4.7.1-stable (official)",
+	"gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+	"merged_world_constructed": false,
+	"note": "Fresh Godot process using the production default separated farm_outdoor map, project game script and assets loaded, unique temporary save/config paths, autosave disabled. Timing begins at SceneTree script entry; external process spawn-to-first-profile-file duration is measured by the PowerShell harness. This profile does not read or write the production save.",
+	"os": "Windows",
+	"regional_maps_ready": true,
+	"renderer": "forward_plus",
+	"resident_count": 0,
+	"script_entry_to_first_game_frame_ms": 519.571,
+	"script_entry_to_game_ready_ms": 323.989,
+	"script_entry_to_input_ready_ms": 1057.408,
+	"startup_stages_ms": {
+		"activate_world_ms": 0.01,
+		"build_hud_ms": 18.26,
+		"initial_map_change_ms": 122.344,
+		"prime_collision_pool_ms": 3.45,
+		"rebuild_collisions_ms": 52.915,
+		"spawn_npcs_ms": 0.186,
+		"stream_world_ms": 52.924,
+		"sync_inventory_ms": 20.171
+	},
+	"terrain_chunk_count": 0,
+	"viewport_size": "(1280.0, 720.0)",
+	"window_size": "(1536, 864)",
+	"world_cache_count": 1,
+	"world_input_ready": true
+}

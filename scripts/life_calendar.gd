@@ -4,7 +4,7 @@ extends RefCounted
 const SEASONS := ["春", "夏", "秋", "冬"]
 const WEEKDAYS := ["一", "二", "三", "四", "五", "六", "日"]
 const FESTIVALS := [
-	{"id": "blossom", "season": 0, "day": 13, "name": "花溪春日会", "activity": "与三位居民打招呼，共同迎接春天", "reward": 180},
+	{"id": "blossom", "season": 0, "day": 13, "name": "花溪春日会", "activity": "在镇上寻找六朵春日印花，限时完成", "reward": 180},
 	{"id": "summer", "season": 1, "day": 14, "name": "夏日分享宴", "activity": "带一份自己种的作物到广场分享", "reward": 240},
 	{"id": "harvest", "season": 2, "day": 16, "name": "丰收展", "activity": "带三份自己种的作物参加丰收展", "reward": 400},
 	{"id": "winter", "season": 3, "day": 25, "name": "冬星祝福夜", "activity": "与三位居民交换冬日祝福", "reward": 250},

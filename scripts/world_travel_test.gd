@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Motion = preload("res://scripts/motion_test_driver.gd")
+
 var failures := 0
 var game
 
@@ -17,7 +19,7 @@ func _run() -> void:
 	root.add_child(game)
 	await physics_frame
 	game.set_physics_process(false)
-	for route in [["farm_outdoor", Vector2i(0,14), "town_square"], ["town_square", Vector2i(42,22), "farm_outdoor"], ["farm_outdoor", Vector2i(63,20), "riverside"], ["riverside", Vector2i(0,15), "farm_outdoor"]]:
+	for route in [["farm_outdoor", Vector2i(0,14), "countryside"], ["town_square", Vector2i(42,22), "countryside"], ["farm_outdoor", Vector2i(63,20), "riverside"], ["riverside", Vector2i(0,15), "farm_outdoor"]]:
 		game._change_map(route[0], game.navigation.get_spawn(route[0]))
 		await physics_frame
 		await walk_to(route[1])
@@ -40,8 +42,7 @@ func _run() -> void:
 				if not game.navigation.interaction_at(game.current_map_id, cell).is_empty():
 					await walk_to(cell)
 		await walk_to(Vector2i(18, 16))
-		game._begin_move(Vector2i.DOWN)
-		for frame in 30: game._update_player_movement(1.0 / 60.0)
+		Motion.walk(game, Vector2i.DOWN)
 		await wait_for_door_transition()
 		expect(game.current_map_id == route[0] and not game.entering_door, "walk out of interior: " + str(route[2]))
 	game.queue_free()
@@ -72,8 +73,7 @@ func walk_to(target: Vector2i) -> void:
 	expect(not path.is_empty(), "route exists to " + str(target))
 	for index in range(1, path.size()):
 		var next: Vector2i = path[index]
-		game._begin_move(next - game.player_cell)
-		for frame in 30: game._update_player_movement(1.0 / 60.0)
+		Motion.walk(game, next - game.player_cell)
 		if index < path.size() - 1:
 			expect(game.player_cell == next, "physics follows legal route cell " + str(next))
 			if game.player_cell != next: return

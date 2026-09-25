@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const UISkin = preload("res://scripts/farm_ui_skin.gd")
+
 var backdrop: ColorRect
 var panel: PanelContainer
 var content: VBoxContainer
@@ -16,50 +18,45 @@ func _process(delta: float) -> void:
 func _ready() -> void:
 	layer = 20
 	backdrop = ColorRect.new()
-	backdrop.color = Color(0.07, 0.12, 0.16, 0.65)
+	backdrop.color = Color(0.10, 0.13, 0.12, 0.68)
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(backdrop)
 	panel = PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	panel.offset_left = -380
 	panel.offset_right = 380
-	panel.offset_top = -254
-	panel.offset_bottom = 254
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("fff3d7")
-	style.border_color = Color("805b40")
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(12)
-	style.content_margin_left = 22
-	style.content_margin_right = 22
-	style.content_margin_top = 18
-	style.content_margin_bottom = 18
-	panel.add_theme_stylebox_override("panel", style)
+	panel.offset_top = -280
+	panel.offset_bottom = 280
+	panel.add_theme_stylebox_override("panel", UISkin.frame())
 	var theme := Theme.new()
 	for state in ["normal", "hover", "pressed", "focus"]:
 		var button_style := StyleBoxFlat.new()
-		button_style.bg_color = Color("efd6a6") if state == "normal" else Color("ffe6aa")
-		button_style.border_color = Color("af7943")
+		button_style.bg_color = Color("ead5a7") if state == "normal" else Color("f8e3aa")
+		button_style.border_color = Color("9b7545")
 		button_style.set_border_width_all(2)
-		button_style.set_corner_radius_all(3)
+		button_style.set_corner_radius_all(0)
 		theme.set_stylebox(state, "Button", button_style)
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-		theme.set_color(state, "Button", Color("62442e"))
+		theme.set_color(state, "Button", Color("493829"))
 	panel.theme = theme
 	add_child(panel)
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 12)
+	column.add_theme_constant_override("separation", 8)
 	panel.add_child(column)
+	var title_band := PanelContainer.new()
+	title_band.custom_minimum_size.y = 34
+	title_band.add_theme_stylebox_override("panel", UISkin.header())
+	column.add_child(title_band)
 	heading = Label.new()
-	heading.add_theme_font_size_override("font_size", 25)
-	heading.add_theme_color_override("font_color", Color("483b34"))
-	column.add_child(heading)
+	heading.add_theme_font_size_override("font_size", 22)
+	heading.add_theme_color_override("font_color", Color("fff0c7"))
+	title_band.add_child(heading)
 	scroll = ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(scroll)
 	content = VBoxContainer.new()
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	content.add_theme_constant_override("separation", 9)
+	content.add_theme_constant_override("separation", 6)
 	scroll.add_child(content)
 	var close_button := Button.new()
 	close_button.text = "返回游戏  ·  Esc"
@@ -88,6 +85,17 @@ func paragraph(text: String) -> void:
 	label.add_theme_color_override("font_color", Color("483b34"))
 	content.add_child(label)
 
+func section(text: String) -> void:
+	var band := PanelContainer.new()
+	band.custom_minimum_size.y = 24
+	band.add_theme_stylebox_override("panel", UISkin.header())
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_color_override("font_color", Color("fff0c7"))
+	band.add_child(label)
+	content.add_child(band)
+
 func dialogue(texture: Texture2D, region: Rect2, text: String) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 20)
@@ -112,17 +120,49 @@ func dialogue(texture: Texture2D, region: Rect2, text: String) -> void:
 	dialogue_text.add_theme_font_size_override("normal_font_size", 18)
 	dialogue_text.visible_characters = 0
 	reveal = 0
+	dialogue_text.gui_input.connect(_on_dialogue_gui_input)
 	row.add_child(dialogue_text)
-	action("显示全部对话", func(): reveal = 10000)
+	action("显示全部对话  ·  空格", reveal_dialogue)
+
+
+func reveal_dialogue() -> void:
+	if not is_instance_valid(dialogue_text): return
+	reveal = float(dialogue_text.get_total_character_count())
+	dialogue_text.visible_characters = -1
+
+
+func _on_dialogue_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		reveal_dialogue()
+		dialogue_text.accept_event()
+
+func story_dialogue(texture: Texture2D, region: Rect2, speaker: String, text: String) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 12)
+	content.add_child(row)
+	var portrait := TextureRect.new()
+	var atlas := AtlasTexture.new()
+	atlas.atlas = texture
+	atlas.region = region
+	portrait.texture = atlas
+	portrait.custom_minimum_size = Vector2(82, 92)
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	row.add_child(portrait)
+	var story := RichTextLabel.new()
+	story.text = "%s：%s" % [speaker, text]
+	story.fit_content = true
+	story.scroll_active = false
+	story.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	story.custom_minimum_size = Vector2(0, 92)
+	story.add_theme_color_override("default_color", Color("483b34"))
+	story.add_theme_font_size_override("normal_font_size", 17)
+	row.add_child(story)
 
 func item_card(icon: Texture2D, title: String, details: String) -> void:
 	var card := PanelContainer.new()
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("f4e2bd")
-	style.border_color = Color("c8a876")
-	style.set_border_width_all(1)
-	style.set_content_margin_all(10)
-	card.add_theme_stylebox_override("panel", style)
+	card.add_theme_stylebox_override("panel", UISkin.card(Color("f4e2bd"), Color("c8a876")))
 	content.add_child(card)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 15)

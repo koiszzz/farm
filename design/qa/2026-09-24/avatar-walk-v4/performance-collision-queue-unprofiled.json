@@ -1,0 +1,120 @@
+{
+  "average_stream_microseconds": 5905,
+  "cached_object_nodes": 171,
+  "display_server": "Windows",
+  "max_stream_microseconds": 15266,
+  "samples": [
+    {
+      "cell": [
+        61,
+        70
+      ],
+      "collision_microseconds": 15048,
+      "collision_nodes": 512,
+      "microseconds": 15266,
+      "object_nodes": 59,
+      "world_microseconds": 218
+    },
+    {
+      "cell": [
+        68,
+        70
+      ],
+      "collision_microseconds": 3581,
+      "collision_nodes": 512,
+      "microseconds": 3752,
+      "object_nodes": 59,
+      "world_microseconds": 171
+    },
+    {
+      "cell": [
+        75,
+        70
+      ],
+      "collision_microseconds": 3487,
+      "collision_nodes": 512,
+      "microseconds": 3598,
+      "object_nodes": 59,
+      "world_microseconds": 111
+    },
+    {
+      "cell": [
+        82,
+        70
+      ],
+      "collision_microseconds": 4454,
+      "collision_nodes": 512,
+      "microseconds": 4570,
+      "object_nodes": 59,
+      "world_microseconds": 116
+    },
+    {
+      "cell": [
+        89,
+        70
+      ],
+      "collision_microseconds": 4286,
+      "collision_nodes": 512,
+      "microseconds": 4382,
+      "object_nodes": 59,
+      "world_microseconds": 96
+    },
+    {
+      "cell": [
+        96,
+        70
+      ],
+      "collision_microseconds": 3774,
+      "collision_nodes": 512,
+      "microseconds": 3867,
+      "object_nodes": 59,
+      "world_microseconds": 93
+    }
+  ],
+  "walk_frames": {
+    "frame_count": 720,
+    "max_microseconds": 522054,
+    "p95_microseconds": 11214,
+    "p99_microseconds": 11321,
+    "spikes_over_25ms": [
+      {
+        "cell": [
+          87,
+          54
+        ],
+        "chunk": [
+          10,
+          6
+        ],
+        "frame": 24,
+        "microseconds": 504836
+      },
+      {
+        "cell": [
+          77,
+          54
+        ],
+        "chunk": [
+          9,
+          6
+        ],
+        "frame": 173,
+        "microseconds": 522054
+      },
+      {
+        "cell": [
+          74,
+          54
+        ],
+        "chunk": [
+          9,
+          6
+        ],
+        "frame": 222,
+        "microseconds": 521684
+      }
+    ],
+    "travelled_cells": 48
+  },
+  "world_object_entries": 171
+}

@@ -6,7 +6,8 @@ extends Node2D
 
 const LOGICAL_SIZE := Vector2i(32, 48)
 const IDLE_ART: Texture2D = preload("res://assets/art/runtime_generated/farmer_idle_v1.png")
-const ACTION_ART: Texture2D = preload("res://assets/art/runtime_generated/farmer_walk_v2.png")
+const ACTION_ART: Texture2D = preload("res://assets/art/runtime_generated/farmer_walk_v5.png")
+const RUN_ART: Texture2D = preload("res://assets/art/runtime_generated/farmer_run_v3.png")
 const PALETTE_SHADER = preload("res://assets/art/character_creator/avatar_palette.gdshader")
 const SWING_ART: Texture2D = preload("res://assets/art/runtime_generated/farmer_swing_v2.png")
 const CROUCH_ART: Texture2D = preload("res://assets/art/runtime_generated/farmer_crouch_v2.png")
@@ -81,14 +82,14 @@ func _draw() -> void:
 
 
 func draw_tools(canvas: Node2D) -> void:
-	if not action in ["hoe", "seed", "water", "harvest", "scythe", "gift", "fish"]: return
+	if not action in ["sword", "pickaxe", "hoe", "seed", "water", "harvest", "scythe", "gift", "fish"]: return
 	var direction: Vector2 = {"down": Vector2.DOWN, "up": Vector2.UP, "left": Vector2.LEFT, "right": Vector2.RIGHT}.get(facing, Vector2.DOWN)
 	var hand: Vector2 = {"down": Vector2(0,-17), "up": Vector2(0,-24), "left": Vector2(-13,-22), "right": Vector2(13,-22)}.get(facing, Vector2(0,-17))
 	var reach := sin(action_progress * PI)
 	var target := direction * 32.0
 	var tip := hand + direction * 9.0
 	match action:
-		"hoe", "scythe":
+		"sword", "pickaxe", "hoe", "scythe":
 			var overhead := Vector2(0,-39)
 			var contact := Vector2(direction.x * 12, -5)
 			var strike := smoothstep(0.28,0.48,action_progress)
@@ -99,7 +100,12 @@ func draw_tools(canvas: Node2D) -> void:
 			var shaft := end - hand
 			canvas.draw_line(hand, end, Color("785035"), 3)
 			var edge := shaft.normalized().orthogonal() * 10.0
-			if action == "hoe":
+			if action == "sword":
+				canvas.draw_line(hand, end, Color("dce8ec"), 5)
+				canvas.draw_line(hand - edge * 0.55, hand + edge * 0.55, Color("d5ae52"), 4)
+			elif action == "pickaxe":
+				canvas.draw_polyline(PackedVector2Array([end - edge * 1.3 + Vector2(0, 4), end, end + edge * 1.3 + Vector2(0, 4)]), Color("c1d3d6"), 3)
+			elif action == "hoe":
 				canvas.draw_line(hand + shaft - edge, hand + shaft + edge, Color("c1d3d6"), 5)
 			else:
 				var angle := shaft.angle()
@@ -159,6 +165,9 @@ func _init() -> void:
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_apply_customization()
+	# Prime the fixed directional anchors before the first movement frame.
+	Atlas.row_anchored_frame(ACTION_ART, Vector2i(8, 4), 0, 0)
+	Atlas.row_anchored_frame(RUN_ART, Vector2i(8, 4), 0, 0)
 	_apply_pose()
 	_apply_scale()
 
@@ -187,31 +196,51 @@ func _apply_pose() -> void:
 	var row := _facing_row()
 	var column := 0
 	if action in ["walk_a", "walk_b", "walk", "run"]:
-		texture = ACTION_ART
+		texture = RUN_ART if running or action == "run" else ACTION_ART
 		grid = Vector2i(8, 4)
 		column = int(stride)
-	elif action in ["hoe", "scythe", "seed", "harvest", "water", "gift", "fish", "pet"]:
+	elif action in ["sword", "pickaxe", "hoe", "scythe", "seed", "harvest", "water", "gift", "fish", "pet"]:
 		grid = Vector2i(4, 4)
 		column = mini(int(action_progress * 4), 3)
-		if action in ["hoe", "scythe"]:
+		if action in ["sword", "pickaxe", "hoe", "scythe"]:
 			texture = SWING_ART
 			row = int({"down": 0, "left": 2, "right": 1, "up": 3}.get(facing, 0))
 		elif action in ["seed", "harvest", "pet"]: texture = CROUCH_ART
 		else: texture = OFFER_ART
 	_body.texture = texture
 	_palette.set_shader_parameter("columns", float(grid.x))
-	var frame := Atlas.frame(texture, grid, column, row)
+	var locomotion_art := texture == ACTION_ART or texture == RUN_ART
+	var frame: Dictionary = Atlas.row_anchored_frame(texture, grid, column, row) if locomotion_art else Atlas.frame(texture, grid, column, row)
 	_body.region_rect = frame.region
-	_body.scale = Vector2.ONE * (44.0 / (texture.get_height() / 4.0)) * (pixel_scale / 0.13)
+	var authored_height := texture.get_height() / float(grid.y)
+	if locomotion_art: authored_height = frame.region.size.y
+	# Walk cells include deliberately transparent margins. Normalize to the
+	# visible frame height so the farmer keeps one body size across all phases.
+	_body.scale = Vector2.ONE * (44.0 / authored_height) * (pixel_scale / 0.13)
 	_body.position = Vector2(frame.offset) * _body.scale
 	_body.rotation = 0.0
 	if action in ["walk_a", "walk_b", "walk", "run"]:
-		_body.position.y -= absf(sin(stride * PI / 4.0)) * (2.0 if running else 0.5)
+		_body.position.x += _locomotion_sway()
+		_body.position.y -= _locomotion_bob()
 		if running and facing in ["left", "right"]:
 			_body.rotation = -0.07 if facing == "left" else 0.07
+	_details.position.x = _locomotion_sway()
 	var detail_scale := pixel_scale / 0.13
 	_details.scale = Vector2(detail_scale, detail_scale * clampf(_body.region_rect.size.y * _body.scale.y / (40.0 * detail_scale), 0.45, 1.0))
 	_details.head = Vector2(0, _body.position.y / _details.scale.y + 9.0)
+
+
+func _locomotion_bob() -> float:
+	if action not in ["walk_a", "walk_b", "walk", "run"]:
+		return 0.0
+	return absf(sin(stride * PI / 4.0)) * (2.5 if running or action == "run" else 1.5)
+
+
+func _locomotion_sway() -> float:
+	if action not in ["walk_a", "walk_b", "walk", "run"]:
+		return 0.0
+	var amplitude := 1.3 if facing in ["down", "up"] else 0.7
+	return sin(stride * PI / 4.0) * amplitude
 
 
 func _apply_customization() -> void:
@@ -227,7 +256,11 @@ func _apply_customization() -> void:
 
 
 func _apply_scale() -> void:
-	_body.scale = Vector2.ONE * (44.0 / (ACTION_ART.get_height() / 4.0)) * (pixel_scale / 0.13)
+	var texture := RUN_ART if running else ACTION_ART
+	var frame: Dictionary = Atlas.row_anchored_frame(texture, Vector2i(8, 4), int(stride), _facing_row())
+	var authored_height := float(frame.region.size.y)
+	if authored_height <= 0.0: authored_height = ACTION_ART.get_height() / 4.0
+	_body.scale = Vector2.ONE * (44.0 / authored_height) * (pixel_scale / 0.13)
 
 
 func _grid_region(texture: Texture2D, grid: Vector2i, column: int, row: int) -> Rect2:

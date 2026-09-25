@@ -48,6 +48,14 @@ func _init() -> void:
 	_expect(farm.get_gold() == previous_gold + 35, "shipping should credit crop sale value")
 	_expect(farm.get_harvest_count("parsnip") == 0, "shipping should remove item from harvest inventory")
 
+	farm.day = 28
+	_expect(farm.get_crop_growing_window("parsnip") == 1, "single-season crops should show one remaining growing day on spring 28")
+	_expect(farm.get_crop_growing_window("strawberry") == 1, "late strawberries should show the short spring window")
+	farm.day = 56
+	_expect(farm.get_crop_growing_window("corn") == 29, "corn should remain plantable across the summer-to-fall boundary")
+	farm.day = 1
+	_expect(farm.get_crop_growing_window("unknown") == 0, "unknown seeds should have no growing window")
+
 	if _failed:
 		quit(1)
 		return

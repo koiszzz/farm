@@ -45,20 +45,6 @@ func _run() -> void:
 	expect(game.fishing_stage == "casting", "facing water casts the line")
 	game.actor_action.advance(1.3)
 	expect(game.fishing_stage == "waiting", "casting settles into waiting")
-	game.transition_lock_frames = 0
-	game._physics_process(2.1)
-	expect(game.fishing_stage == "bite", "waiting leads to a timed bite")
-	var key := InputEventKey.new()
-	key.keycode = KEY_E
-	key.pressed = true
-	game._unhandled_input(key)
-	game.actor_action.advance(1.3)
-	expect(game.fish_count == 1 and game.fishing_stage.is_empty(), "timely reel yields one fish and unlocks movement")
-	game._farm_action()
-	game.actor_action.advance(1.3)
-	game._physics_process(2.1)
-	game._physics_process(1.5)
-	expect(game.fish_count == 1 and game.fishing_stage.is_empty(), "missed bite yields no extra fish")
 	game.player.set_pose("up")
 	expect(game.player._facing_row() == 3, "north uses an independent back row")
 	game._change_map("farm_outdoor", Vector2i(15, 11))
@@ -71,16 +57,21 @@ func _run() -> void:
 	expect(not game.entering_door and game.world.door_open == 0.0 and game.player.modulate.a == 1.0, "arrival closes door and restores player")
 	game._change_map("town_square", Vector2i(18,14))
 	var npc = game.npcs.florist.node
+	game.npcs.florist.route = [game.player_cell]
 	game.player_body.position = npc.position + Vector2(0,24)
+	npc.position = game.player_body.position + Vector2(0,-24)
 	game.player_cell = game._cell_from_world_position(game.player_body.position)
+	expect(game._nearby_npc_actor() == "florist", "reachable florist route makes the nearby resident interactable")
 	game.farm.harvest_inventory.parsnip = 2
-	game._give_gift("florist", "parsnip")
+	game._give_gift("florist", "food:parsnip")
 	expect(game.farm.get_harvest_count("parsnip") == 2, "gift stays in inventory before contact")
 	game.actor_action.advance(0.50)
 	expect(game.farm.get_harvest_count("parsnip") == 1, "gift transfers once at hand contact")
 	game.actor_action.advance(1.0)
 	expect(game.farm.get_harvest_count("parsnip") == 1 and game.life_panel.visible, "gift recovery shows reply without second deduction")
 	game.life_panel.close()
+	game.fishing.catch_fish("sardine")
+	game._sync_inventory()
 	game.save_path = "user://action-system-qa-%d.json" % Time.get_ticks_msec()
 	game.autosave_enabled = true
 	expect(game._save_game(), "fish inventory and appearance save successfully")

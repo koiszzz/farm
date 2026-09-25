@@ -1,14 +1,16 @@
 extends RefCounted
 
 const WATER_CAPACITY := 24
-const RESOURCE_NAMES := {"wood": "木材", "stone": "石料", "berry": "野莓", "mushroom": "蘑菇"}
-const RESOURCE_PRICES := {"wood": 2, "stone": 2, "berry": 12, "mushroom": 18}
+const RESOURCE_NAMES := {"wood": "木材", "stone": "石料", "berry": "野莓", "mushroom": "蘑菇", "shell": "海贝", "copper_ore": "铜矿", "iron_ore": "铁矿", "coal": "煤炭", "quartz": "石英", "earth_crystal": "地晶", "amethyst": "紫水晶", "frozen_tear": "冰泪", "fire_quartz": "火水晶"}
+const RESOURCE_PRICES := {"wood": 2, "stone": 2, "berry": 12, "mushroom": 18, "shell": 22, "copper_ore": 10, "iron_ore": 20, "coal": 12, "quartz": 60, "earth_crystal": 45, "amethyst": 100, "frozen_tear": 120, "fire_quartz": 160}
 const PICKUPS := {
 	"farm_outdoor": [[20, 12, "wood"], [22, 15, "stone"], [18, 20, "berry"], [29, 12, "wood"], [22, 24, "mushroom"]],
 	"town_square": [[18, 13, "berry"], [30, 14, "mushroom"], [32, 20, "wood"]],
 	"riverside": [[12, 15, "berry"], [16, 20, "mushroom"], [20, 13, "stone"]],
+	"countryside": [[12, 24, "wood"], [24, 22, "berry"], [40, 24, "stone"], [46, 13, "mushroom"], [18, 34, "wood"]],
+	"beach": [[16, 13, "shell"], [24, 16, "shell"], [34, 16, "shell"], [41, 15, "shell"]],
 }
-var resources := {"wood": 0, "stone": 0, "berry": 0, "mushroom": 0}
+var resources := {"wood": 0, "stone": 0, "berry": 0, "mushroom": 0, "shell": 0, "copper_ore": 0, "iron_ore": 0, "coal": 0, "quartz": 0, "earth_crystal": 0, "amethyst": 0, "frozen_tear": 0, "fire_quartz": 0}
 var gathered: Dictionary = {}
 var water := WATER_CAPACITY
 var pet_points := 0
@@ -20,6 +22,7 @@ func available(map_id: String, day: int, navigation) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	var source_maps: Array = PICKUPS.keys() if map_id == "valley_world" else [map_id]
 	for source_map in source_maps:
+		if map_id == "valley_world" and source_map not in ["farm_outdoor", "town_square", "riverside"]: continue
 		for index in PICKUPS.get(source_map, []).size():
 			var item: Array = PICKUPS[source_map][index]
 			var cell := Vector2i(item[0], item[1])
@@ -55,6 +58,7 @@ func feed(day: int) -> String:
 func ship() -> int:
 	var earned := 0
 	for kind in resources:
+		if kind in ["copper_ore", "iron_ore", "coal"]: continue
 		earned += int(resources[kind]) * int(RESOURCE_PRICES[kind])
 		resources[kind] = 0
 	return earned

@@ -1,0 +1,731 @@
+{
+  "grid": [
+    8,
+    4
+  ],
+  "image_size": [
+    1774,
+    887
+  ],
+  "metric": "1 - mean RGBA absolute difference across the union of non-transparent pixels; higher means more alike",
+  "rows": [
+    {
+      "adjacent_similarity": [
+        0.8981,
+        0.8956,
+        0.8674,
+        0.9005,
+        0.9044,
+        0.8902,
+        0.8636,
+        0.8604
+      ],
+      "closest_pair": {
+        "frames": [
+          2,
+          6
+        ],
+        "similarity": 0.9378
+      },
+      "direction": "down",
+      "foot_y_range": [
+        221,
+        221,
+        0
+      ],
+      "frames": [
+        {
+          "foot_anchor": [
+            124.5,
+            221.0
+          ],
+          "frame": 0,
+          "source_rect": [
+            0,
+            0,
+            221,
+            221
+          ],
+          "used_rect": [
+            49,
+            0,
+            155,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            102.0,
+            221.0
+          ],
+          "frame": 1,
+          "source_rect": [
+            221,
+            0,
+            222,
+            221
+          ],
+          "used_rect": [
+            0,
+            0,
+            222,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            103.0,
+            221.0
+          ],
+          "frame": 2,
+          "source_rect": [
+            443,
+            0,
+            222,
+            221
+          ],
+          "used_rect": [
+            1,
+            0,
+            217,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            120.0,
+            221.0
+          ],
+          "frame": 3,
+          "source_rect": [
+            665,
+            0,
+            222,
+            221
+          ],
+          "used_rect": [
+            5,
+            0,
+            213,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            122.0,
+            221.0
+          ],
+          "frame": 4,
+          "source_rect": [
+            887,
+            0,
+            221,
+            221
+          ],
+          "used_rect": [
+            9,
+            0,
+            211,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            99.0,
+            221.0
+          ],
+          "frame": 5,
+          "source_rect": [
+            1108,
+            0,
+            222,
+            221
+          ],
+          "used_rect": [
+            2,
+            0,
+            219,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            101.0,
+            221.0
+          ],
+          "frame": 6,
+          "source_rect": [
+            1330,
+            0,
+            222,
+            221
+          ],
+          "used_rect": [
+            1,
+            0,
+            217,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            118.5,
+            221.0
+          ],
+          "frame": 7,
+          "source_rect": [
+            1552,
+            0,
+            222,
+            221
+          ],
+          "used_rect": [
+            46,
+            0,
+            124,
+            221
+          ]
+        }
+      ]
+    },
+    {
+      "adjacent_similarity": [
+        0.9286,
+        0.912,
+        0.8574,
+        0.8605,
+        0.9289,
+        0.9243,
+        0.8461,
+        0.8247
+      ],
+      "closest_pair": {
+        "frames": [
+          4,
+          6
+        ],
+        "similarity": 0.9574
+      },
+      "direction": "left",
+      "foot_y_range": [
+        221,
+        222,
+        1
+      ],
+      "frames": [
+        {
+          "foot_anchor": [
+            84.5,
+            222.0
+          ],
+          "frame": 0,
+          "source_rect": [
+            0,
+            221,
+            221,
+            222
+          ],
+          "used_rect": [
+            45,
+            0,
+            124,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            139.0,
+            222.0
+          ],
+          "frame": 1,
+          "source_rect": [
+            221,
+            221,
+            222,
+            222
+          ],
+          "used_rect": [
+            4,
+            0,
+            218,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            111.5,
+            221.0
+          ],
+          "frame": 2,
+          "source_rect": [
+            443,
+            221,
+            222,
+            222
+          ],
+          "used_rect": [
+            0,
+            0,
+            171,
+            221
+          ]
+        },
+        {
+          "foot_anchor": [
+            135.0,
+            222.0
+          ],
+          "frame": 3,
+          "source_rect": [
+            665,
+            221,
+            222,
+            222
+          ],
+          "used_rect": [
+            1,
+            0,
+            163,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            83.5,
+            222.0
+          ],
+          "frame": 4,
+          "source_rect": [
+            887,
+            221,
+            221,
+            222
+          ],
+          "used_rect": [
+            43,
+            0,
+            167,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            136.5,
+            222.0
+          ],
+          "frame": 5,
+          "source_rect": [
+            1108,
+            221,
+            222,
+            222
+          ],
+          "used_rect": [
+            18,
+            0,
+            201,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            83.0,
+            222.0
+          ],
+          "frame": 6,
+          "source_rect": [
+            1330,
+            221,
+            222,
+            222
+          ],
+          "used_rect": [
+            18,
+            0,
+            204,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            133.0,
+            222.0
+          ],
+          "frame": 7,
+          "source_rect": [
+            1552,
+            221,
+            222,
+            222
+          ],
+          "used_rect": [
+            43,
+            0,
+            118,
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "adjacent_similarity": [
+        0.8799,
+        0.9099,
+        0.8829,
+        0.9077,
+        0.882,
+        0.9017,
+        0.8841,
+        0.8723
+      ],
+      "closest_pair": {
+        "frames": [
+          2,
+          6
+        ],
+        "similarity": 0.9463
+      },
+      "direction": "right",
+      "foot_y_range": [
+        222,
+        222,
+        0
+      ],
+      "frames": [
+        {
+          "foot_anchor": [
+            126.5,
+            222.0
+          ],
+          "frame": 0,
+          "source_rect": [
+            0,
+            443,
+            221,
+            222
+          ],
+          "used_rect": [
+            49,
+            0,
+            155,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            85.5,
+            222.0
+          ],
+          "frame": 1,
+          "source_rect": [
+            221,
+            443,
+            222,
+            222
+          ],
+          "used_rect": [
+            46,
+            0,
+            136,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            87.5,
+            222.0
+          ],
+          "frame": 2,
+          "source_rect": [
+            443,
+            443,
+            222,
+            222
+          ],
+          "used_rect": [
+            12,
+            0,
+            206,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            84.5,
+            222.0
+          ],
+          "frame": 3,
+          "source_rect": [
+            665,
+            443,
+            222,
+            222
+          ],
+          "used_rect": [
+            13,
+            0,
+            193,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            117.5,
+            222.0
+          ],
+          "frame": 4,
+          "source_rect": [
+            887,
+            443,
+            221,
+            222
+          ],
+          "used_rect": [
+            15,
+            0,
+            205,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            82.5,
+            222.0
+          ],
+          "frame": 5,
+          "source_rect": [
+            1108,
+            443,
+            222,
+            222
+          ],
+          "used_rect": [
+            14,
+            0,
+            162,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            85.5,
+            222.0
+          ],
+          "frame": 6,
+          "source_rect": [
+            1330,
+            443,
+            222,
+            222
+          ],
+          "used_rect": [
+            18,
+            0,
+            204,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            82.5,
+            222.0
+          ],
+          "frame": 7,
+          "source_rect": [
+            1552,
+            443,
+            222,
+            222
+          ],
+          "used_rect": [
+            13,
+            0,
+            161,
+            222
+          ]
+        }
+      ]
+    },
+    {
+      "adjacent_similarity": [
+        0.9499,
+        0.9036,
+        0.8812,
+        0.924,
+        0.9511,
+        0.8954,
+        0.8817,
+        0.8875
+      ],
+      "closest_pair": {
+        "frames": [
+          4,
+          5
+        ],
+        "similarity": 0.9511
+      },
+      "direction": "up",
+      "foot_y_range": [
+        222,
+        222,
+        0
+      ],
+      "frames": [
+        {
+          "foot_anchor": [
+            102.0,
+            222.0
+          ],
+          "frame": 0,
+          "source_rect": [
+            0,
+            665,
+            221,
+            222
+          ],
+          "used_rect": [
+            47,
+            0,
+            167,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            102.0,
+            222.0
+          ],
+          "frame": 1,
+          "source_rect": [
+            221,
+            665,
+            222,
+            222
+          ],
+          "used_rect": [
+            49,
+            0,
+            172,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            124.5,
+            222.0
+          ],
+          "frame": 2,
+          "source_rect": [
+            443,
+            665,
+            222,
+            222
+          ],
+          "used_rect": [
+            3,
+            0,
+            209,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            100.0,
+            222.0
+          ],
+          "frame": 3,
+          "source_rect": [
+            665,
+            665,
+            222,
+            222
+          ],
+          "used_rect": [
+            5,
+            0,
+            215,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            100.5,
+            222.0
+          ],
+          "frame": 4,
+          "source_rect": [
+            887,
+            665,
+            221,
+            222
+          ],
+          "used_rect": [
+            15,
+            0,
+            205,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            99.5,
+            222.0
+          ],
+          "frame": 5,
+          "source_rect": [
+            1108,
+            665,
+            222,
+            222
+          ],
+          "used_rect": [
+            0,
+            0,
+            222,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            122.5,
+            222.0
+          ],
+          "frame": 6,
+          "source_rect": [
+            1330,
+            665,
+            222,
+            222
+          ],
+          "used_rect": [
+            0,
+            0,
+            172,
+            222
+          ]
+        },
+        {
+          "foot_anchor": [
+            98.0,
+            222.0
+          ],
+          "frame": 7,
+          "source_rect": [
+            1552,
+            665,
+            222,
+            222
+          ],
+          "used_rect": [
+            5,
+            0,
+            179,
+            222
+          ]
+        }
+      ]
+    }
+  ],
+  "source": "res://assets/art/runtime_generated/farmer_walk_v3.png",
+  "total_frames": 32
+}

@@ -1,7 +1,16 @@
 extends SceneTree
 
+class DoorTestGame extends "res://scripts/game.gd":
+	var facade_open_at_interior_swap := -1.0
+
+	func _change_map(next_map_id: String, next_cell: Vector2i) -> void:
+		if entering_door and next_map_id == "farmhouse_interior":
+			facade_open_at_interior_swap = world.door_open
+		super._change_map(next_map_id, next_cell)
+
 var failures := 0
 var game
+var completed_gate_swap_count := 0
 
 
 func _init() -> void:
@@ -15,7 +24,7 @@ func expect(value: bool, message: String) -> void:
 
 
 func _run() -> void:
-	game = preload("res://Main.tscn").instantiate()
+	game = DoorTestGame.new()
 	game.autosave_enabled = false
 	game.force_continuous_world_for_qa = true
 	root.add_child(game)
@@ -49,14 +58,14 @@ func _run() -> void:
 	var farm_door: Vector2i = game.navigation.to_contiguous_world("farm_outdoor", Vector2i(15, 10))
 	game._change_map("valley_world", farm_door)
 	game._enter_door("farmhouse_interior", game.navigation.get_spawn("farmhouse_interior"), farm_door)
-	await create_timer(0.12).timeout
-	expect(game.entering_door and game.current_map_id == "valley_world", "exterior door visibly opens before the map swap")
-	expect(not game.scene_transition.overlay.visible, "black cover waits for the facade animation")
-	await create_timer(0.20).timeout
-	expect(game.world.door_open > 0.0, "facade animation advances before the map swap")
-	expect(game.scene_transition.overlay.visible, "entering is covered by the black transition")
+	await create_timer(0.08).timeout
+	expect(game.entering_door and game.current_map_id == "valley_world", "exterior door begins opening before the map swap")
+	await create_timer(0.06).timeout
+	expect(game.scene_transition.overlay.visible, "cover overlaps the final part of the facade animation")
+	expect(game.current_map_id == "valley_world", "map swap waits while the facade finishes opening")
 	await create_timer(0.70).timeout
 	expect(game.current_map_id == "farmhouse_interior" and not game.entering_door, "centre-light reveal completes inside")
+	expect(game.facade_open_at_interior_swap >= 0.999, "scene swap waits for the facade to reach its fully open pose")
 	expect(game.world._door_cells.is_empty(), "interiors have no animated exit door")
 	expect(not game.world._object_cache["rug"].visible, "legacy universal rug is hidden")
 
@@ -65,6 +74,27 @@ func _run() -> void:
 	expect(game.world.door_open == 0.0 and game.scene_transition.overlay.visible, "leaving has black cover without an indoor door animation")
 	await create_timer(0.68).timeout
 	expect(game.current_map_id == "valley_world" and not game.entering_door, "centre-light reveal completes outside")
+	var outdoor_renderer = game.world
+	game._change_map("farmhouse_interior", game.navigation.get_spawn("farmhouse_interior"))
+	game._change_map("farm_outdoor", Vector2i(15, 11))
+	expect(game.world == outdoor_renderer, "ordinary house round trip reuses outdoor renderer")
+	for map_id in ["general_store_interior", "clinic_interior", "cafe_interior", "valley_world"]:
+		game._change_map(map_id, game.navigation.get_spawn(map_id))
+		await process_frame
+		expect(game._world_cache.size() <= game.WORLD_CACHE_LIMIT, "scene cache stays bounded")
+		if map_id.ends_with("_interior"):
+			expect(not game.world._object_cache["rug"].visible, "legacy universal rug stays hidden in " + map_id)
+		var visible_worlds := 0
+		for cached in game._world_cache.values():
+			if cached.visible: visible_worlds += 1
+			expect(cached.visible == cached.is_processing(), "hidden scene stops streaming work")
+		expect(visible_worlds == 1, "exactly one cached scene is visible")
+	expect(game.world.active_door == Vector2i(-1, -1) and game.world.door_open == 0.0, "cached doors are closed when returning")
+	var completed_gate := create_tween()
+	completed_gate.tween_interval(0.02)
+	await completed_gate.finished
+	await game.scene_transition.play_gated(_mark_completed_gate_swap, completed_gate.finished, Callable(completed_gate, "is_running"))
+	expect(completed_gate_swap_count == 1 and not game.scene_transition.running, "a gate finished during cover still swaps and reveals instead of staying black")
 	game.queue_free()
 	print("Door transition: %d failures; facade anchors, four animations, proportional rugs and centre-light round trip" % failures)
 	quit(1 if failures else 0)
@@ -75,3 +105,7 @@ func _unique_count(values: Array) -> int:
 	for value in values:
 		unique[value] = true
 	return unique.size()
+
+
+func _mark_completed_gate_swap() -> void:
+	completed_gate_swap_count += 1

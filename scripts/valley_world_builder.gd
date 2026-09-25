@@ -40,6 +40,12 @@ static func zone_at(cell: Vector2i) -> String:
 
 static func _merge_map(navigation, world: Dictionary, source_id: String, offset: Vector2i) -> void:
 	var source: Dictionary = navigation._maps[source_id]
+	if not world.has("signposts"): world["signposts"] = []
+	for source_sign in source.get("signposts", []):
+		var sign: Dictionary = source_sign.duplicate(true)
+		for key in ["post", "stand"]:
+			sign[key] = [int(sign[key][0]) + offset.x, int(sign[key][1]) + offset.y]
+		world.signposts.append(sign)
 	for local_cell in source.cells:
 		var layers: Dictionary = source.cells[local_cell].duplicate(true)
 		layers.erase("exit")

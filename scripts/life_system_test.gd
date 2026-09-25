@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Motion = preload("res://scripts/motion_test_driver.gd")
+
 const Calendar = preload("res://scripts/life_calendar.gd")
 const Farm = preload("res://scripts/farm_state.gd")
 const Village = preload("res://scripts/village_life.gd")
@@ -71,17 +73,22 @@ func _run() -> void:
 	farm.day = 9
 	farm.harvest_inventory["turnip"] = 2
 	village.gift("florist", "turnip", farm)
-	expect(village.bond("florist").points == 220, "favorite birthday gift grants 180")
+	expect(village.bond("florist").points == 680, "loved birthday gift receives the eightfold birthday bonus")
 	village.gift("florist", "turnip", farm)
 	expect(farm.get_harvest_count("turnip") == 1, "duplicate daily gift does not consume item")
+	var liked_gift := village.gift_value("shopkeeper", "turnip", 10)
+	var hated_gift := village.gift_value("fisherman", "coal", 10)
+	expect(liked_gift.tier == "liked" and liked_gift.points == 45, "resident-specific liked gifts award the middle friendship tier")
+	expect(hated_gift.tier == "hated" and hated_gift.points == -40, "resident-specific hated gifts can lower friendship")
 	farm.day = 10
 	village.gift("florist", "pumpkin", farm)
 	expect(village.bond("florist").gift_day == 9, "missing gift does not consume daily allowance")
 	farm.day = 13
 	previous_gold = farm.gold
 	village.join_festival(farm)
-	expect(farm.gold == previous_gold, "spring festival requires greeting everyone")
-	for actor in Village.PEOPLE: village.talk(actor, farm.day)
+	expect(farm.gold == previous_gold, "spring reward requires finishing the flower hunt")
+	expect(not village.record_spring_festival_hunt(farm.day, 5, 20.0), "finding fewer than six flowers cannot complete the spring activity")
+	expect(village.record_spring_festival_hunt(farm.day, 6, 42.0) and village.festival_hunt_complete(farm.day), "six flowers record a completed spring hunt")
 	village.join_festival(farm)
 	expect(farm.gold == previous_gold + 180, "spring festival awards coins")
 	village.join_festival(farm)
@@ -105,7 +112,7 @@ func _run() -> void:
 	village.join_festival(farm)
 	expect(farm.gold == previous_gold + 250, "winter blessing event rewards greetings")
 	farm.day = 125
-	for actor in Village.PEOPLE: village.talk(actor, farm.day)
+	village.record_spring_festival_hunt(farm.day, 6, 35.0)
 	previous_gold = farm.gold
 	village.join_festival(farm)
 	expect(farm.gold == previous_gold + 180, "next year reward becomes available")
@@ -137,7 +144,7 @@ func _run() -> void:
 	scene._farm_action()
 	scene.actor_action.advance(1.0)
 	scene.player.set_pose("left", "idle")
-	scene._begin_move(Vector2i.DOWN)
+	Motion.walk(scene, Vector2i.DOWN)
 	expect(scene.player.facing == "down" and not scene.moving, "player can face an occupied crop without walking into it")
 	for index in 4: scene.farm.advance_day(true)
 	scene._change_map("farm_outdoor", Vector2i(4, 14))
@@ -167,7 +174,10 @@ func _run() -> void:
 	scene.inventory_panel.close()
 	scene._open_people()
 	scene._open_shop()
-	scene._open_dialogue("florist")
+	for resident in Village.PEOPLE:
+		expect(scene._npc_walk_texture(resident) != null, "every resident resolves dialogue portrait art")
+		scene._open_dialogue(resident)
+		expect(scene.life_panel.visible, "every resident dialogue opens")
 	scene.life_panel.close()
 	scene._change_map("farmhouse_interior", scene.navigation.get_spawn("farmhouse_interior"))
 	scene._ask_sleep()

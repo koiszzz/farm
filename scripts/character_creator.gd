@@ -72,7 +72,7 @@ func _build_ui() -> void:
 	var card := PanelContainer.new()
 	card.position = Vector2(56, 32)
 	card.size = Vector2(848, 476)
-	card.add_theme_stylebox_override("panel", _stylebox(Color("#f5e6c8"), Color("#5a4335"), 5, 12))
+	card.add_theme_stylebox_override("panel", _stylebox(Color("#f3e3be"), Color("#5a4335"), 5, 0))
 	_panel.add_child(card)
 
 	var columns := HBoxContainer.new()
@@ -219,7 +219,9 @@ func _stylebox(background: Color, border: Color, border_width: int, radius: int)
 	style.bg_color = background
 	style.border_color = border
 	style.set_border_width_all(border_width)
-	style.set_corner_radius_all(radius)
+	style.set_corner_radius_all(0)
+	style.shadow_color = Color("#30291f", 0.42)
+	style.shadow_size = 6
 	style.content_margin_left = 12
 	style.content_margin_right = 12
 	style.content_margin_top = 8

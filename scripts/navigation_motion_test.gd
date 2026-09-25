@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Motion = preload("res://scripts/motion_test_driver.gd")
+
 var failures := 0
 
 func _init() -> void:
@@ -15,9 +17,7 @@ func _run() -> void:
 	for entry in [["farm_outdoor", Vector2i(3, 23), Vector2i.RIGHT], ["farm_outdoor", Vector2i(1, 14), Vector2i.LEFT], ["town_square", Vector2i(10, 12), Vector2i.UP]]:
 		game._change_map(entry[0], entry[1])
 		await physics_frame
-		game._begin_move(entry[2])
-		for frame in 30:
-			game._update_player_movement(1.0 / 60.0)
+		Motion.walk(game, entry[2])
 		var reached: bool = game.player_cell == entry[1] + entry[2] or game.current_map_id != entry[0]
 		if not reached:
 			failures += 1

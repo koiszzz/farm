@@ -1,0 +1,9 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+D3D12 12_0 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 3050 4GB Laptop GPU
+
+CAMERA_2X_CAPTURE res://design/qa/2026-09-25/camera-2x/farm_outdoor.png zoom=2.00
+CAMERA_2X_CAPTURE res://design/qa/2026-09-25/camera-2x/beach.png zoom=2.00
+CAMERA_2X_CAPTURE res://design/qa/2026-09-25/camera-2x/town_square.png zoom=2.00
+CAMERA_2X_CAPTURE res://design/qa/2026-09-25/camera-2x/cave.png zoom=2.00
+COUNTRYSIDE_SIGN_NODES 2
+CAMERA_2X_CAPTURE res://design/qa/2026-09-25/camera-2x/countryside.png zoom=2.00

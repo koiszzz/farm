@@ -1,0 +1,183 @@
+{
+  "machine": "13th Gen Intel Core i7-13700H / NVIDIA RTX 3050 Laptop GPU",
+  "engine": "Godot 4.7.1",
+  "renderer": "gl_compatibility",
+  "sample_count": 5,
+  "samples": [
+    {
+      "iteration": 1,
+      "launch_to_first_frame_ms": 5380.8,
+      "launch_to_process_exit_ms": 5642.1,
+      "exit_code": 0,
+      "profile": {
+        "character_creator_visible_on_first_frame": false,
+        "cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+        "display": "Windows",
+        "engine": "4.7.1-stable (official)",
+        "gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+        "note": "Fresh Godot process using the production default separated farm_outdoor map, project game script and assets loaded, unique temporary save/config paths, autosave disabled. Timing begins at SceneTree script entry; external process spawn-to-first-profile-file duration is measured by the PowerShell harness. This profile does not read or write the production save.",
+        "os": "Windows",
+        "renderer": "gl_compatibility",
+        "resident_count": 0,
+        "script_entry_to_first_game_frame_ms": 460.684,
+        "script_entry_to_game_ready_ms": 333.504,
+        "script_entry_to_input_ready_ms": 1107.826,
+        "startup_stages_ms": {
+          "activate_world_ms": 0.008,
+          "build_hud_ms": 17.144,
+          "initial_map_change_ms": 111.591,
+          "prime_collision_pool_ms": 3.636,
+          "rebuild_collisions_ms": 54.442,
+          "spawn_npcs_ms": 0.177,
+          "stream_world_ms": 54.451,
+          "sync_inventory_ms": 20.072
+        },
+        "terrain_chunk_count": 0,
+        "viewport_size": "(1280.0, 720.0)",
+        "window_size": "(1536, 864)",
+        "world_cache_count": 1,
+        "world_input_ready": true
+      }
+    },
+    {
+      "iteration": 2,
+      "launch_to_first_frame_ms": 4255.9,
+      "launch_to_process_exit_ms": 4636.9,
+      "exit_code": 0,
+      "profile": {
+        "character_creator_visible_on_first_frame": false,
+        "cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+        "display": "Windows",
+        "engine": "4.7.1-stable (official)",
+        "gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+        "note": "Fresh Godot process using the production default separated farm_outdoor map, project game script and assets loaded, unique temporary save/config paths, autosave disabled. Timing begins at SceneTree script entry; external process spawn-to-first-profile-file duration is measured by the PowerShell harness. This profile does not read or write the production save.",
+        "os": "Windows",
+        "renderer": "gl_compatibility",
+        "resident_count": 0,
+        "script_entry_to_first_game_frame_ms": 487.554,
+        "script_entry_to_game_ready_ms": 359.828,
+        "script_entry_to_input_ready_ms": 1132.111,
+        "startup_stages_ms": {
+          "activate_world_ms": 0.009,
+          "build_hud_ms": 19.231,
+          "initial_map_change_ms": 122.385,
+          "prime_collision_pool_ms": 3.548,
+          "rebuild_collisions_ms": 60.478,
+          "spawn_npcs_ms": 0.185,
+          "stream_world_ms": 60.488,
+          "sync_inventory_ms": 19.92
+        },
+        "terrain_chunk_count": 0,
+        "viewport_size": "(1280.0, 720.0)",
+        "window_size": "(1536, 864)",
+        "world_cache_count": 1,
+        "world_input_ready": true
+      }
+    },
+    {
+      "iteration": 3,
+      "launch_to_first_frame_ms": 3686.0,
+      "launch_to_process_exit_ms": 3947.6,
+      "exit_code": 0,
+      "profile": {
+        "character_creator_visible_on_first_frame": false,
+        "cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+        "display": "Windows",
+        "engine": "4.7.1-stable (official)",
+        "gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+        "note": "Fresh Godot process using the production default separated farm_outdoor map, project game script and assets loaded, unique temporary save/config paths, autosave disabled. Timing begins at SceneTree script entry; external process spawn-to-first-profile-file duration is measured by the PowerShell harness. This profile does not read or write the production save.",
+        "os": "Windows",
+        "renderer": "gl_compatibility",
+        "resident_count": 0,
+        "script_entry_to_first_game_frame_ms": 468.033,
+        "script_entry_to_game_ready_ms": 337.127,
+        "script_entry_to_input_ready_ms": 1114.134,
+        "startup_stages_ms": {
+          "activate_world_ms": 0.009,
+          "build_hud_ms": 18.62,
+          "initial_map_change_ms": 108.5,
+          "prime_collision_pool_ms": 3.646,
+          "rebuild_collisions_ms": 51.202,
+          "spawn_npcs_ms": 0.18,
+          "stream_world_ms": 51.21,
+          "sync_inventory_ms": 20.081
+        },
+        "terrain_chunk_count": 0,
+        "viewport_size": "(1280.0, 720.0)",
+        "window_size": "(1536, 864)",
+        "world_cache_count": 1,
+        "world_input_ready": true
+      }
+    },
+    {
+      "iteration": 4,
+      "launch_to_first_frame_ms": 3712.1,
+      "launch_to_process_exit_ms": 3978.6,
+      "exit_code": 0,
+      "profile": {
+        "character_creator_visible_on_first_frame": false,
+        "cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+        "display": "Windows",
+        "engine": "4.7.1-stable (official)",
+        "gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+        "note": "Fresh Godot process using the production default separated farm_outdoor map, project game script and assets loaded, unique temporary save/config paths, autosave disabled. Timing begins at SceneTree script entry; external process spawn-to-first-profile-file duration is measured by the PowerShell harness. This profile does not read or write the production save.",
+        "os": "Windows",
+        "renderer": "gl_compatibility",
+        "resident_count": 0,
+        "script_entry_to_first_game_frame_ms": 464.387,
+        "script_entry_to_game_ready_ms": 337.558,
+        "script_entry_to_input_ready_ms": 1112.547,
+        "startup_stages_ms": {
+          "activate_world_ms": 0.009,
+          "build_hud_ms": 18.265,
+          "initial_map_change_ms": 110.805,
+          "prime_collision_pool_ms": 3.462,
+          "rebuild_collisions_ms": 52.731,
+          "spawn_npcs_ms": 0.178,
+          "stream_world_ms": 52.74,
+          "sync_inventory_ms": 20.173
+        },
+        "terrain_chunk_count": 0,
+        "viewport_size": "(1280.0, 720.0)",
+        "window_size": "(1536, 864)",
+        "world_cache_count": 1,
+        "world_input_ready": true
+      }
+    },
+    {
+      "iteration": 5,
+      "launch_to_first_frame_ms": 3704.5,
+      "launch_to_process_exit_ms": 3950.4,
+      "exit_code": 0,
+      "profile": {
+        "character_creator_visible_on_first_frame": false,
+        "cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+        "display": "Windows",
+        "engine": "4.7.1-stable (official)",
+        "gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+        "note": "Fresh Godot process using the production default separated farm_outdoor map, project game script and assets loaded, unique temporary save/config paths, autosave disabled. Timing begins at SceneTree script entry; external process spawn-to-first-profile-file duration is measured by the PowerShell harness. This profile does not read or write the production save.",
+        "os": "Windows",
+        "renderer": "gl_compatibility",
+        "resident_count": 0,
+        "script_entry_to_first_game_frame_ms": 474.621,
+        "script_entry_to_game_ready_ms": 345.644,
+        "script_entry_to_input_ready_ms": 1122.603,
+        "startup_stages_ms": {
+          "activate_world_ms": 0.01,
+          "build_hud_ms": 22.169,
+          "initial_map_change_ms": 110.655,
+          "prime_collision_pool_ms": 3.607,
+          "rebuild_collisions_ms": 51.77,
+          "spawn_npcs_ms": 0.187,
+          "stream_world_ms": 51.782,
+          "sync_inventory_ms": 21.172
+        },
+        "terrain_chunk_count": 0,
+        "viewport_size": "(1280.0, 720.0)",
+        "window_size": "(1536, 864)",
+        "world_cache_count": 1,
+        "world_input_ready": true
+      }
+    }
+  ]
+}

@@ -20,6 +20,9 @@ var _loaded := false
 var _resolution_order: Array = DEFAULT_RESOLUTION_ORDER.duplicate()
 var _classes: Dictionary = {}
 var _maps: Dictionary = {}
+var _navigation_grids: Dictionary = {}
+var _route_cache: Dictionary = {}
+var _door_cache: Dictionary = {}
 
 
 static func load_default() -> MapData:
@@ -39,6 +42,9 @@ func load_from_json(path: String = DEFAULT_PATH) -> bool:
 	load_errors.clear()
 	_classes.clear()
 	_maps.clear()
+	_navigation_grids.clear()
+	_route_cache.clear()
+	_door_cache.clear()
 
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
@@ -85,10 +91,64 @@ func load_from_json(path: String = DEFAULT_PATH) -> bool:
 		_add_error("Navigation JSON did not contain any valid maps.")
 		return false
 	_loaded = true
+	_install_signposts()
 	return true
 
 func build_contiguous_world() -> void:
 	preload("res://scripts/valley_world_builder.gd").build(self)
+	_install_signposts("valley_world")
+
+func build_regions() -> void:
+	for terrain in ["sand", "boardwalk", "cave_floor"]:
+		_classes[terrain] = {"walkable": true}
+	preload("res://scripts/region_world_builder.gd").build(self)
+	_install_signposts()
+
+
+func _install_signposts(only_map := "") -> void:
+	var records: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://design/maps/signposts.json"))
+	for map_id in records:
+		if not _maps.has(map_id) or (not only_map.is_empty() and map_id != only_map): continue
+		var map: Dictionary = _maps[map_id]
+		if not map.has("signposts"): map["signposts"] = []
+		for entry in records[map_id]:
+			var existing := false
+			for installed in map.signposts:
+				if installed.id == entry.id: existing = true
+			if existing: continue
+			var post := _as_cell(entry.post)
+			var stand := _as_cell(entry.stand)
+			if not is_walkable(map_id, post) or not is_walkable(map_id, stand) or not interaction_at(map_id, stand).is_empty():
+				_add_error("Signpost conflicts with map: " + str(entry.id))
+				continue
+			map.cells[post]["solid"] = "solid"
+			map.cells[post]["blocked_id"] = entry.id
+			map.cells[stand]["interaction"] = "interaction"
+			map.cells[stand]["interaction_record"] = {"target": "signpost", "title": entry.title, "text": entry.text, "id": entry.id}
+			map.signposts.append(entry.duplicate(true))
+		# Connecting world roads may repaint merged stand cells. Restore the
+		# sign contract from its authored local-to-world coordinates afterwards.
+		for entry in map.signposts:
+			var post := _as_cell(entry.post)
+			var stand := _as_cell(entry.stand)
+			map.cells[post]["solid"] = "solid"
+			map.cells[post]["blocked_id"] = entry.id
+			map.cells[stand]["interaction"] = "interaction"
+			map.cells[stand]["interaction_record"] = {"target": "signpost", "title": entry.title, "text": entry.text, "id": entry.id}
+		_navigation_grids.erase(map_id)
+		_door_cache.erase(map_id)
+	_route_cache.clear()
+
+
+func get_signposts(map_id: String) -> Array:
+	return _get_map(map_id).get("signposts", []).duplicate(true)
+
+
+func has_clear_line(map_id: String, from: Vector2, to: Vector2) -> bool:
+	var steps := maxi(1, ceili(from.distance_to(to) / 8.0))
+	for index in range(1, steps + 1):
+		if not is_walkable(map_id, world_to_cell(from.lerp(to, float(index) / steps))): return false
+	return true
 
 func to_contiguous_world(map_id: String, cell: Vector2i) -> Vector2i:
 	return preload("res://scripts/valley_world_builder.gd").to_world(map_id, cell)
@@ -117,6 +177,45 @@ func has_map(map_id: String) -> bool:
 ## Returns a deep copy so a caller cannot desynchronise the navigation cache.
 func get_map(map_id: String) -> Dictionary:
 	return _get_map(map_id).duplicate(true)
+
+
+## Narrow snapshots avoid copying every terrain cell just to read decorations.
+func get_objects(map_id: String) -> Array:
+	return _get_map(map_id).get("objects", []).duplicate(true)
+
+
+func get_door_cells(map_id: String) -> Array[Vector2i]:
+	if not _door_cache.has(map_id):
+		var doors: Array[Vector2i] = []
+		if not map_id.ends_with("_interior"):
+			var cells: Dictionary = _get_map(map_id).get("cells", {})
+			for cell in cells:
+				if str(interaction_at(map_id, cell).get("target", "")).ends_with("_interior"):
+					doors.append(cell)
+		_door_cache[map_id] = doors
+	return _door_cache[map_id].duplicate()
+
+
+## Static topology belongs to the map. Consumers receive paths, not a mutable grid.
+func patrol_route(map_id: String, checkpoints: Array[Vector2i]) -> Array[Vector2i]:
+	var key := map_id + str(checkpoints)
+	if _route_cache.has(key): return _route_cache[key].duplicate()
+	if not _navigation_grids.has(map_id):
+		var grid := AStarGrid2D.new()
+		grid.region = get_map_bounds(map_id)
+		grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+		grid.update()
+		for y in grid.region.size.y:
+			for x in grid.region.size.x:
+				grid.set_point_solid(Vector2i(x, y), not is_walkable(map_id, Vector2i(x, y)))
+		_navigation_grids[map_id] = grid
+	var grid: AStarGrid2D = _navigation_grids[map_id]
+	var route: Array[Vector2i] = []
+	for index in checkpoints.size():
+		var segment := grid.get_id_path(checkpoints[index], checkpoints[(index + 1) % checkpoints.size()])
+		for step in range(segment.size() - 1): route.append(segment[step])
+	_route_cache[key] = route
+	return route.duplicate()
 
 
 func get_map_size(map_id: String) -> Vector2i:

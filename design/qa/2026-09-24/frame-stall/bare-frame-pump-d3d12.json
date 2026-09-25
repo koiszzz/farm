@@ -1,0 +1,120 @@
+{
+  "display_server": "Windows",
+  "node_count": 0,
+  "reports": [
+    {
+      "frame_count": 720,
+      "max_microseconds": 524201,
+      "mode": "original",
+      "p95_microseconds": 11245,
+      "p99_microseconds": 11609,
+      "spikes_over_25ms": [
+        {
+          "frame": 63,
+          "frames_per_second": 1.0,
+          "microseconds": 521001,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 205,
+          "frames_per_second": 63.0,
+          "microseconds": 524201,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 257,
+          "frames_per_second": 79.0,
+          "microseconds": 517792,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 307,
+          "frames_per_second": 52.0,
+          "microseconds": 502181,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 648,
+          "frames_per_second": 90.0,
+          "microseconds": 508195,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 695,
+          "frames_per_second": 47.0,
+          "microseconds": 520792,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        }
+      ],
+      "window_focused_after_sample": true
+    },
+    {
+      "frame_count": 720,
+      "max_microseconds": 521394,
+      "mode": "disabled",
+      "p95_microseconds": 7163,
+      "p99_microseconds": 7827,
+      "spikes_over_25ms": [
+        {
+          "frame": 192,
+          "frames_per_second": 138.0,
+          "microseconds": 502358,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 275,
+          "frames_per_second": 76.0,
+          "microseconds": 521394,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 357,
+          "frames_per_second": 74.0,
+          "microseconds": 519011,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 441,
+          "frames_per_second": 72.0,
+          "microseconds": 516281,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 521,
+          "frames_per_second": 84.0,
+          "microseconds": 514987,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 604,
+          "frames_per_second": 80.0,
+          "microseconds": 499599,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        },
+        {
+          "frame": 689,
+          "frames_per_second": 83.0,
+          "microseconds": 502741,
+          "process_frames_elapsed": 1,
+          "window_focused": true
+        }
+      ],
+      "window_focused_after_sample": true
+    }
+  ],
+  "vsync_mode_original": 1,
+  "window_focus_after_request": true,
+  "window_focus_before_request": true
+}

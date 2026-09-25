@@ -1,0 +1,53 @@
+{
+  "grid": [
+    4,
+    4
+  ],
+  "image_size": [
+    1774,
+    887
+  ],
+  "rows": [
+    {
+      "adjacent_similarity": [
+        0.4995,
+        0.5424,
+        0.4998,
+        0.6002
+      ],
+      "direction_row": 0,
+      "foot_y_range": 17
+    },
+    {
+      "adjacent_similarity": [
+        0.5127,
+        0.5282,
+        0.5169,
+        0.6123
+      ],
+      "direction_row": 1,
+      "foot_y_range": 0
+    },
+    {
+      "adjacent_similarity": [
+        0.5236,
+        0.5376,
+        0.5232,
+        0.6295
+      ],
+      "direction_row": 2,
+      "foot_y_range": 5
+    },
+    {
+      "adjacent_similarity": [
+        0.5211,
+        0.5567,
+        0.5224,
+        0.611
+      ],
+      "direction_row": 3,
+      "foot_y_range": 38
+    }
+  ],
+  "source": "res://assets/art/runtime_generated/mayor_walk_v1.png"
+}

@@ -1,0 +1,75 @@
+{
+  "average_stream_microseconds": 8104,
+  "cached_object_nodes": 171,
+  "display_server": "headless",
+  "max_stream_microseconds": 18323,
+  "samples": [
+    {
+      "cell": [
+        61,
+        70
+      ],
+      "collision_microseconds": 18184,
+      "collision_nodes": 512,
+      "microseconds": 18323,
+      "object_nodes": 59,
+      "world_microseconds": 139
+    },
+    {
+      "cell": [
+        68,
+        70
+      ],
+      "collision_microseconds": 4651,
+      "collision_nodes": 512,
+      "microseconds": 4762,
+      "object_nodes": 59,
+      "world_microseconds": 111
+    },
+    {
+      "cell": [
+        75,
+        70
+      ],
+      "collision_microseconds": 5098,
+      "collision_nodes": 512,
+      "microseconds": 5174,
+      "object_nodes": 59,
+      "world_microseconds": 76
+    },
+    {
+      "cell": [
+        82,
+        70
+      ],
+      "collision_microseconds": 6903,
+      "collision_nodes": 512,
+      "microseconds": 7058,
+      "object_nodes": 59,
+      "world_microseconds": 155
+    },
+    {
+      "cell": [
+        89,
+        70
+      ],
+      "collision_microseconds": 6214,
+      "collision_nodes": 512,
+      "microseconds": 6292,
+      "object_nodes": 59,
+      "world_microseconds": 78
+    },
+    {
+      "cell": [
+        96,
+        70
+      ],
+      "collision_microseconds": 6909,
+      "collision_nodes": 512,
+      "microseconds": 7018,
+      "object_nodes": 59,
+      "world_microseconds": 109
+    }
+  ],
+  "world_object_entries": 171
+}

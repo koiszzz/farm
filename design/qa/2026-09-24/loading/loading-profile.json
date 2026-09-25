@@ -1,0 +1,72 @@
+{
+	"display": "Windows",
+	"door_transition_lock_cleared": true,
+	"engine": "4.7.1-stable (official)",
+	"note": "Warm house-to-outdoor map swaps; temporary unique save/config paths; production saves are not read or written. Timings omit the transition animation unless marked rendered_exit_ms.",
+	"rendered_exit_ms": 443.784,
+	"renderer": "forward_plus",
+	"resize_probe": {
+		"collision_cells_after": 805,
+		"collision_cells_before": 805,
+		"viewport_after": "(1280.0, 720.0)",
+		"viewport_before": "(1280.0, 720.0)"
+	},
+	"samples": [
+		{
+			"activate_world_ms": 0.165,
+			"collision_cells": 805,
+			"collision_rebuild_ms": 22.134,
+			"iteration": 0,
+			"npc_count": 10,
+			"npc_schedule_and_nodes_ms": 0.93,
+			"stream_and_collisions_ms": 22.223,
+			"terrain_chunks": 153,
+			"total_swap_ms": 26.895
+		},
+		{
+			"activate_world_ms": 0.179,
+			"collision_cells": 805,
+			"collision_rebuild_ms": 22.503,
+			"iteration": 1,
+			"npc_count": 10,
+			"npc_schedule_and_nodes_ms": 0.936,
+			"stream_and_collisions_ms": 22.592,
+			"terrain_chunks": 152,
+			"total_swap_ms": 26.897
+		},
+		{
+			"activate_world_ms": 0.167,
+			"collision_cells": 805,
+			"collision_rebuild_ms": 22.434,
+			"iteration": 2,
+			"npc_count": 10,
+			"npc_schedule_and_nodes_ms": 0.918,
+			"stream_and_collisions_ms": 22.532,
+			"terrain_chunks": 151,
+			"total_swap_ms": 26.874
+		},
+		{
+			"activate_world_ms": 0.19,
+			"collision_cells": 805,
+			"collision_rebuild_ms": 22.612,
+			"iteration": 3,
+			"npc_count": 10,
+			"npc_schedule_and_nodes_ms": 0.934,
+			"stream_and_collisions_ms": 23.271,
+			"terrain_chunks": 150,
+			"total_swap_ms": 27.609
+		},
+		{
+			"activate_world_ms": 0.252,
+			"collision_cells": 805,
+			"collision_rebuild_ms": 21.998,
+			"iteration": 4,
+			"npc_count": 10,
+			"npc_schedule_and_nodes_ms": 0.898,
+			"stream_and_collisions_ms": 22.084,
+			"terrain_chunks": 149,
+			"total_swap_ms": 27.019
+		}
+	],
+	"viewport_size": "(1280.0, 720.0)"
+}

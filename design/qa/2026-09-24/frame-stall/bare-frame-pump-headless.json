@@ -1,0 +1,18 @@
+{
+  "display_server": "headless",
+  "node_count": 0,
+  "reports": [
+    {
+      "frame_count": 720,
+      "max_microseconds": 16530,
+      "mode": "headless",
+      "p95_microseconds": 15768,
+      "p99_microseconds": 16126,
+      "spikes_over_25ms": [],
+      "window_focused_after_sample": true
+    }
+  ],
+  "vsync_mode_original": -1,
+  "window_focus_after_request": true,
+  "window_focus_before_request": true
+}

@@ -1,5 +1,9 @@
 extends Node2D
 
+const ORE_DEPOSIT_ART: Texture2D = preload("res://assets/art/runtime_generated/ore_deposits_v1.svg")
+const BEACH_COLLECTIBLES_ART: Texture2D = preload("res://assets/art/runtime_generated/beach_collectibles_v1.png")
+const ORE_DEPOSIT_INDEX := {"copper_ore": 0, "iron_ore": 1, "coal": 2, "quartz": 3, "earth_crystal": 4, "amethyst": 5, "frozen_tear": 6, "fire_quartz": 7}
+
 var game
 
 func _ready() -> void:
@@ -11,10 +15,17 @@ func refresh() -> void:
 
 func _draw() -> void:
 	if game == null or game.navigation == null or game.farm == null: return
+	if game.Mining.is_mine(game.current_map_id):
+		_draw_mine()
 	for item in game.homestead.available(game.current_map_id, game.farm.day, game.navigation):
 		var p: Vector2 = game.world.cell_center_to_screen(item.cell)
 		draw_rect(Rect2(p + Vector2(-9, 2), Vector2(20, 5)), Color(0.22, 0.20, 0.10, 0.2))
 		match str(item.kind):
+			"shell":
+				var pickup_index := 0 if str(item.key).ends_with(":0") or str(item.key).ends_with(":2") else 1
+				var frame_size := BEACH_COLLECTIBLES_ART.get_size() / Vector2(4, 2)
+				var source_rect := Rect2(Vector2(pickup_index, 0) * frame_size, frame_size)
+				draw_texture_rect_region(BEACH_COLLECTIBLES_ART, Rect2(p + Vector2(-14, -17), Vector2(28, 28)), source_rect)
 			"wood":
 				draw_line(p + Vector2(-9, 1), p + Vector2(9, -5), Color("674226"), 7)
 				draw_line(p + Vector2(-8, -1), p + Vector2(8, -7), Color("c18a4c"), 3)
@@ -41,3 +52,21 @@ func _draw() -> void:
 		draw_rect(Rect2(base + Vector2(-5, -4), Vector2(10, 14)), Color("513c29"))
 		draw_rect(Rect2(base + Vector2(-21, 16), Vector2(18, 7)), Color("7b6254"))
 		draw_rect(Rect2(base + Vector2(-19, 16), Vector2(14, 3)), Color("d8af67") if game.homestead.fed_day == game.farm.day else Color("394a4e"))
+
+
+func _draw_mine() -> void:
+	for cell in game.Mining.cells_for_floor(game.current_map_id):
+		var deposit: Dictionary = game.mining.vein(game.current_map_id, cell, game.farm.day)
+		if deposit.is_empty(): continue
+		var p: Vector2 = game.world.cell_center_to_screen(cell)
+		draw_rect(Rect2(p + Vector2(-13, 7), Vector2(26, 5)), Color("373542"))
+		var ore_index := int(ORE_DEPOSIT_INDEX.get(str(deposit.material), 0))
+		draw_texture_rect_region(ORE_DEPOSIT_ART, Rect2(p - Vector2(16, 16), Vector2.ONE * 32.0), Rect2(Vector2(ore_index * 32, 0), Vector2(32, 32)))
+		if game.mining.damage.has(deposit.key): draw_polyline(PackedVector2Array([p + Vector2(-2, -13), p + Vector2(1, -5), p + Vector2(-4, 3)]), Color("343544"), 2)
+	var ladders := [Vector2i(18, 24)]
+	if game.current_map_id != "mine_3": ladders.append(Vector2i(18, 4))
+	for cell in ladders:
+		var p: Vector2 = game.world.cell_center_to_screen(cell)
+		draw_rect(Rect2(p - Vector2(12, 12), Vector2(24, 24)), Color("262630"))
+		for x in [-8, 8]: draw_line(p + Vector2(x, -13), p + Vector2(x, 13), Color("b6926b"), 3)
+		for y in [-9, -3, 3, 9]: draw_line(p + Vector2(-8, y), p + Vector2(8, y), Color("d6b27b"), 2)

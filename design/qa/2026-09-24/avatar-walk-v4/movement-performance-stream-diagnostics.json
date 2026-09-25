@@ -1,0 +1,260 @@
+{
+  "average_stream_microseconds": 5995,
+  "cached_object_nodes": 171,
+  "display_server": "Windows",
+  "max_stream_microseconds": 15966,
+  "samples": [
+    {
+      "cell": [
+        61,
+        70
+      ],
+      "collision_microseconds": 15747,
+      "collision_nodes": 512,
+      "microseconds": 15966,
+      "object_nodes": 59,
+      "world_microseconds": 219
+    },
+    {
+      "cell": [
+        68,
+        70
+      ],
+      "collision_microseconds": 3194,
+      "collision_nodes": 512,
+      "microseconds": 3298,
+      "object_nodes": 59,
+      "world_microseconds": 104
+    },
+    {
+      "cell": [
+        75,
+        70
+      ],
+      "collision_microseconds": 4026,
+      "collision_nodes": 512,
+      "microseconds": 4147,
+      "object_nodes": 59,
+      "world_microseconds": 121
+    },
+    {
+      "cell": [
+        82,
+        70
+      ],
+      "collision_microseconds": 4184,
+      "collision_nodes": 512,
+      "microseconds": 4287,
+      "object_nodes": 59,
+      "world_microseconds": 103
+    },
+    {
+      "cell": [
+        89,
+        70
+      ],
+      "collision_microseconds": 4311,
+      "collision_nodes": 512,
+      "microseconds": 4406,
+      "object_nodes": 59,
+      "world_microseconds": 95
+    },
+    {
+      "cell": [
+        96,
+        70
+      ],
+      "collision_microseconds": 3785,
+      "collision_nodes": 512,
+      "microseconds": 3868,
+      "object_nodes": 59,
+      "world_microseconds": 83
+    }
+  ],
+  "walk_frames": {
+    "frame_count": 720,
+    "max_microseconds": 532389,
+    "p95_microseconds": 11231,
+    "p99_microseconds": 11482,
+    "spikes_over_25ms": [
+      {
+        "cell": [
+          87,
+          54
+        ],
+        "chunk": [
+          10,
+          6
+        ],
+        "frame": 26,
+        "frame_tail_microseconds": 514907,
+        "microseconds": 515046,
+        "movement_microseconds": 137,
+        "queue_microseconds": 2
+      },
+      {
+        "cell": [
+          84,
+          54
+        ],
+        "chunk": [
+          10,
+          6
+        ],
+        "frame": 73,
+        "frame_tail_microseconds": 532249,
+        "microseconds": 532389,
+        "movement_microseconds": 136,
+        "queue_microseconds": 4
+      },
+      {
+        "cell": [
+          65,
+          54
+        ],
+        "chunk": [
+          8,
+          6
+        ],
+        "frame": 364,
+        "frame_tail_microseconds": 497361,
+        "microseconds": 497566,
+        "movement_microseconds": 201,
+        "queue_microseconds": 4
+      },
+      {
+        "cell": [
+          61,
+          54
+        ],
+        "chunk": [
+          7,
+          6
+        ],
+        "frame": 414,
+        "frame_tail_microseconds": 511417,
+        "microseconds": 511927,
+        "movement_microseconds": 132,
+        "queue_microseconds": 378
+      },
+      {
+        "cell": [
+          58,
+          54
+        ],
+        "chunk": [
+          7,
+          6
+        ],
+        "frame": 465,
+        "frame_tail_microseconds": 524036,
+        "microseconds": 524200,
+        "movement_microseconds": 162,
+        "queue_microseconds": 2
+      }
+    ],
+    "travelled_cells": 48,
+    "world_visible": true
+  },
+  "walk_frames_without_world_render": {
+    "frame_count": 720,
+    "max_microseconds": 524128,
+    "p95_microseconds": 11329,
+    "p99_microseconds": 11671,
+    "spikes_over_25ms": [
+      {
+        "cell": [
+          79,
+          54
+        ],
+        "chunk": [
+          9,
+          6
+        ],
+        "frame": 152,
+        "frame_tail_microseconds": 511794,
+        "microseconds": 511942,
+        "movement_microseconds": 145,
+        "queue_microseconds": 3
+      },
+      {
+        "cell": [
+          69,
+          54
+        ],
+        "chunk": [
+          8,
+          6
+        ],
+        "frame": 297,
+        "frame_tail_microseconds": 496421,
+        "microseconds": 496550,
+        "movement_microseconds": 127,
+        "queue_microseconds": 2
+      },
+      {
+        "cell": [
+          55,
+          54
+        ],
+        "chunk": [
+          6,
+          6
+        ],
+        "frame": 504,
+        "frame_tail_microseconds": 519282,
+        "microseconds": 519417,
+        "movement_microseconds": 132,
+        "queue_microseconds": 3
+      },
+      {
+        "cell": [
+          52,
+          54
+        ],
+        "chunk": [
+          6,
+          6
+        ],
+        "frame": 552,
+        "frame_tail_microseconds": 503732,
+        "microseconds": 504071,
+        "movement_microseconds": 118,
+        "queue_microseconds": 221
+      },
+      {
+        "cell": [
+          49,
+          54
+        ],
+        "chunk": [
+          6,
+          6
+        ],
+        "frame": 602,
+        "frame_tail_microseconds": 523982,
+        "microseconds": 524128,
+        "movement_microseconds": 143,
+        "queue_microseconds": 3
+      },
+      {
+        "cell": [
+          56,
+          54
+        ],
+        "chunk": [
+          7,
+          6
+        ],
+        "frame": 698,
+        "frame_tail_microseconds": 518763,
+        "microseconds": 519111,
+        "movement_microseconds": 344,
+        "queue_microseconds": 4
+      }
+    ],
+    "travelled_cells": 48,
+    "world_visible": false
+  },
+  "world_object_entries": 171
+}

@@ -1,0 +1,20 @@
+{
+	"machine": "13th Gen Intel Core i7-13700H / NVIDIA RTX 3050 Laptop GPU",
+	"engine": "Godot 4.7.1",
+	"renderer": "Forward+ / D3D12",
+	"sample_count": 5,
+	"measurement_scope": "Five independent Godot processes. Timings begin at SceneTree script entry; this post-change batch does not measure Windows process creation to first frame.",
+	"samples": [
+		{"iteration": 1, "script_entry_to_game_ready_ms": 336.834, "script_entry_to_first_game_frame_ms": 572.929, "script_entry_to_input_ready_ms": 1107.328, "merged_world_constructed": false, "regional_maps_ready": true},
+		{"iteration": 2, "script_entry_to_game_ready_ms": 332.677, "script_entry_to_first_game_frame_ms": 526.216, "script_entry_to_input_ready_ms": 1063.503, "merged_world_constructed": false, "regional_maps_ready": true},
+		{"iteration": 3, "script_entry_to_game_ready_ms": 351.418, "script_entry_to_first_game_frame_ms": 586.280, "script_entry_to_input_ready_ms": 1131.705, "merged_world_constructed": false, "regional_maps_ready": true},
+		{"iteration": 4, "script_entry_to_game_ready_ms": 323.989, "script_entry_to_first_game_frame_ms": 519.571, "script_entry_to_input_ready_ms": 1057.408, "merged_world_constructed": false, "regional_maps_ready": true},
+		{"iteration": 5, "script_entry_to_game_ready_ms": 327.570, "script_entry_to_first_game_frame_ms": 521.044, "script_entry_to_input_ready_ms": 1057.974, "merged_world_constructed": false, "regional_maps_ready": true}
+	],
+	"medians_ms": {
+		"script_entry_to_game_ready": 332.677,
+		"script_entry_to_first_game_frame": 526.216,
+		"script_entry_to_input_ready": 1063.503
+	},
+	"note": "Normal regional play now skips constructing the unused valley_world dictionary. Compared with the earlier five-sample Forward+ baseline, median SceneTree-to-Ready fell from 375.177 ms to 332.677 ms. External process launch-to-frame is not remeasured here; previous 4.6-5.9 s process-start data includes engine/render initialization before SceneTree entry."
+}

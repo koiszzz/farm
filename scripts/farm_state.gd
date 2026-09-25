@@ -16,6 +16,7 @@ const DEFAULT_SEEDS := {
 	"tomato": 4,
 	"pumpkin": 2,
 }
+const STRUCTURE_IDS := ["sprinkler", "mayo_machine", "preserves_jar", "cheese_press"]
 const DEFAULT_CROPS := {
 	"parsnip": {"grow_days": 4, "sell_price": 35, "seed_price": 15, "seasons": [0], "label": "防风草"},
 	"turnip": {"grow_days": 3, "sell_price": 28, "seed_price": 12, "seasons": [0, 2], "label": "芜菁"},
@@ -56,6 +57,7 @@ var crop_definitions: Dictionary = DEFAULT_CROPS.duplicate(true)
 
 ## Only changed tillable cells are stored. A missing valid cell is unworked soil.
 var _plots: Dictionary = {}
+var _structures: Dictionary = {}
 
 
 func bind(map_data, target_map_id := "farm_outdoor") -> Dictionary:
@@ -76,6 +78,7 @@ func reset(starting_gold := DEFAULT_GOLD, initial_seeds: Dictionary = {}) -> Dic
 	seed_inventory = DEFAULT_SEEDS.duplicate(true) if initial_seeds.is_empty() else _positive_inventory(initial_seeds)
 	harvest_inventory.clear()
 	_plots.clear()
+	_structures.clear()
 	gold_changed.emit(gold, 0)
 	return _success("reset", {"gold": gold, "day": day})
 
@@ -88,6 +91,35 @@ func get_cell_state(cell: Vector2i) -> Dictionary:
 
 func is_crop_occupied(cell: Vector2i) -> bool:
 	return not str(get_cell_state(cell).get("seed", "")).is_empty()
+
+
+func is_field_occupied(cell: Vector2i) -> bool:
+	return is_crop_occupied(cell) or _structures.has(cell)
+
+
+func structure_at(cell: Vector2i) -> String:
+	return str(_structures.get(cell, ""))
+
+
+func place_structure(cell: Vector2i, structure_id: String) -> Dictionary:
+	if not _is_tillable(cell): return _failure("place_structure", "not_tillable", "设施只能放在农场耕地区域。", cell)
+	if structure_id not in STRUCTURE_IDS: return _failure("place_structure", "unknown_structure", "未知设施。", cell)
+	if is_field_occupied(cell): return _failure("place_structure", "occupied", "这里已有作物或设施。", cell)
+	var plot := _plot_for(cell)
+	plot.tilled = true
+	plot.watered = false
+	_save_plot(cell, plot)
+	_structures[cell] = structure_id
+	cell_changed.emit(cell, get_cell_state(cell))
+	return _success("place_structure", {"cell": cell, "structure": structure_id})
+
+
+func remove_structure(cell: Vector2i) -> Dictionary:
+	var structure_id := structure_at(cell)
+	if structure_id.is_empty(): return _failure("remove_structure", "empty", "这里没有可拆除的设施。", cell)
+	_structures.erase(cell)
+	cell_changed.emit(cell, get_cell_state(cell))
+	return _success("remove_structure", {"cell": cell, "structure": structure_id})
 
 
 func till(cell: Vector2i) -> Dictionary:
@@ -171,6 +203,12 @@ func harvest(cell: Vector2i) -> Dictionary:
 func advance_day(is_raining := false) -> Dictionary:
 	if not is_bound():
 		return _failure("advance_day", "not_bound", "Bind MapData before advancing the farm.")
+	var sprinkler_cells := _sprinkler_water_cells()
+	for cell in sprinkler_cells:
+		if _plots.has(cell):
+			var watered_plot: Dictionary = _plots[cell]
+			watered_plot.watered = true
+			_save_plot(cell, watered_plot)
 	var grown_cells: Array[Vector2i] = []
 	var matured_cells: Array[Vector2i] = []
 	var cleared_water_cells: Array[Vector2i] = []
@@ -202,7 +240,7 @@ func advance_day(is_raining := false) -> Dictionary:
 			plot["growth"] = 0
 			plot["mature"] = false
 			expired.append(cell)
-		plot["watered"] = Calendar.weather(day) == "雨" and bool(plot.get("tilled", false))
+		plot["watered"] = bool(plot.get("tilled", false)) and (Calendar.weather(day) == "雨" or cell in sprinkler_cells)
 		_save_plot(cell, plot)
 	var result := _success("advance_day", {
 		"day": day,
@@ -211,12 +249,13 @@ func advance_day(is_raining := false) -> Dictionary:
 		"matured_cells": matured_cells,
 		"cleared_water_cells": cleared_water_cells,
 		"expired_cells": expired,
+		"sprinkler_cells": sprinkler_cells,
 	})
 	day_advanced.emit(day, is_raining, result.duplicate(true))
 	return result
 
 
-func ship(item_id: String, amount: int = 1) -> Dictionary:
+func ship(item_id: String, amount: int = 1, price_multiplier := 1.0) -> Dictionary:
 	if not crop_definitions.has(item_id):
 		return _failure("ship", "unknown_item", "This item cannot be shipped.")
 	var available := get_harvest_count(item_id)
@@ -229,21 +268,21 @@ func ship(item_id: String, amount: int = 1) -> Dictionary:
 	var remaining: int = available - shipped
 	harvest_inventory[item_id] = remaining
 	var crop: Dictionary = crop_definitions[item_id]
-	var earned: int = shipped * int(crop.get("sell_price", 0))
+	var earned: int = roundi(shipped * int(crop.get("sell_price", 0)) * maxf(0.0, float(price_multiplier)))
 	gold += earned
 	inventory_changed.emit("harvest", item_id, remaining)
 	gold_changed.emit(gold, earned)
 	return _success("ship", {"item_id": item_id, "amount": shipped, "earned": earned, "gold": gold})
 
 
-func ship_all() -> Dictionary:
+func ship_all(price_multiplier := 1.0) -> Dictionary:
 	var total_earned := 0
 	var shipped: Dictionary = {}
 	for item_id in harvest_inventory.keys().duplicate():
 		var amount := get_harvest_count(str(item_id))
 		if amount <= 0:
 			continue
-		var result := ship(str(item_id), amount)
+		var result := ship(str(item_id), amount, price_multiplier)
 		if bool(result.get("ok", false)):
 			shipped[item_id] = int(result.get("amount", 0))
 			total_earned += int(result.get("earned", 0))
@@ -265,10 +304,10 @@ func get_seed_count(seed_id: String) -> int:
 	return max(0, int(seed_inventory.get(seed_id, 0)))
 
 
-func buy_seed(seed_id: String, amount := 1) -> Dictionary:
+func buy_seed(seed_id: String, amount := 1, unit_price := -1) -> Dictionary:
 	if not crop_definitions.has(seed_id) or amount <= 0 or amount > 99:
 		return _failure("buy_seed", "invalid_amount", "购买数量无效。")
-	var price := int(crop_definitions[seed_id].get("seed_price", 15)) * amount
+	var price := (int(crop_definitions[seed_id].get("seed_price", 15)) if unit_price < 0 else maxi(0, unit_price)) * amount
 	if gold < price: return _failure("buy_seed", "poor", "金币不足。")
 	gold -= price
 	add_seeds(seed_id, amount)
@@ -280,7 +319,10 @@ func snapshot() -> Dictionary:
 	var plots: Array = []
 	for cell in _plots:
 		plots.append({"x": cell.x, "y": cell.y, "state": _plots[cell].duplicate(true)})
-	return {"day": day, "gold": gold, "seeds": seed_inventory.duplicate(true), "harvest": harvest_inventory.duplicate(true), "plots": plots}
+	var structures: Array = []
+	for cell in _structures:
+		structures.append({"x": cell.x, "y": cell.y, "id": _structures[cell]})
+	return {"day": day, "gold": gold, "seeds": seed_inventory.duplicate(true), "harvest": harvest_inventory.duplicate(true), "plots": plots, "structures": structures}
 
 
 func restore(data: Dictionary) -> void:
@@ -291,12 +333,18 @@ func restore(data: Dictionary) -> void:
 	for item in data.get("seeds", {}): seed_inventory[item] = maxi(0, int(data.seeds[item]))
 	for item in data.get("harvest", {}): harvest_inventory[item] = maxi(0, int(data.harvest[item]))
 	_plots.clear()
+	_structures.clear()
 	for row in data.get("plots", []):
 		var cell := Vector2i(int(row.x), int(row.y))
 		if _is_tillable(cell):
 			var state: Dictionary = row.state.duplicate(true)
 			state["growth"] = int(state.get("growth", 0))
 			_save_plot(cell, state)
+	for row in data.get("structures", []):
+		var cell := Vector2i(int(row.x), int(row.y))
+		var structure_id := str(row.get("id", ""))
+		if _is_tillable(cell) and structure_id in STRUCTURE_IDS and not is_crop_occupied(cell):
+			_structures[cell] = structure_id
 
 
 func get_harvest_count(item_id: String) -> int:
@@ -312,8 +360,39 @@ func get_crop_definition(seed_id: String) -> Dictionary:
 	return crop.duplicate(true) if crop is Dictionary else {}
 
 
+## Count consecutive days, starting today, that this crop remains in season.
+## Multi-season crops carry their window across adjacent valid seasons, while
+## a gap in the season list ends the window immediately.
+func get_crop_growing_window(seed_id: String) -> int:
+	if not crop_definitions.has(seed_id):
+		return 0
+	var seasons: Array = crop_definitions[seed_id].get("seasons", [0, 1, 2, 3])
+	var available_days := 0
+	for offset in 112:
+		var season := int(Calendar.date(day + offset).season)
+		if not season in seasons:
+			break
+		available_days += 1
+	return available_days
+
+
 func get_plots() -> Dictionary:
 	return _plots.duplicate(true)
+
+
+func get_structures() -> Dictionary:
+	return _structures.duplicate()
+
+
+func _sprinkler_water_cells() -> Array[Vector2i]:
+	var result: Array[Vector2i] = []
+	for cell_value in _structures:
+		var cell: Vector2i = cell_value
+		if structure_at(cell) != "sprinkler": continue
+		for offset in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			var target: Vector2i = cell + offset
+			if _plots.has(target) and target not in result: result.append(target)
+	return result
 
 
 func is_bound() -> bool:

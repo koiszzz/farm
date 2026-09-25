@@ -1,0 +1,198 @@
+{
+	"grid": [
+		8,
+		1
+	],
+	"image_size": [
+		2172,
+		724
+	],
+	"metric": "1 minus mean RGBA absolute difference over union of non-transparent pixels; higher means more alike",
+	"rows": [
+		{
+			"adjacent_similarity": [
+				0.8966,
+				0.913,
+				0.8551,
+				0.8832,
+				0.9256,
+				0.9218,
+				0.8677,
+				0.8021
+			],
+			"closest_pair": {
+				"frames": [
+					4,
+					6
+				],
+				"similarity": 0.9496
+			},
+			"direction": "row_0",
+			"foot_y_range": [
+				692,
+				724,
+				32
+			],
+			"frames": [
+				{
+					"cell": [
+						0,
+						0,
+						271,
+						724
+					],
+					"foot_anchor": [
+						151.5,
+						708.0
+					],
+					"frame": 0,
+					"used_rect": [
+						32,
+						200,
+						239,
+						508
+					]
+				},
+				{
+					"cell": [
+						271,
+						0,
+						272,
+						724
+					],
+					"foot_anchor": [
+						126.0,
+						708.0
+					],
+					"frame": 1,
+					"used_rect": [
+						0,
+						195,
+						252,
+						513
+					]
+				},
+				{
+					"cell": [
+						543,
+						0,
+						271,
+						724
+					],
+					"foot_anchor": [
+						148.5,
+						709.0
+					],
+					"frame": 2,
+					"used_rect": [
+						26,
+						202,
+						245,
+						507
+					]
+				},
+				{
+					"cell": [
+						814,
+						0,
+						272,
+						724
+					],
+					"foot_anchor": [
+						118.5,
+						692.0
+					],
+					"frame": 3,
+					"used_rect": [
+						0,
+						193,
+						237,
+						499
+					]
+				},
+				{
+					"cell": [
+						1086,
+						0,
+						271,
+						724
+					],
+					"foot_anchor": [
+						127.5,
+						708.0
+					],
+					"frame": 4,
+					"used_rect": [
+						20,
+						197,
+						215,
+						511
+					]
+				},
+				{
+					"cell": [
+						1357,
+						0,
+						272,
+						724
+					],
+					"foot_anchor": [
+						132.0,
+						692.0
+					],
+					"frame": 5,
+					"used_rect": [
+						11,
+						194,
+						242,
+						498
+					]
+				},
+				{
+					"cell": [
+						1629,
+						0,
+						271,
+						724
+					],
+					"foot_anchor": [
+						122.0,
+						724.0
+					],
+					"frame": 6,
+					"used_rect": [
+						5,
+						194,
+						234,
+						530
+					]
+				},
+				{
+					"cell": [
+						1900,
+						0,
+						272,
+						724
+					],
+					"foot_anchor": [
+						130.0,
+						702.0
+					],
+					"frame": 7,
+					"used_rect": [
+						20,
+						193,
+						220,
+						509
+					]
+				}
+			]
+		}
+	],
+	"seam_opaque_pixels": {
+		"horizontal": 0,
+		"vertical": 0
+	},
+	"source": "res://design/qa/2026-09-25/npc-animation/mayor-down-walk-candidate.png",
+	"total_frames": 8
+}

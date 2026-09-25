@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="224" height="128" viewBox="0 0 224 128" shape-rendering="crispEdges">
+  <!-- 0 apple -->
+  <g transform="translate(0 0)"><path d="M15 9h3V5h4v4h4V7h3v3h-4v3h-4v-3h-3v3h-3z" fill="#4a5833"/><path d="M15 13h-4v3H8v9h3v4h7v-2h4v2h7v-4h3v-9h-3v-3h-6v2h-4v-2z" fill="#763d32"/><path d="M15 14h5v3h-4v5h-4v-5h3zM22 17h6v3h-4v4h-5v-4h3z" fill="#d45a49"/><path d="M14 22h3v4h-3z" fill="#f3b16f"/></g>
+  <!-- 1 orange -->
+  <g transform="translate(32 0)"><path d="M14 7h4V4h5v4h-4v3h-5z" fill="#537340"/><path d="M16 9h9v3h5v4h3v9h-3v4h-5v3h-9v-3h-5v-4H8v-9h3v-4h5z" fill="#a34c2e"/><path d="M16 12h9v3h5v4h-3v7h-4v2h-7v-3h-4v-8h4z" fill="#f39b37"/><path d="M19 14h4v3h3v5h-3v3h-4v-3h-3v-5h3z" fill="#ffc95d"/><path d="M19 16h2v7h-2zM16 19h8v2h-8z" fill="#f5aa43"/></g>
+  <!-- 2 peach -->
+  <g transform="translate(64 0)"><path d="M16 9h4V5h4v4h5v4h-4v3h-7v-3h-4z" fill="#526b3a"/><path d="M18 12h-5v3h-4v6h3v6h5v3h7v-3h5v-5h3v-6h-4v-4h-5v2h-3z" fill="#814538"/><path d="M18 14h4v2h4v3h4v5h-4v4h-7v-3h-4v-5h-3v-4h6z" fill="#efa27f"/><path d="M20 14h3v5h-3zM14 18h3v5h-3z" fill="#ffd09a"/><path d="M22 18h2v4h-2z" fill="#d46f67"/></g>
+  <!-- 3 pomegranate -->
+  <g transform="translate(96 0)"><path d="M17 9h3V5h3v4h4v4h-4v3h-6v-3h-4z" fill="#477040"/><path d="M15 14h-4v4H8v8h4v4h14v-3h5v-9h-4v-4h-6v2h-4v-2z" fill="#622e38"/><path d="M15 16h6v3h5v4h3v5h-5v2h-8v-3h-4v-7h3z" fill="#bd4050"/><path d="M17 18h3v3h-3zM23 20h3v3h-3zM16 24h3v3h-3zM22 26h3v3h-3z" fill="#f5c77b"/></g>
+  <!-- 4 egg -->
+  <g transform="translate(128 0)"><path d="M16 7h8v3h4v5h3v9h-3v5h-4v3h-8v-3h-4v-5H9v-9h3v-5h4z" fill="#7f6647"/><path d="M17 9h6v3h4v5h2v7h-3v4h-4v2h-6v-2h-4v-5h-2v-7h3v-4h4z" fill="#f5e6bf"/><path d="M16 13h4v3h-4zM14 17h2v5h-2z" fill="#fff5dd"/></g>
+  <!-- 5 duck egg -->
+  <g transform="translate(160 0)"><path d="M16 7h8v3h4v5h3v9h-3v5h-4v3h-8v-3h-4v-5h-3v-9h3v-5h4z" fill="#426466"/><path d="M17 9h6v3h4v5h2v7h-3v4h-4v2h-6v-2h-4v-5h-2v-7h3v-4h4z" fill="#c8dfd0"/><path d="M16 12h4v3h-4zM14 18h2v4h-2z" fill="#eff4d9"/><path d="M23 25h4v2h-4z" fill="#88b5aa"/></g>
+  <!-- 6 milk -->
+  <g transform="translate(192 0)"><path d="M15 5h10v3h3v5h3v15h-3v4H12v-4H9V13h3V8h3z" fill="#4c5146"/><path d="M17 7h6v4h3v4h2v12h-3v3H13v-3h-2V15h3v-4h3z" fill="#e7e5d4"/><path d="M17 7h6v4h-6zM15 16h11v7H15z" fill="#74a8a9"/><path d="M17 17h3v4h-3z" fill="#c7e0d6"/></g>
+  <!-- 7 mayonnaise -->
+  <g transform="translate(0 32)"><path d="M14 7h12v3h3v5h3v12h-3v4h-4v2H15v-2h-4v-4H8V15h3v-5h3z" fill="#554131"/><path d="M16 9h8v4h3v3h3v9h-3v4h-4v2h-7v-2h-4v-4h-2v-9h3v-3h3z" fill="#d9bd72"/><path d="M17 6h7v4h-7zM14 16h13v9H14z" fill="#f3e5b7"/><path d="M16 18h4v5h-4z" fill="#f5c85e"/></g>
+  <!-- 8 cheese -->
+  <g transform="translate(32 32)"><path d="M7 21 24 8l10 9v11H8z" fill="#67442e"/><path d="M10 20 24 10l8 8v8H10z" fill="#e0b34f"/><path d="M11 20h20v6H11z" fill="#f5d477"/><path d="M18 19h3v3h-3zM25 16h3v3h-3zM23 23h3v2h-3z" fill="#a97336"/><path d="M9 28h23v2H9z" fill="#493528"/></g>
+  <!-- 9 pickles -->
+  <g transform="translate(64 32)"><path d="M14 6h14v3h3v5h2v14h-3v4H12v-4H9V14h2V9h3z" fill="#4e4631"/><path d="M16 8h10v4h3v4h2v10h-3v5H13v-5h-2V16h3v-4h2z" fill="#a7b06a"/><path d="M16 7h10v3H16zM13 16h16v9H13z" fill="#d7dd9d"/><path d="M17 17h3v6h-3zM23 16h3v5h-3z" fill="#6f8c4d"/></g>
+  <!-- 10 trail mix -->
+  <g transform="translate(96 32)"><path d="M8 18h25v4h-2v6h-4v3H14v-3h-4v-6H8z" fill="#66442d"/><path d="M11 19h19v4h-2v4h-4v2H16v-2h-4v-4h-1z" fill="#e0b26a"/><path d="M13 17h5v4h-5zM20 16h5v5h-5zM27 18h4v4h-4z" fill="#ae5147"/><path d="M15 17h2v2h-2zM21 16h2v2h-2z" fill="#e3d58a"/><path d="M14 25h13v2H14z" fill="#986039"/></g>
+  <!-- 11 fish stew -->
+  <g transform="translate(128 32)"><path d="M8 17h24v3h3v7h-3v3H11v-3H8z" fill="#5a4030"/><path d="M10 18h20v3h3v4h-3v3H12v-3h-2z" fill="#c68146"/><path d="M13 17h8v2h-8zM21 21h7v4h-7z" fill="#efc66e"/><path d="M14 22h5v3h-5z" fill="#dc5a4e"/><path d="M18 16h8v2h-8z" fill="#73985a"/><path d="M12 29h18v2H12z" fill="#96673d"/></g>
+  <!-- 12 pumpkin soup -->
+  <g transform="translate(160 32)"><path d="M8 18h25v4h-2v6h-4v3H14v-3h-4v-6H8z" fill="#603e2b"/><path d="M11 19h19v5h-3v4H15v-3h-3v-4h-1z" fill="#e3813e"/><path d="M17 16h6v3h-6zM14 20h4v3h-4z" fill="#f8bd5d"/><path d="M21 19h7v3h-7z" fill="#f4d58c"/><path d="M14 28h14v2H14z" fill="#a75334"/></g>
+  <!-- 13 miner lunch -->
+  <g transform="translate(192 32)"><path d="M8 15h24v4h3v11h-4v3H10v-3H7V19h3v-4z" fill="#61422e"/><path d="M11 18h18v3h3v7h-3v2H11v-3H9v-6h2z" fill="#e4d1a1"/><path d="M13 17h5v5h-5zM20 17h7v4h-7zM13 24h6v5h-6z" fill="#73a05a"/><path d="M21 23h8v5h-8z" fill="#d26d4b"/></g>
+  <!-- 14 field salad -->
+  <g transform="translate(0 64)"><path d="M8 18h25v4h-2v6h-4v3H14v-3h-4v-6H8z" fill="#5b432f"/><path d="M11 19h19v5h-3v4H15v-3h-3v-4h-1z" fill="#c3b568"/><path d="M12 18h7v4h-5v4h-3v-4zM20 16h7v4h-5v4h-4v-4z" fill="#6b9d51"/><path d="M14 23h5v4h-5z" fill="#8bbb5b"/><path d="M23 23h5v3h-5z" fill="#cf6c50"/></g>
+  <!-- 15 sea skewer -->
+  <g transform="translate(32 64)"><path d="M8 27 28 7l2 2-20 20z" fill="#69472f"/><path d="M13 23h7v5h-7zM20 16h7v5h-7zM25 10h6v5h-6z" fill="#dc6e43"/><path d="M14 24h4v2h-4zM21 17h4v2h-4z" fill="#eecf76"/><path d="M8 27h5v3H8z" fill="#a47b4e"/></g>
+  <!-- 16 miner rice -->
+  <g transform="translate(64 64)"><path d="M15 12h11v3h4v4h3v8h-4v4h-5v2h-8v-2h-5v-4H8v-8h3v-4h4z" fill="#594333"/><path d="M16 14h9v3h4v3h2v6h-3v3h-5v2h-7v-2h-4v-4h-2v-6h3v-3h3z" fill="#eee1c0"/><path d="M17 17h8v3h-8zM15 22h3v4h-3z" fill="#f8f0d8"/><path d="M22 24h5v3h-5z" fill="#78a25d"/></g>
+  <!-- 17 berry tart -->
+  <g transform="translate(96 64)"><path d="M8 24h3v-5h4v-4h13v4h4v5h3v5H8z" fill="#68442e"/><path d="M11 23h21v5H11z" fill="#d49b53"/><path d="M14 18h15v5H14z" fill="#efc87d"/><path d="M15 16h5v4h-5zM22 15h5v4h-5zM18 20h5v4h-5z" fill="#b84f54"/><path d="M16 17h2v2h-2zM23 16h2v2h-2z" fill="#f4d6a1"/></g>
+  <!-- 18 sprinkler -->
+  <g transform="translate(128 64)"><path d="M14 12h4V8h12v4h-4v3h-4v6h7v4h-5v5H16v-5h-5v-4h7v-6h-4z" fill="#4d4c47"/><path d="M16 10h9v4h-5v5h10v3H18v-3h2v-6h-4z" fill="#83afac"/><path d="M18 25h8v3h-8zM10 20h8v2h-8z" fill="#c5d7bb"/></g>
+  <!-- 19 mayonnaise machine -->
+  <g transform="translate(160 64)"><path d="M9 12h22v4h3v14h-4v3H10v-3H7V16h2z" fill="#59402d"/><path d="M12 14h17v4h2v9h-3v3H12v-3h-2v-9h2z" fill="#bd9457"/><path d="M14 9h13v5H14zM16 18h9v6h-9z" fill="#e8d39b"/><path d="M18 19h5v4h-5z" fill="#d7b555"/><path d="M14 27h14v2H14z" fill="#765336"/></g>
+  <!-- 20 preserves jar -->
+  <g transform="translate(192 64)"><path d="M12 9h16v4h3v17h-4v3H11v-3H8V13h4z" fill="#514232"/><path d="M14 11h12v4h3v12h-3v4H12v-4h-2V15h4z" fill="#9aab65"/><path d="M13 8h15v4H13zM12 17h16v7H12z" fill="#d9e0a1"/><path d="M16 18h4v5h-4zM22 17h3v4h-3z" fill="#65824a"/></g>
+  <!-- 21 cheese press -->
+  <g transform="translate(0 96)"><path d="M11 7h19v3h3v23H9V10h2z" fill="#55402e"/><path d="M13 9h15v3h2v17H11V12h2z" fill="#bd8a4c"/><path d="M16 6h9v5h-9zM17 13h7v9h-7z" fill="#e1c176"/><path d="M13 23h15v4H13zM15 30h11v2H15z" fill="#744d30"/><path d="M8 31h27v2H8z" fill="#473426"/></g>
+  <!-- 22 apple sapling -->
+  <g transform="translate(32 96)"><path d="M20 16h4v15h-4z" fill="#805433"/><path d="M21 18h-7v-4h-4v-5h5V5h6v4h4V5h5v5h3v5h-5v4h-7z" fill="#4f783f"/><path d="M15 10h4v4h-4zM25 8h4v4h-4z" fill="#81a853"/><path d="M16 32h13v2H16z" fill="#775238"/></g>
+  <!-- 23 orange sapling -->
+  <g transform="translate(64 96)"><path d="M20 16h4v15h-4z" fill="#815438"/><path d="M20 17h-7v-5h-5v-5h6V3h6v5h5V4h6v5h4v5h-5v4h-9z" fill="#547b3d"/><path d="M14 9h4v4h-4zM26 7h5v4h-5z" fill="#8ca950"/><path d="M20 18h5v5h-5z" fill="#ed9c3e"/><path d="M16 32h13v2H16z" fill="#775238"/></g>
+  <!-- 24 peach sapling -->
+  <g transform="translate(96 96)"><path d="M20 16h4v15h-4z" fill="#815438"/><path d="M20 17h-7v-5h-5v-5h6V3h6v5h5V4h6v5h4v5h-5v4h-9z" fill="#557c42"/><path d="M14 9h4v4h-4zM26 7h5v4h-5z" fill="#91b85a"/><path d="M22 19h5v5h-5z" fill="#eda083"/><path d="M16 32h13v2H16z" fill="#775238"/></g>
+  <!-- 25 pomegranate sapling -->
+  <g transform="translate(128 96)"><path d="M20 16h4v15h-4z" fill="#815438"/><path d="M20 17h-7v-5h-5v-5h6V3h6v5h5V4h6v5h4v5h-5v4h-9z" fill="#54743e"/><path d="M14 9h4v4h-4zM26 7h5v4h-5z" fill="#8eab4c"/><path d="M22 18h5v6h-5z" fill="#bc4652"/><path d="M16 32h13v2H16z" fill="#775238"/></g>
+  <!-- 26 bait -->
+  <g transform="translate(192 96)"><path d="M11 24h18v4H11z" fill="#63452f"/><path d="M13 21h15v3H13z" fill="#9a7146"/><path d="M15 14h3v7h-3zM23 12h3v9h-3z" fill="#e2c994"/><path d="M18 15h4v3h-4zM12 18h3v3h-3zM26 16h4v3h-4z" fill="#d6a85f"/><path d="M16 10h3v3h-3zM24 8h3v3h-3z" fill="#f0dfad"/></g>
+  <!-- 27 cork bobber -->
+  <g transform="translate(160 96)"><path d="M18 4h5v8h-5z" fill="#624433"/><path d="M17 9h7v4h-7z" fill="#f1e6c9"/><path d="M13 13h15v5h-3v7h-3v4h-4v-4h-3v-7h-2z" fill="#734633"/><path d="M14 14h13v5h-3v6h-3v3h-2v-3h-3v-6h-2z" fill="#cf5446"/><path d="M16 15h9v3h-9z" fill="#f5e7c0"/><path d="M18 24h5v3h-5z" fill="#f5e7c0"/></g>
+</svg>

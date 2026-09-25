@@ -1,0 +1,54 @@
+{
+	"engine": "4.7.1-stable (official)",
+	"note": "CPU synchronous swap only; excludes transition animation, first rendered frame and cold startup. Fresh session, day 1 at 06:00.",
+	"pet_grid_ms": 1194.883,
+	"renderer": "forward_plus",
+	"samples": [
+		{
+			"iteration": 0,
+			"npc_count": 10,
+			"npcs_ms": 6611.3,
+			"object_count": 164,
+			"stream_ms": 179.084,
+			"terrain_chunks": 1134,
+			"total_swap_ms": 8911.42
+		},
+		{
+			"iteration": 1,
+			"npc_count": 10,
+			"npcs_ms": 6388.668,
+			"object_count": 164,
+			"stream_ms": 127.309,
+			"terrain_chunks": 1134,
+			"total_swap_ms": 8448.34
+		},
+		{
+			"iteration": 2,
+			"npc_count": 10,
+			"npcs_ms": 5822.404,
+			"object_count": 164,
+			"stream_ms": 123.006,
+			"terrain_chunks": 1134,
+			"total_swap_ms": 7869.304
+		},
+		{
+			"iteration": 3,
+			"npc_count": 10,
+			"npcs_ms": 6343.327,
+			"object_count": 164,
+			"stream_ms": 120.704,
+			"terrain_chunks": 1134,
+			"total_swap_ms": 8509.876
+		},
+		{
+			"iteration": 4,
+			"npc_count": 10,
+			"npcs_ms": 6592.122,
+			"object_count": 164,
+			"stream_ms": 161.057,
+			"terrain_chunks": 1134,
+			"total_swap_ms": 8671.848
+		}
+	],
+	"warm_config_ms": 877.624
+}

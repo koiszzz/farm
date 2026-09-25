@@ -50,7 +50,7 @@ func _draw() -> void:
 			draw_line(torso + Vector2(-6,7), torso + Vector2(6,7), Color("80613d"), 3)
 	var hair: Color = avatar._palette_color("hair_color", str(data.hair_color))
 	var dark := hair.darkened(0.50)
-	var bounce := sin(avatar.stride * PI / 4) * 1.5 if avatar.action in ["walk_a", "walk_b"] else 0.0
+	var bounce := _walking_bounce()
 	var tail := head + Vector2((-7 if avatar.facing == "right" else 7) if side else 0, 4)
 	match str(data.hair):
 		"long":
@@ -82,3 +82,10 @@ func _draw() -> void:
 				draw_colored_polygon(PackedVector2Array([point+Vector2(-3,0),point+Vector2(0,-6),point+Vector2(3,0)]), hair)
 		"side_part":
 			if not back: draw_line(head + Vector2(-6*facing_sign,-5), head + Vector2(4*facing_sign,0), dark, 3)
+
+
+func _walking_bounce() -> float:
+	if avatar == null or avatar.action not in ["walk_a", "walk_b", "walk", "run"]:
+		return 0.0
+	var amplitude := 2.0 if avatar.action == "run" else 1.5
+	return sin(avatar.stride * PI / 4.0) * amplitude

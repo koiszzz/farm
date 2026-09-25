@@ -1,0 +1,174 @@
+{
+  "average_stream_microseconds": 6175,
+  "cached_object_nodes": 171,
+  "display_server": "Windows",
+  "max_stream_microseconds": 15698,
+  "samples": [
+    {
+      "cell": [
+        61,
+        70
+      ],
+      "collision_microseconds": 15468,
+      "collision_nodes": 512,
+      "microseconds": 15698,
+      "object_nodes": 59,
+      "world_microseconds": 230
+    },
+    {
+      "cell": [
+        68,
+        70
+      ],
+      "collision_microseconds": 3577,
+      "collision_nodes": 512,
+      "microseconds": 3715,
+      "object_nodes": 59,
+      "world_microseconds": 138
+    },
+    {
+      "cell": [
+        75,
+        70
+      ],
+      "collision_microseconds": 4768,
+      "collision_nodes": 512,
+      "microseconds": 4908,
+      "object_nodes": 59,
+      "world_microseconds": 140
+    },
+    {
+      "cell": [
+        82,
+        70
+      ],
+      "collision_microseconds": 4312,
+      "collision_nodes": 512,
+      "microseconds": 4416,
+      "object_nodes": 59,
+      "world_microseconds": 104
+    },
+    {
+      "cell": [
+        89,
+        70
+      ],
+      "collision_microseconds": 4308,
+      "collision_nodes": 512,
+      "microseconds": 4401,
+      "object_nodes": 59,
+      "world_microseconds": 93
+    },
+    {
+      "cell": [
+        96,
+        70
+      ],
+      "collision_microseconds": 3829,
+      "collision_nodes": 512,
+      "microseconds": 3912,
+      "object_nodes": 59,
+      "world_microseconds": 83
+    }
+  ],
+  "walk_frames": {
+    "frame_count": 720,
+    "max_microseconds": 537200,
+    "p95_microseconds": 11252,
+    "p99_microseconds": 14948,
+    "spikes_over_25ms": [
+      {
+        "cell": [
+          86,
+          54
+        ],
+        "chunk": [
+          10,
+          6
+        ],
+        "frame": 45,
+        "frame_tail_microseconds": 511074,
+        "microseconds": 511192,
+        "movement_microseconds": 115,
+        "queue_microseconds": 3
+      },
+      {
+        "cell": [
+          83,
+          54
+        ],
+        "chunk": [
+          10,
+          6
+        ],
+        "frame": 96,
+        "frame_tail_microseconds": 497425,
+        "microseconds": 497557,
+        "movement_microseconds": 130,
+        "queue_microseconds": 2
+      },
+      {
+        "cell": [
+          76,
+          54
+        ],
+        "chunk": [
+          9,
+          6
+        ],
+        "frame": 193,
+        "frame_tail_microseconds": 519092,
+        "microseconds": 519224,
+        "movement_microseconds": 130,
+        "queue_microseconds": 2
+      },
+      {
+        "cell": [
+          63,
+          54
+        ],
+        "chunk": [
+          7,
+          6
+        ],
+        "frame": 391,
+        "frame_tail_microseconds": 537068,
+        "microseconds": 537200,
+        "movement_microseconds": 131,
+        "queue_microseconds": 1
+      },
+      {
+        "cell": [
+          53,
+          54
+        ],
+        "chunk": [
+          6,
+          6
+        ],
+        "frame": 534,
+        "frame_tail_microseconds": 521360,
+        "microseconds": 521760,
+        "movement_microseconds": 137,
+        "queue_microseconds": 263
+      },
+      {
+        "cell": [
+          50,
+          54
+        ],
+        "chunk": [
+          6,
+          6
+        ],
+        "frame": 587,
+        "frame_tail_microseconds": 519676,
+        "microseconds": 519797,
+        "movement_microseconds": 120,
+        "queue_microseconds": 1
+      }
+    ],
+    "travelled_cells": 48
+  },
+  "world_object_entries": 171
+}

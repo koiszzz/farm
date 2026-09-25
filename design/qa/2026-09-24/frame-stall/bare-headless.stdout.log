@@ -1,0 +1,3 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+Bare frame pump: {"frame_count":720,"max_microseconds":16520,"mode":"headless","p95_microseconds":15861,"p99_microseconds":16156,"spikes_over_25ms":[],"window_focused_after_sample":true}

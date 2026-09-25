@@ -1,0 +1,634 @@
+{
+	"cpu": "13th Gen Intel(R) Core(TM) i7-13700H",
+	"display": "Windows",
+	"engine": "4.7.1-stable (official)",
+	"entry_input_ready_ms": {
+		"count": 30,
+		"max": 411.267,
+		"median": 399.942,
+		"min": 280.719,
+		"over_800ms": 0,
+		"p95": 411.236
+	},
+	"exit_input_ready_ms": {
+		"count": 30,
+		"max": 347.552,
+		"median": 322.199,
+		"min": 299.943,
+		"over_800ms": 0,
+		"p95": 344.167
+	},
+	"failures": 0,
+	"gpu": "NVIDIA GeForce RTX 3050 4GB Laptop GPU",
+	"iterations": 30,
+	"note": "Thirty rendered farmhouse round trips in an isolated Windows process. Input-ready includes the scene transition, a physics frame to release the transition lock, and the first outdoor rendered frame on exit. Production save/config are not read or written.",
+	"os": "Windows",
+	"renderer": "gl_compatibility",
+	"samples": [
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 280.719,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 29.806
+			},
+			"entry_transition_ms": 247.591,
+			"exit_input_ready_ms": 310.839,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 29.099
+			},
+			"exit_transition_ms": 277.847,
+			"iteration": 1,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 297.01,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 9.338
+			},
+			"entry_transition_ms": 264.382,
+			"exit_input_ready_ms": 311.304,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 29.052
+			},
+			"exit_transition_ms": 278.482,
+			"iteration": 2,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 399.942,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 9.806
+			},
+			"entry_transition_ms": 378.505,
+			"exit_input_ready_ms": 333.062,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 34.958
+			},
+			"exit_transition_ms": 289.304,
+			"iteration": 3,
+			"resident_count": 10,
+			"terrain_chunk_count": 135,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 411.171,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 12.606
+			},
+			"entry_transition_ms": 378.313,
+			"exit_input_ready_ms": 311.23,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 30.568
+			},
+			"exit_transition_ms": 278.347,
+			"iteration": 4,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 411.267,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.254
+			},
+			"entry_transition_ms": 379.022,
+			"exit_input_ready_ms": 344.167,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 33.77
+			},
+			"exit_transition_ms": 300.338,
+			"iteration": 5,
+			"resident_count": 10,
+			"terrain_chunk_count": 133,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.668,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 13.349
+			},
+			"entry_transition_ms": 367.137,
+			"exit_input_ready_ms": 347.552,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 42.674
+			},
+			"exit_transition_ms": 300.818,
+			"iteration": 6,
+			"resident_count": 10,
+			"terrain_chunk_count": 134,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 385.676,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 12.176
+			},
+			"entry_transition_ms": 363.701,
+			"exit_input_ready_ms": 333.43,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 37.224
+			},
+			"exit_transition_ms": 300.66,
+			"iteration": 7,
+			"resident_count": 10,
+			"terrain_chunk_count": 135,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 399.82,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.113
+			},
+			"entry_transition_ms": 378.17,
+			"exit_input_ready_ms": 322.444,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 33.31
+			},
+			"exit_transition_ms": 289.601,
+			"iteration": 8,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 410.71,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 11.26
+			},
+			"entry_transition_ms": 389.268,
+			"exit_input_ready_ms": 333.547,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 46.908
+			},
+			"exit_transition_ms": 291.772,
+			"iteration": 9,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 410.86,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 13.727
+			},
+			"entry_transition_ms": 378.227,
+			"exit_input_ready_ms": 333.234,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 33.106
+			},
+			"exit_transition_ms": 289.321,
+			"iteration": 10,
+			"resident_count": 10,
+			"terrain_chunk_count": 135,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 408.271,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.366
+			},
+			"entry_transition_ms": 379.742,
+			"exit_input_ready_ms": 313.948,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 29.817
+			},
+			"exit_transition_ms": 281.021,
+			"iteration": 11,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 411.127,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.009
+			},
+			"entry_transition_ms": 389.471,
+			"exit_input_ready_ms": 310.838,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 29.32
+			},
+			"exit_transition_ms": 278.221,
+			"iteration": 12,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.935,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 13.635
+			},
+			"entry_transition_ms": 367.497,
+			"exit_input_ready_ms": 322.245,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 38.967
+			},
+			"exit_transition_ms": 289.267,
+			"iteration": 13,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.869,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 9.678
+			},
+			"entry_transition_ms": 366.899,
+			"exit_input_ready_ms": 311.099,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 28.789
+			},
+			"exit_transition_ms": 278.05,
+			"iteration": 14,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 410.887,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 12.549
+			},
+			"entry_transition_ms": 378.341,
+			"exit_input_ready_ms": 322.199,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 33.253
+			},
+			"exit_transition_ms": 289.398,
+			"iteration": 15,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 410.973,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 22.229
+			},
+			"entry_transition_ms": 389.19,
+			"exit_input_ready_ms": 333.583,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 37.996
+			},
+			"exit_transition_ms": 300.817,
+			"iteration": 16,
+			"resident_count": 10,
+			"terrain_chunk_count": 135,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 410.961,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 12.498
+			},
+			"entry_transition_ms": 389.048,
+			"exit_input_ready_ms": 310.943,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 28.292
+			},
+			"exit_transition_ms": 277.966,
+			"iteration": 17,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.743,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 12.334
+			},
+			"entry_transition_ms": 367.082,
+			"exit_input_ready_ms": 311.177,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 30.668
+			},
+			"exit_transition_ms": 278.436,
+			"iteration": 18,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.906,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.156
+			},
+			"entry_transition_ms": 366.93,
+			"exit_input_ready_ms": 333.534,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 30.452
+			},
+			"exit_transition_ms": 289.539,
+			"iteration": 19,
+			"resident_count": 10,
+			"terrain_chunk_count": 135,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 401.684,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 12.557
+			},
+			"entry_transition_ms": 377.775,
+			"exit_input_ready_ms": 320.12,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 34.145
+			},
+			"exit_transition_ms": 266.989,
+			"iteration": 20,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 399.833,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.321
+			},
+			"entry_transition_ms": 378.6,
+			"exit_input_ready_ms": 322.337,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 35.213
+			},
+			"exit_transition_ms": 289.356,
+			"iteration": 21,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.733,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.804
+			},
+			"entry_transition_ms": 366.893,
+			"exit_input_ready_ms": 322.089,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 34.616
+			},
+			"exit_transition_ms": 289.529,
+			"iteration": 22,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 400.499,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 10.55
+			},
+			"entry_transition_ms": 378.526,
+			"exit_input_ready_ms": 299.943,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 28.424
+			},
+			"exit_transition_ms": 271.234,
+			"iteration": 23,
+			"resident_count": 10,
+			"terrain_chunk_count": 137,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 399.942,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 9.971
+			},
+			"entry_transition_ms": 377.664,
+			"exit_input_ready_ms": 310.553,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 28.62
+			},
+			"exit_transition_ms": 277.817,
+			"iteration": 24,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.911,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 13.861
+			},
+			"entry_transition_ms": 369.59,
+			"exit_input_ready_ms": 333.317,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 33.887
+			},
+			"exit_transition_ms": 290.874,
+			"iteration": 25,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 400.153,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 11.991
+			},
+			"entry_transition_ms": 366.975,
+			"exit_input_ready_ms": 322.034,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 35.455
+			},
+			"exit_transition_ms": 289.297,
+			"iteration": 26,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 388.721,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 11.531
+			},
+			"entry_transition_ms": 366.936,
+			"exit_input_ready_ms": 322.17,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 28.082
+			},
+			"exit_transition_ms": 281.066,
+			"iteration": 27,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 395.568,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 19.899
+			},
+			"entry_transition_ms": 366.452,
+			"exit_input_ready_ms": 337.68,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 48.186
+			},
+			"exit_transition_ms": 305.494,
+			"iteration": 28,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 399.865,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 17.369
+			},
+			"entry_transition_ms": 367.391,
+			"exit_input_ready_ms": 322.244,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 41.388
+			},
+			"exit_transition_ms": 291.451,
+			"iteration": 29,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		},
+		{
+			"collision_cell_count": 805,
+			"entry_input_ready_ms": 411.236,
+			"entry_ok": true,
+			"entry_swap": {
+				"total_swap_ms": 13.573
+			},
+			"entry_transition_ms": 378.261,
+			"exit_input_ready_ms": 311.277,
+			"exit_ok": true,
+			"exit_swap": {
+				"total_swap_ms": 29.544
+			},
+			"exit_transition_ms": 277.949,
+			"iteration": 30,
+			"resident_count": 10,
+			"terrain_chunk_count": 136,
+			"world_cache_count": 2
+		}
+	],
+	"viewport_size": "(1280.0, 720.0)",
+	"world_cache_limit": 3,
+	"world_cache_max_observed": 2,
+	"world_cache_sizes": [
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2,
+		2
+	]
+}

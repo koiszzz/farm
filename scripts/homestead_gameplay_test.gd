@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Motion = preload("res://scripts/motion_test_driver.gd")
+
 var game
 var checks := 0
 var failures := 0
@@ -95,14 +97,17 @@ func _run() -> void:
 	game._change_map("farm_outdoor", well)
 	game._interact()
 	expect(game.homestead.water == 24, "authored well interaction refills can")
-	game._change_map("farm_outdoor", Vector2i(5, 13))
+	game._change_map("farm_outdoor", Vector2i(5, 14))
 	await physics_frame
 	game._select_tool(0)
-	game._begin_move(Vector2i.DOWN)
+	Motion.hold(Vector2i.DOWN)
+	game._update_player_movement(1.0 / 60.0)
 	game._farm_action()
 	expect(game.queued_use == "tool" and game.actor_action.kind.is_empty(), "tool input buffers while walking")
-	game._update_player_movement(0.3)
-	expect(game.player_cell == Vector2i(5, 14) and game.actor_action.kind == "hoe", "buffered action starts immediately on arrival")
+	var action_position: Vector2 = game.player_body.position
+	game._update_player_movement(1.0 / 60.0)
+	Motion.hold(Vector2i.ZERO)
+	expect(game.player_body.position == action_position and game.actor_action.kind == "hoe", "buffered action stops at current position on next tick")
 	_settle_action()
 	expect(game.farm.get_cell_state(Vector2i(5, 15)).tilled, "buffered action works the intended adjacent cell")
 	game._open_inventory()
@@ -175,9 +180,9 @@ func _run() -> void:
 		game._open_dialogue("shopkeeper")
 		await _capture("resident_dialogue", 2.0)
 		game.life_panel.close()
-	game._change_map("riverside", Vector2i(18, 15))
-	expect(game.npcs.has("fisherman"), "fisherman's daytime schedule appears by river")
-	await _capture("river_day")
+	game._change_map("beach", Vector2i(28, 14))
+	expect(game.npcs.has("fisherman"), "fisherman's daytime schedule appears at beach")
+	await _capture("beach_day")
 	game.clock_minutes = 1260
 	game._change_map("cafe_interior", Vector2i(18, 15))
 	expect(game.npcs.has("florist") and game.npcs.has("fisherman"), "evening residents gather in cafe")

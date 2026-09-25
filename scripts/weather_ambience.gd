@@ -15,6 +15,7 @@ func _process(delta: float) -> void:
 
 func _draw_weather() -> void:
 	if game == null or game.farm == null: return
+	if game.Mining.is_mine(game.current_map_id): return
 	var size: Vector2 = get_viewport().get_visible_rect().size
 	if game.current_map_id.ends_with("_interior"):
 		paint.draw_rect(Rect2(Vector2.ZERO, size), Color(0.55, 0.30, 0.10, 0.045))

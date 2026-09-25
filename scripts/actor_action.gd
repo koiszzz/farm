@@ -3,7 +3,7 @@ extends RefCounted
 
 ## One transaction per animation. The contact callback commits gameplay once;
 ## cancelling before contact has no inventory or energy side effects.
-const DURATIONS := {"hoe": 0.70, "seed": 0.55, "water": 0.95, "harvest": 0.70, "scythe": 0.75, "gift": 0.90, "fish": 1.20, "pet": 1.0}
+const DURATIONS := {"sword": 0.45, "pickaxe": 0.65, "hoe": 0.70, "seed": 0.55, "water": 0.95, "harvest": 0.70, "scythe": 0.75, "gift": 0.90, "fish": 1.20, "pet": 1.0}
 var kind := ""
 var elapsed := 0.0
 var duration := 0.0

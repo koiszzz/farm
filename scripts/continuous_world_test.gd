@@ -134,9 +134,13 @@ func _run() -> void:
 	legacy.map = "farm_outdoor"
 	legacy.cell = [17, 16]
 	legacy.farm.plots = [{"x": 4, "y": 15, "state": {"tilled": true, "watered": false, "seed": "", "growth": 0, "mature": false}}]
+	legacy.farm.structures = [{"x": 6, "y": 15, "id": "mayo_machine"}]
+	legacy.processing.jobs = [{"x": 6, "y": 15, "machine": "mayo_machine", "input": "egg", "output": "mayonnaise", "ready_day": 2, "ready": false}]
 	game._migrate_save_to_contiguous(legacy)
 	expect(legacy.map == "valley_world" and Vector2i(legacy.cell[0], legacy.cell[1]) == farm_spawn, "legacy outdoor save location migrates once")
 	expect(Vector2i(legacy.farm.plots[0].x, legacy.farm.plots[0].y) == game.navigation.to_contiguous_world("farm_outdoor", Vector2i(4, 15)), "legacy farm plots migrate without being discarded")
+	expect(Vector2i(legacy.farm.structures[0].x, legacy.farm.structures[0].y) == game.navigation.to_contiguous_world("farm_outdoor", Vector2i(6, 15)), "legacy processing machine migrates with farm structures")
+	expect(Vector2i(legacy.processing.jobs[0].x, legacy.processing.jobs[0].y) == Vector2i(legacy.farm.structures[0].x, legacy.farm.structures[0].y), "legacy processing job stays aligned with migrated machine")
 	game.autosave_enabled = false
 	DirAccess.remove_absolute(game.save_path)
 	DirAccess.remove_absolute(game.display_config_path)

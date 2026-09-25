@@ -1,0 +1,57 @@
+{
+	"engine": "4.7.1-stable (official)",
+	"note": "Isolated MapData construction timings only; excludes Godot process start, rendering, game nodes, save reads and full runtime readiness.",
+	"os": "Windows",
+	"rows": [
+		{
+			"build_contiguous_world_ms": 35.355,
+			"build_regions_ms": 14.374,
+			"farm_size": "(64, 44)",
+			"iteration": 1,
+			"load_json_ms": 21.577,
+			"map_count": 13,
+			"valid": true,
+			"valley_size": "(248, 112)"
+		},
+		{
+			"build_contiguous_world_ms": 49.134,
+			"build_regions_ms": 20.582,
+			"farm_size": "(64, 44)",
+			"iteration": 2,
+			"load_json_ms": 15.622,
+			"map_count": 13,
+			"valid": true,
+			"valley_size": "(248, 112)"
+		},
+		{
+			"build_contiguous_world_ms": 33.583,
+			"build_regions_ms": 13.051,
+			"farm_size": "(64, 44)",
+			"iteration": 3,
+			"load_json_ms": 18.358,
+			"map_count": 13,
+			"valid": true,
+			"valley_size": "(248, 112)"
+		},
+		{
+			"build_contiguous_world_ms": 35.051,
+			"build_regions_ms": 13.019,
+			"farm_size": "(64, 44)",
+			"iteration": 4,
+			"load_json_ms": 20.809,
+			"map_count": 13,
+			"valid": true,
+			"valley_size": "(248, 112)"
+		},
+		{
+			"build_contiguous_world_ms": 35.816,
+			"build_regions_ms": 13.817,
+			"farm_size": "(64, 44)",
+			"iteration": 5,
+			"load_json_ms": 15.341,
+			"map_count": 13,
+			"valid": true,
+			"valley_size": "(248, 112)"
+		}
+	]
+}
