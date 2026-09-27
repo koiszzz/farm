@@ -13,12 +13,12 @@ func _init() -> void:
 	var farm = FarmStateService.new()
 	_expect(farm.bind(navigation, "farm_outdoor").get("ok", false), "farm should bind to the outdoor farm map")
 
-	var cell := Vector2i(3, 15)
+	var cell := Vector2i(16, 16)
 	_expect(not farm.till(Vector2i(1, 1)).get("ok", true), "grass must not be tillable")
 	_expect(farm.till(cell).get("ok", false), "tillable soil should be tillable")
 	_expect(not farm.till(cell).get("ok", true), "a cell cannot be tilled twice")
 	_expect(farm.plant(cell, "parsnip").get("ok", false), "a seed can be planted on tilled soil")
-	_expect(farm.get_seed_count("parsnip") == 5, "planting consumes exactly one seed")
+	_expect(farm.get_seed_count("parsnip") == 8, "planting consumes exactly one seed")
 	_expect(farm.is_crop_occupied(cell), "a planted crop should occupy its cell")
 	_expect(not farm.harvest(cell).get("ok", true), "an immature crop cannot be harvested")
 

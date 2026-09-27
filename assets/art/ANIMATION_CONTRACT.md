@@ -22,6 +22,17 @@ For locomotion frames, `SpriteAtlas.row_anchored_frame()` keeps one root pivot a
 
 NPC walk cycles have four phases per direction. When an NPC switches from walking to idle (for example, at a patrol pause or to greet the player), reset its stride to the planted first phase; resuming at a partially lifted foot reads as a foot pop. NPC walk art still needs distinct, frame-safe atlases for every resident; only the florist, shopkeeper, and fisherman currently have dedicated walk sheets.
 
+### Farm animal locomotion
+
+The current chicken, duck, and cow actors use **4 columns × 4 rows**, with rows ordered down / left / right / up. They advance their four stride phases from actual distance travelled, so new animal walk art must keep that atlas contract unless the renderer is deliberately changed in a separate task.
+
+- Keep every frame on one fixed canvas and root pivot. The torso center, ground shadow, foot baseline, body size, and markings stay in place; never slide or recenter the whole animal between frames.
+- Use restrained gait: planted contact, subtle weight transfer, small passing step, opposite contact. Leg motion should read clearly without wide lunges; body bob is minimal (about one source pixel at most) and head/tail motion stays secondary.
+- Frame 0 is the planted idle/stop pose. On stop, reset to frame 0. On movement, phase follows travelled distance, not an unrelated timer.
+- Compare adjacent frames overlaid and as a loop. Reject visible root drift, jumpy silhouette/scale, support-foot skating, large stride changes, or shadow movement.
+
+The current animal reference candidate is recorded in `design/farm-art-completion-plan.md`; it illustrates small-step motion only and is not a production atlas.
+
 ## Idle and action atlases
 
 - Idle art uses **1 column × 4 rows** in the same direction order.

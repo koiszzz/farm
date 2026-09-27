@@ -83,7 +83,6 @@ func _draw() -> void:
 		"side_part":
 			if not back: draw_line(head + Vector2(-6*facing_sign,-5), head + Vector2(4*facing_sign,0), dark, 3)
 
-
 func _walking_bounce() -> float:
 	if avatar == null or avatar.action not in ["walk_a", "walk_b", "walk", "run"]:
 		return 0.0

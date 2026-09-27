@@ -19,13 +19,13 @@ func _run() -> void:
 	root.add_child(game)
 	await physics_frame
 	game.set_physics_process(false)
-	for route in [["farm_outdoor", Vector2i(0,14), "countryside"], ["town_square", Vector2i(42,22), "countryside"], ["farm_outdoor", Vector2i(63,20), "riverside"], ["riverside", Vector2i(0,15), "farm_outdoor"]]:
+	for route in [["farm_outdoor", Vector2i(0,14), "countryside"], ["town_square", Vector2i(42,22), "countryside"], ["farm_outdoor", Vector2i(45,10), "riverside"], ["farm_outdoor", Vector2i(27,21), "town_square"], ["riverside", Vector2i(0,15), "farm_outdoor"]]:
 		game._change_map(route[0], game.navigation.get_spawn(route[0]))
 		await physics_frame
 		await walk_to(route[1])
 		expect(game.current_map_id == route[2], "walking reaches exit from spawn: " + str(route))
 		expect(game.navigation.exit_at(game.current_map_id, game.player_cell).is_empty(), "arrival lies outside a return trigger")
-	for route in [["farm_outdoor", Vector2i(15,10), "farmhouse_interior"], ["town_square", Vector2i(10,11), "general_store_interior"], ["town_square", Vector2i(24,9), "clinic_interior"], ["town_square", Vector2i(38,11), "cafe_interior"]]:
+	for route in [["farm_outdoor", Vector2i(27,12), "farmhouse_interior"], ["town_square", Vector2i(10,11), "general_store_interior"], ["town_square", Vector2i(24,9), "clinic_interior"], ["town_square", Vector2i(38,11), "cafe_interior"]]:
 		game._change_map(route[0], game.navigation.get_spawn(route[0]))
 		await physics_frame
 		await walk_to(route[1])
@@ -34,14 +34,14 @@ func _run() -> void:
 		# Exercise actual physics through the room, including both side aisles
 		# and the functional furniture stand positions, before leaving.
 		await walk_to(Vector2i(7, 8))
-		await walk_to(Vector2i(29, 16))
 		var size: Vector2i = game.navigation.get_map_size(game.current_map_id)
+		await walk_to(Vector2i(mini(29, size.x - 3), mini(16, size.y - 3)))
 		for y in size.y:
 			for x in size.x:
 				var cell := Vector2i(x, y)
 				if not game.navigation.interaction_at(game.current_map_id, cell).is_empty():
 					await walk_to(cell)
-		await walk_to(Vector2i(18, 16))
+		await walk_to(game.navigation.get_spawn(game.current_map_id))
 		Motion.walk(game, Vector2i.DOWN)
 		await wait_for_door_transition()
 		expect(game.current_map_id == route[0] and not game.entering_door, "walk out of interior: " + str(route[2]))

@@ -50,8 +50,8 @@
         44
       ],
       "spawn": [
-        17,
-        16
+        27,
+        14
       ],
       "surfaces": [
         {
@@ -65,106 +65,59 @@
           ]
         },
         {
-          "id": "farm_main_path",
-          "class": "path",
-          "points": [
-            [
-              0,
-              14
-            ],
-            [
-              12,
-              14
-            ],
-            [
-              12,
-              11
-            ],
-            [
-              17,
-              11
-            ],
-            [
-              17,
-              14
-            ],
-            [
-              28,
-              14
-            ],
-            [
-              28,
-              10
-            ],
-            [
-              39,
-              10
-            ]
-          ]
-        },
-        {
           "id": "farm_cultivation",
           "class": "tillable",
           "rect": [
-            3,
-            15,
+            16,
             13,
-            9
+            6,
+            7
           ]
         },
         {
-          "id": "v2_riverside_lane",
-          "class": "path",
-          "points": [
-            [
-              28,
-              14
-            ],
-            [
-              42,
-              14
-            ],
-            [
-              42,
-              20
-            ],
-            [
-              63,
-              20
-            ]
-          ]
-        },
-        {
-          "id": "v2_south_garden_lane",
-          "class": "path",
-          "points": [
-            [
-              17,
-              14
-            ],
-            [
-              17,
-              29
-            ],
-            [
-              45,
-              29
-            ],
-            [
-              45,
-              20
-            ]
-          ]
-        },
-        {
-          "id": "v2_front_porch",
+          "id": "farm_main_path",
           "class": "path",
           "rect": [
+            27,
             14,
-            10,
-            3,
-            2
+            1,
+            7
           ]
+        },
+        {
+          "id": "farm_south_gate_path",
+          "class": "path",
+          "rect": [25, 21, 5, 1]
+        },
+        {
+          "id": "farm_south_path_exit",
+          "class": "path",
+          "rect": [27, 22, 1, 6]
+        },
+        {
+          "id": "farm_crop_path_south_run",
+          "class": "path",
+          "rect": [
+            22,
+            18,
+            3,
+            1
+          ]
+        },
+        {
+          "id": "farm_crop_path_north_turn",
+          "class": "path",
+          "rect": [24, 16, 1, 3]
+        },
+        {
+          "id": "farm_crop_path_to_main",
+          "class": "path",
+          "rect": [24, 16, 3, 1]
+        },
+        {
+          "id": "farm_well_lane_east",
+          "class": "path",
+          "rect": [27, 15, 20, 1]
         }
       ],
       "blocked": [
@@ -172,49 +125,44 @@
           "id": "farmhouse",
           "class": "solid",
           "rect": [
-            10,
-            7,
-            11,
-            3
-          ]
-        },
-        {
-          "id": "pond",
-          "class": "water",
-          "rect": [
-            27,
-            16,
+            20,
+            12,
             13,
-            12
-          ]
-        },
-        {
-          "id": "north_fence",
-          "class": "solid",
-          "rect": [
-            23,
-            5,
-            8,
             1
           ]
         },
         {
-          "id": "crop_plot_fence_west",
+          "id": "house_rear_fence_left",
           "class": "solid",
           "rect": [
-            2,
-            14,
-            1,
-            11
+            11,
+            7,
+            7,
+            1
           ]
         },
         {
-          "id": "crop_plot_fence_south",
+          "id": "house_rear_fence_right",
+          "class": "solid",
+          "rect": [36, 7, 9, 1]
+        },
+        {
+          "id": "south_fence_left",
           "class": "solid",
           "rect": [
-            3,
-            24,
-            13,
+            0,
+            21,
+            25,
+            1
+          ]
+        },
+        {
+          "id": "south_fence_right",
+          "class": "solid",
+          "rect": [
+            30,
+            21,
+            15,
             1
           ]
         },
@@ -222,7 +170,7 @@
           "id": "shipping_box",
           "class": "solid",
           "rect": [
-            22,
+            37,
             10,
             2,
             1
@@ -232,18 +180,18 @@
           "id": "v2_well",
           "class": "solid",
           "rect": [
-            24,
-            9,
-            2,
-            1
+            44,
+            13,
+            6,
+            2
           ]
         },
         {
           "id": "tree_farm_0",
           "class": "solid",
           "rect": [
-            4,
-            6,
+            1,
+            3,
             1,
             1
           ]
@@ -252,8 +200,8 @@
           "id": "tree_farm_1",
           "class": "solid",
           "rect": [
-            7,
-            8,
+            5,
+            2,
             1,
             1
           ]
@@ -262,8 +210,8 @@
           "id": "tree_farm_2",
           "class": "solid",
           "rect": [
-            34,
-            7,
+            9,
+            4,
             1,
             1
           ]
@@ -272,8 +220,8 @@
           "id": "tree_farm_3",
           "class": "solid",
           "rect": [
-            39,
-            6,
+            12,
+            2,
             1,
             1
           ]
@@ -282,8 +230,8 @@
           "id": "tree_farm_4",
           "class": "solid",
           "rect": [
-            45,
-            8,
+            16,
+            5,
             1,
             1
           ]
@@ -292,8 +240,8 @@
           "id": "tree_farm_5",
           "class": "solid",
           "rect": [
-            52,
-            7,
+            20,
+            3,
             1,
             1
           ]
@@ -302,8 +250,8 @@
           "id": "tree_farm_6",
           "class": "solid",
           "rect": [
-            59,
-            9,
+            24,
+            1,
             1,
             1
           ]
@@ -312,8 +260,8 @@
           "id": "tree_farm_7",
           "class": "solid",
           "rect": [
-            6,
-            30,
+            28,
+            4,
             1,
             1
           ]
@@ -322,8 +270,8 @@
           "id": "tree_farm_8",
           "class": "solid",
           "rect": [
-            11,
-            34,
+            32,
+            2,
             1,
             1
           ]
@@ -332,8 +280,8 @@
           "id": "tree_farm_9",
           "class": "solid",
           "rect": [
-            24,
-            35,
+            36,
+            5,
             1,
             1
           ]
@@ -342,8 +290,8 @@
           "id": "tree_farm_10",
           "class": "solid",
           "rect": [
-            31,
-            33,
+            40,
+            3,
             1,
             1
           ]
@@ -352,8 +300,8 @@
           "id": "tree_farm_11",
           "class": "solid",
           "rect": [
-            39,
-            37,
+            44,
+            1,
             1,
             1
           ]
@@ -362,8 +310,8 @@
           "id": "tree_farm_12",
           "class": "solid",
           "rect": [
-            49,
-            35,
+            48,
+            4,
             1,
             1
           ]
@@ -372,8 +320,8 @@
           "id": "tree_farm_13",
           "class": "solid",
           "rect": [
-            56,
-            31,
+            52,
+            2,
             1,
             1
           ]
@@ -382,9 +330,369 @@
           "id": "tree_farm_14",
           "class": "solid",
           "rect": [
-            60,
-            38,
+            56,
+            5,
             1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_15",
+          "class": "solid",
+          "rect": [
+            59,
+            3,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_16",
+          "class": "solid",
+          "rect": [
+            62,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_17",
+          "class": "solid",
+          "rect": [
+            2,
+            7,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_18",
+          "class": "solid",
+          "rect": [
+            2,
+            10,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_19",
+          "class": "solid",
+          "rect": [
+            7,
+            13,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_20",
+          "class": "solid",
+          "rect": [
+            2,
+            16,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_21",
+          "class": "solid",
+          "rect": [
+            2,
+            19,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_22",
+          "class": "solid",
+          "rect": [
+            2,
+            22,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_23",
+          "class": "solid",
+          "rect": [
+            2,
+            25,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_24",
+          "class": "solid",
+          "rect": [
+            2,
+            28,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_25",
+          "class": "solid",
+          "rect": [
+            2,
+            31,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_26",
+          "class": "solid",
+          "rect": [
+            2,
+            34,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_27",
+          "class": "solid",
+          "rect": [
+            2,
+            37,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_28",
+          "class": "solid",
+          "rect": [
+            2,
+            40,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_29",
+          "class": "solid",
+          "rect": [
+            61,
+            7,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_30",
+          "class": "solid",
+          "rect": [
+            61,
+            10,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_31",
+          "class": "solid",
+          "rect": [
+            61,
+            13,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_32",
+          "class": "solid",
+          "rect": [
+            61,
+            16,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_33",
+          "class": "solid",
+          "rect": [
+            61,
+            19,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_34",
+          "class": "solid",
+          "rect": [
+            61,
+            34,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_35",
+          "class": "solid",
+          "rect": [
+            61,
+            37,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "tree_farm_36",
+          "class": "solid",
+          "rect": [
+            61,
+            40,
+            1,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_18",
+          "class": "water",
+          "rect": [
+            53,
+            18,
+            11,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_19",
+          "class": "water",
+          "rect": [
+            51,
+            19,
+            13,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_20",
+          "class": "water",
+          "rect": [
+            49,
+            20,
+            15,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_21",
+          "class": "water",
+          "rect": [
+            47,
+            21,
+            17,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_22",
+          "class": "water",
+          "rect": [
+            45,
+            22,
+            19,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_23",
+          "class": "water",
+          "rect": [
+            44,
+            23,
+            20,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_24",
+          "class": "water",
+          "rect": [
+            43,
+            24,
+            21,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_25",
+          "class": "water",
+          "rect": [
+            43,
+            25,
+            21,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_26",
+          "class": "water",
+          "rect": [
+            44,
+            26,
+            20,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_27",
+          "class": "water",
+          "rect": [
+            45,
+            27,
+            19,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_28",
+          "class": "water",
+          "rect": [
+            47,
+            28,
+            17,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_29",
+          "class": "water",
+          "rect": [
+            50,
+            29,
+            14,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_30",
+          "class": "water",
+          "rect": [
+            52,
+            30,
+            12,
+            1
+          ]
+        },
+        {
+          "id": "pond_waterline_31",
+          "class": "water",
+          "rect": [
+            54,
+            31,
+            10,
             1
           ]
         }
@@ -394,8 +702,8 @@
           "id": "farmhouse_door",
           "class": "interaction",
           "rect": [
-            15,
-            10,
+            27,
+            12,
             1,
             1
           ],
@@ -405,9 +713,9 @@
           "id": "shipping_box_front",
           "class": "interaction",
           "rect": [
-            22,
+            38,
             11,
-            2,
+            1,
             1
           ],
           "target": "shipping_box"
@@ -416,8 +724,8 @@
           "id": "well_front",
           "class": "interaction",
           "rect": [
-            24,
-            10,
+            46,
+            15,
             1,
             1
           ],
@@ -426,13 +734,13 @@
       ],
       "exits": [
         {
-          "id": "farm_to_town",
+          "id": "farm_south_gate",
           "class": "exit",
           "rect": [
-            0,
-            13,
-            1,
-            3
+            25,
+            21,
+            5,
+            1
           ],
           "target": "town_square",
           "arrival": [
@@ -444,8 +752,8 @@
           "id": "farm_to_riverside",
           "class": "exit",
           "rect": [
-            63,
-            19,
+            45,
+            10,
             1,
             3
           ],
@@ -459,16 +767,16 @@
       "objects": [
         {
           "id": "farmhouse",
-          "atlas": "buildings",
+          "atlas": "farmhouse_front",
           "index": [
             0,
             0
           ],
           "visual_rect": [
-            10,
-            2,
-            11,
-            8
+            18,
+            -2.3,
+            17,
+            15.3
           ]
         },
         {
@@ -479,7 +787,7 @@
             1
           ],
           "visual_rect": [
-            22,
+            37,
             9,
             2,
             2
@@ -487,16 +795,16 @@
         },
         {
           "id": "v2_well",
-          "atlas": "props",
+          "atlas": "farm_well",
           "index": [
-            1,
-            1
+            0,
+            0
           ],
           "visual_rect": [
-            24,
-            8,
-            2,
-            2
+            43.25,
+            5,
+            7.5,
+            10
           ]
         },
         {
@@ -507,10 +815,10 @@
             0
           ],
           "visual_rect": [
-            3,
-            3,
-            3,
-            4
+            -1,
+            -1,
+            5,
+            5
           ]
         },
         {
@@ -521,10 +829,10 @@
             0
           ],
           "visual_rect": [
-            6,
-            5,
             3,
-            4
+            -2,
+            5,
+            5
           ]
         },
         {
@@ -535,10 +843,10 @@
             0
           ],
           "visual_rect": [
-            33,
-            4,
-            3,
-            4
+            7,
+            0,
+            5,
+            5
           ]
         },
         {
@@ -549,10 +857,10 @@
             0
           ],
           "visual_rect": [
-            38,
-            3,
-            3,
-            4
+            10,
+            -2,
+            5,
+            5
           ]
         },
         {
@@ -563,10 +871,10 @@
             0
           ],
           "visual_rect": [
-            44,
+            14,
+            1,
             5,
-            3,
-            4
+            5
           ]
         },
         {
@@ -577,10 +885,10 @@
             0
           ],
           "visual_rect": [
-            51,
-            4,
-            3,
-            4
+            18,
+            -1,
+            5,
+            5
           ]
         },
         {
@@ -591,10 +899,10 @@
             0
           ],
           "visual_rect": [
-            58,
-            6,
-            3,
-            4
+            22,
+            -3,
+            5,
+            5
           ]
         },
         {
@@ -605,10 +913,10 @@
             0
           ],
           "visual_rect": [
+            26,
+            0,
             5,
-            27,
-            3,
-            4
+            5
           ]
         },
         {
@@ -619,10 +927,10 @@
             0
           ],
           "visual_rect": [
-            10,
-            31,
-            3,
-            4
+            30,
+            -2,
+            5,
+            5
           ]
         },
         {
@@ -633,10 +941,10 @@
             0
           ],
           "visual_rect": [
-            23,
-            32,
-            3,
-            4
+            34,
+            1,
+            5,
+            5
           ]
         },
         {
@@ -647,10 +955,10 @@
             0
           ],
           "visual_rect": [
-            30,
-            30,
-            3,
-            4
+            38,
+            -1,
+            5,
+            5
           ]
         },
         {
@@ -661,10 +969,10 @@
             0
           ],
           "visual_rect": [
-            38,
-            34,
-            3,
-            4
+            42,
+            -3,
+            5,
+            5
           ]
         },
         {
@@ -675,10 +983,10 @@
             0
           ],
           "visual_rect": [
-            48,
-            32,
-            3,
-            4
+            46,
+            0,
+            5,
+            5
           ]
         },
         {
@@ -689,10 +997,10 @@
             0
           ],
           "visual_rect": [
-            55,
-            28,
-            3,
-            4
+            50,
+            -2,
+            5,
+            5
           ]
         },
         {
@@ -703,10 +1011,318 @@
             0
           ],
           "visual_rect": [
-            59,
-            35,
+            54,
+            1,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_15",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            57,
+            -1,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_16",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            60,
+            -3,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_17",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
             3,
-            4
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_18",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            6,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_19",
+          "atlas": "farm_cherry_tree",
+          "index": [
+            1,
+            0
+          ],
+          "visual_rect": [
+            3,
+            5,
+            9,
+            9
+          ]
+        },
+        {
+          "id": "tree_farm_20",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            12,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_21",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            15,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_22",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            18,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_23",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            21,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_24",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            24,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_25",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            27,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_26",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            30,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_27",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            33,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_28",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            0,
+            36,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_29",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            3,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_30",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            6,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_31",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            9,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_32",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            12,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_33",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            15,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_34",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            30,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_35",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            33,
+            5,
+            5
+          ]
+        },
+        {
+          "id": "tree_farm_36",
+          "atlas": "props",
+          "index": [
+            0,
+            0
+          ],
+          "visual_rect": [
+            59,
+            36,
+            5,
+            5
           ]
         }
       ]
@@ -1014,8 +1630,8 @@
           ],
           "target": "farm_outdoor",
           "arrival": [
-            1,
-            12
+            25,
+            29
           ]
         }
       ],
@@ -1023,61 +1639,211 @@
         {
           "actor": "florist",
           "points": [
-            [9, 12], [14, 12], [15, 15], [9, 15]
+            [
+              9,
+              12
+            ],
+            [
+              14,
+              12
+            ],
+            [
+              15,
+              15
+            ],
+            [
+              9,
+              15
+            ]
           ]
         },
         {
           "actor": "shopkeeper",
           "points": [
-            [9, 17], [13, 17], [13, 20], [9, 20]
+            [
+              9,
+              17
+            ],
+            [
+              13,
+              17
+            ],
+            [
+              13,
+              20
+            ],
+            [
+              9,
+              20
+            ]
           ]
         },
         {
           "actor": "fisherman",
           "points": [
-            [7, 23], [10, 23], [11, 21], [7, 21]
+            [
+              7,
+              23
+            ],
+            [
+              10,
+              23
+            ],
+            [
+              11,
+              21
+            ],
+            [
+              7,
+              21
+            ]
           ]
         },
         {
           "actor": "mayor",
           "points": [
-            [18, 13], [21, 13], [21, 17], [18, 17]
+            [
+              18,
+              13
+            ],
+            [
+              21,
+              13
+            ],
+            [
+              21,
+              17
+            ],
+            [
+              18,
+              17
+            ]
           ]
         },
         {
           "actor": "carpenter",
           "points": [
-            [26, 13], [29, 13], [29, 16], [26, 16]
+            [
+              26,
+              13
+            ],
+            [
+              29,
+              13
+            ],
+            [
+              29,
+              16
+            ],
+            [
+              26,
+              16
+            ]
           ]
         },
         {
           "actor": "doctor",
           "points": [
-            [31, 12], [33, 12], [33, 15], [31, 15]
+            [
+              31,
+              12
+            ],
+            [
+              33,
+              12
+            ],
+            [
+              33,
+              15
+            ],
+            [
+              31,
+              15
+            ]
           ]
         },
         {
           "actor": "cook",
           "points": [
-            [38, 13], [41, 13], [41, 16], [38, 16]
+            [
+              38,
+              13
+            ],
+            [
+              41,
+              13
+            ],
+            [
+              41,
+              16
+            ],
+            [
+              38,
+              16
+            ]
           ]
         },
         {
           "actor": "ranger",
           "points": [
-            [8, 25], [10, 25], [10, 27], [8, 27]
+            [
+              8,
+              25
+            ],
+            [
+              10,
+              25
+            ],
+            [
+              10,
+              27
+            ],
+            [
+              8,
+              27
+            ]
           ]
         },
         {
           "actor": "teacher",
           "points": [
-            [34, 22], [39, 22], [39, 26], [34, 26]
+            [
+              34,
+              22
+            ],
+            [
+              39,
+              22
+            ],
+            [
+              39,
+              26
+            ],
+            [
+              34,
+              26
+            ]
           ]
         },
         {
           "actor": "child",
           "points": [
-            [25, 23], [28, 23], [28, 26], [25, 26]
+            [
+              25,
+              23
+            ],
+            [
+              28,
+              23
+            ],
+            [
+              28,
+              26
+            ],
+            [
+              25,
+              26
+            ]
           ]
         }
       ],
@@ -1255,12 +2021,12 @@
     {
       "id": "farmhouse_interior",
       "size_tiles": [
-        36,
-        20
+        20,
+        12
       ],
       "spawn": [
-        18,
-        16
+        10,
+        10
       ],
       "surfaces": [
         {
@@ -1269,8 +2035,8 @@
           "rect": [
             0,
             0,
-            36,
-            20
+            20,
+            12
           ]
         }
       ],
@@ -1279,59 +2045,49 @@
           "id": "north_wall",
           "class": "solid",
           "rect": [
+            1,
             0,
-            0,
-            36,
-            4
+            18,
+            1
           ]
         },
         {
           "id": "west_wall",
           "class": "solid",
           "rect": [
-            0,
-            4,
-            7,
-            16
+            1,
+            1,
+            1,
+            10
           ]
         },
         {
           "id": "east_wall",
           "class": "solid",
           "rect": [
-            30,
-            4,
-            6,
-            16
+            18,
+            1,
+            1,
+            10
           ]
         },
         {
           "id": "south_wall_left",
           "class": "solid",
           "rect": [
+            2,
+            11,
             7,
-            18,
-            10,
-            2
+            1
           ]
         },
         {
           "id": "south_wall_right",
           "class": "solid",
           "rect": [
-            19,
-            18,
             11,
-            2
-          ]
-        },
-        {
-          "id": "door_boundary",
-          "class": "solid",
-          "rect": [
-            17,
-            19,
-            2,
+            11,
+            7,
             1
           ]
         },
@@ -1339,18 +2095,18 @@
           "id": "bed",
           "class": "solid",
           "rect": [
-            8,
-            6,
+            3,
+            5,
             2,
-            2
+            1
           ]
         },
         {
           "id": "bookshelf",
           "class": "solid",
           "rect": [
-            12,
-            5,
+            14,
+            3,
             2,
             1
           ]
@@ -1359,49 +2115,9 @@
           "id": "fireplace",
           "class": "solid",
           "rect": [
-            17,
-            5,
+            8,
+            4,
             3,
-            1
-          ]
-        },
-        {
-          "id": "kitchen",
-          "class": "solid",
-          "rect": [
-            24,
-            5,
-            3,
-            1
-          ]
-        },
-        {
-          "id": "stove",
-          "class": "solid",
-          "rect": [
-            27,
-            5,
-            2,
-            1
-          ]
-        },
-        {
-          "id": "dining_table",
-          "class": "solid",
-          "rect": [
-            24,
-            11,
-            2,
-            1
-          ]
-        },
-        {
-          "id": "chair",
-          "class": "solid",
-          "rect": [
-            24,
-            12,
-            1,
             1
           ]
         },
@@ -1409,8 +2125,8 @@
           "id": "chest",
           "class": "solid",
           "rect": [
-            8,
-            14,
+            3,
+            9,
             2,
             1
           ]
@@ -1419,8 +2135,8 @@
           "id": "plant",
           "class": "solid",
           "rect": [
-            28,
             15,
+            9,
             1,
             1
           ]
@@ -1431,8 +2147,8 @@
           "id": "bedside",
           "class": "interaction",
           "rect": [
-            10,
-            8,
+            5,
+            6,
             1,
             1
           ],
@@ -1442,8 +2158,8 @@
           "id": "chest_front",
           "class": "interaction",
           "rect": [
+            5,
             9,
-            15,
             1,
             1
           ],
@@ -1453,8 +2169,8 @@
           "id": "fireplace_front",
           "class": "interaction",
           "rect": [
-            18,
-            6,
+            9,
+            5,
             1,
             1
           ],
@@ -1466,8 +2182,8 @@
           "id": "farmhouse_to_farm",
           "class": "exit",
           "rect": [
-            17,
-            17,
+            9,
+            11,
             2,
             1
           ],
@@ -1487,8 +2203,8 @@
             0
           ],
           "visual_rect": [
-            8,
-            5,
+            3,
+            2,
             2,
             3
           ]
@@ -1501,8 +2217,8 @@
             1
           ],
           "visual_rect": [
-            12,
-            3,
+            14,
+            1,
             2,
             3
           ]
@@ -1515,66 +2231,10 @@
             1
           ],
           "visual_rect": [
-            17,
-            3,
+            8,
+            1,
             3,
             3
-          ]
-        },
-        {
-          "id": "kitchen",
-          "atlas": "furniture",
-          "index": [
-            0,
-            2
-          ],
-          "visual_rect": [
-            24,
-            4,
-            3,
-            2
-          ]
-        },
-        {
-          "id": "stove",
-          "atlas": "furniture",
-          "index": [
-            1,
-            2
-          ],
-          "visual_rect": [
-            27,
-            4,
-            2,
-            2
-          ]
-        },
-        {
-          "id": "dining_table",
-          "atlas": "furniture",
-          "index": [
-            2,
-            0
-          ],
-          "visual_rect": [
-            24,
-            10,
-            2,
-            2
-          ]
-        },
-        {
-          "id": "chair",
-          "atlas": "furniture",
-          "index": [
-            3,
-            0
-          ],
-          "visual_rect": [
-            24,
-            12,
-            1,
-            1
           ]
         },
         {
@@ -1585,8 +2245,8 @@
             2
           ],
           "visual_rect": [
+            3,
             8,
-            13,
             2,
             2
           ]
@@ -1599,8 +2259,8 @@
             1
           ],
           "visual_rect": [
-            28,
-            14,
+            15,
+            8,
             1,
             2
           ]
@@ -1613,9 +2273,9 @@
             1
           ],
           "visual_rect": [
-            16,
-            11,
-            4,
+            7,
+            6,
+            6,
             3
           ],
           "ground": true

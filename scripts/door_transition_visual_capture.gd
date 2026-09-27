@@ -14,12 +14,12 @@ func _run() -> void:
 	root.add_child(game)
 	await process_frame
 	game.set_physics_process(false)
-	var farm_door: Vector2i = game.navigation.to_contiguous_world("farm_outdoor", Vector2i(15, 10))
+	var farm_door: Vector2i = game.navigation.to_contiguous_world("farm_outdoor", Vector2i(27, 12))
 	game._change_map("valley_world", farm_door)
 	game.player.set_pose("up", "idle")
 	await _capture("01_farmhouse_closed", 0.22)
 	var exterior_samples := {
-		"farmhouse": ["farm_outdoor", Vector2i(15, 10)],
+		"farmhouse": ["farm_outdoor", Vector2i(27, 12)],
 		"general_store": ["town_square", Vector2i(10, 11)],
 		"clinic": ["town_square", Vector2i(24, 9)],
 		"cafe": ["town_square", Vector2i(38, 11)],

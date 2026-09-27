@@ -213,9 +213,10 @@ func _apply_pose() -> void:
 	var frame: Dictionary = Atlas.row_anchored_frame(texture, grid, column, row) if locomotion_art else Atlas.frame(texture, grid, column, row)
 	_body.region_rect = frame.region
 	var authored_height := texture.get_height() / float(grid.y)
-	if locomotion_art: authored_height = frame.region.size.y
-	# Walk cells include deliberately transparent margins. Normalize to the
-	# visible frame height so the farmer keeps one body size across all phases.
+	if locomotion_art or action == "idle": authored_height = frame.region.size.y
+	# Idle cells and locomotion sheets have different transparent margins.
+	# Normalize both by visible height so standing and moving use the same size.
+	if authored_height <= 0.0: authored_height = maxf(texture.get_height() / float(grid.y), 1.0)
 	_body.scale = Vector2.ONE * (44.0 / authored_height) * (pixel_scale / 0.13)
 	_body.position = Vector2(frame.offset) * _body.scale
 	_body.rotation = 0.0

@@ -1,0 +1,6 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+PROBE down region=[P: (69.0, 25.0), S: (117.0, 219.0)] body_pos=(-47.41552, -176.0) body_scale=(0.803653, 0.803653) detail_scale=(4.0, 4.0) detail_head=(0.0, -35.0)
+PROBE left region=[P: (70.0, 277.0), S: (115.0, 223.0)] body_pos=(-43.80269, -176.0) body_scale=(0.789238, 0.789238) detail_scale=(4.0, 4.0) detail_head=(0.0, -35.0)
+PROBE right region=[P: (71.0, 535.0), S: (114.0, 221.0)] body_pos=(-47.38462, -176.0) body_scale=(0.79638, 0.79638) detail_scale=(4.0, 4.0) detail_head=(0.0, -35.0)
+PROBE up region=[P: (69.0, 790.0), S: (116.0, 222.0)] body_pos=(-46.77478, -176.0) body_scale=(0.792793, 0.792793) detail_scale=(4.0, 4.0) detail_head=(0.0, -35.0)

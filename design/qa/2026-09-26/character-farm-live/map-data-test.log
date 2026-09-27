@@ -1,0 +1,15 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+WARNING: MapData: Signpost conflicts with map: farm_west
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _add_error (res://scripts/map_data.gd:522)
+       [1] _install_signposts (res://scripts/map_data.gd:122)
+       [2] load_from_json (res://scripts/map_data.gd:94)
+       [3] load_data (res://scripts/map_data.gd:36)
+       [4] _init (res://scripts/map_data_test.gd:11)
+ERROR: MapData test failed: shipping box stand cell should be interactive
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://scripts/map_data_test.gd:57)
+       [1] _init (res://scripts/map_data_test.gd:38)

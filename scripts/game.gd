@@ -26,6 +26,8 @@ var clock_elapsed := 0.0
 var energy := 100
 var autosave_enabled := true
 var save_path := "user://farm_life_v1.json"
+var player_name := "乡野旅人"
+var farm_name := "花溪农场"
 var hud_day: Label
 const Homestead = preload("res://scripts/homestead_life.gd")
 var homestead = Homestead.new()
@@ -145,6 +147,7 @@ var collision_shape_pool: Array[CollisionShape2D] = []
 var streamed_collision_shape: RectangleShape2D
 const WINDOW_SIZES := [Vector2i(1280, 720), Vector2i(1536, 864), Vector2i(1920, 1080)]
 const CAMERA_ZOOMS := [1.5, 1.75, 2.0]
+const FARM_CAMERA_ZOOMS := [0.65, 0.7, 0.75]
 var display_size_index := 1
 var camera_zoom_index := 2
 var display_config_path := "user://display.cfg"
@@ -238,6 +241,7 @@ func _ready() -> void:
 	world.set_community_state(community)
 	pet = preload("res://scripts/companion_actor.gd").new()
 	pet.model = homestead
+	pet.set_variant(homestead.pet_species, homestead.pet_gender)
 	pet.navigation = navigation
 	pet.farm = farm
 	pet.animals = animals
@@ -258,7 +262,7 @@ func _ready() -> void:
 	farm_music.game = self
 	add_child(farm_music)
 	player = AvatarRendererScript.new()
-	player.pixel_scale = 0.13
+	player.pixel_scale = 0.40
 	player.z_index = 0
 	player_body = CharacterBody2D.new()
 	player_body.name = "PlayerBody"
@@ -311,9 +315,13 @@ func _ready() -> void:
 	add_child(inventory_panel)
 	inventory_panel.layout_changed.connect(_on_inventory_layout_changed)
 	if autosave_enabled:
-		_load_game()
+		if FileAccess.file_exists(save_path) or FileAccess.file_exists(save_path + ".bak"):
+			_load_game()
+		else:
+			creator.open_new_game()
 	_update_farm_hud()
-	_set_status("WASD 移动 · E 使用工具 · F 互动 · L 技能 · K 制作。农舍或农场按 N 休息。")
+	if not creator.visible:
+		_set_status("WASD 移动 · E 使用工具 · F 互动 · H 农场手册 · 农舍或农场按 N 休息。")
 	if not autosave_enabled and FileAccess.file_exists(save_path):
 		_set_status("存档损坏且备份不可用；已保留原文件并停止自动覆盖。当前为临时游玩。")
 
@@ -440,11 +448,12 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_K: _open_crafting()
 			KEY_L: _open_skills()
 			KEY_J: _open_character_card()
+			KEY_H: _open_farm_guide()
 			KEY_F10: _open_display_settings()
 			KEY_F11: _toggle_fullscreen()
 			KEY_G: _open_gifts(_interaction_npc_actor())
 			KEY_F5: _set_status("存档已保存。" if _save_game() else "存档失败，请检查磁盘空间。")
-		if event.keycode in [KEY_TAB, KEY_I, KEY_R, KEY_P, KEY_M, KEY_K, KEY_L, KEY_J, KEY_G, KEY_F5, KEY_F10, KEY_F11]:
+		if event.keycode in [KEY_TAB, KEY_I, KEY_R, KEY_P, KEY_M, KEY_K, KEY_L, KEY_J, KEY_H, KEY_G, KEY_F5, KEY_F10, KEY_F11]:
 			get_viewport().set_input_as_handled()
 			return
 	if event.keycode == KEY_C:
@@ -754,10 +763,22 @@ func _pet_dog() -> void:
 		_save_game())
 
 func _open_pet() -> void:
-	life_panel.open("麦麦 · 农场伙伴")
-	life_panel.paragraph("亲密度 %d / 1000 · %s\n每天抚摸 +20，喂食 +30。20:00 后回窝休息。\n今天：%s / %s" % [homestead.pet_points, "正在跟随你" if homestead.following else "在家等你", "已抚摸" if homestead.pet_day == farm.day else "还没抚摸", "已喂食" if homestead.fed_day == farm.day else "还没喂食"])
+	var pet_name := "麦麦" if homestead.pet_species == "dog" else "团团"
+	life_panel.open("%s · 农场伙伴" % pet_name)
+	life_panel.paragraph("外观：%s · %s\n亲密度 %d / 1000 · %s\n每天抚摸 +20，喂食 +30。20:00 后回窝休息。\n今天：%s / %s" % ["小狗" if homestead.pet_species == "dog" else "小猫", "公" if homestead.pet_gender == "male" else "母", homestead.pet_points, "正在跟随你" if homestead.following else "在家等你", "已抚摸" if homestead.pet_day == farm.day else "还没抚摸", "已喂食" if homestead.fed_day == farm.day else "还没喂食"])
+	life_panel.action("切换为小猫" if homestead.pet_species == "dog" else "切换为小狗", func():
+		homestead.pet_species = "cat" if homestead.pet_species == "dog" else "dog"
+		pet.set_variant(homestead.pet_species, homestead.pet_gender)
+		_save_game()
+		_open_pet())
+	if homestead.pet_species == "dog":
+		life_panel.action("切换公/母外观", func():
+			homestead.pet_gender = "male" if homestead.pet_gender == "female" else "female"
+			pet.set_variant(homestead.pet_species, homestead.pet_gender)
+			_save_game()
+			_open_pet())
 	if _pet_is_near():
-		life_panel.action("摸摸麦麦", func(): life_panel.close(); _pet_dog())
+		life_panel.action("抚摸%s" % pet_name, func(): life_panel.close(); _pet_dog())
 		life_panel.action("喂一份野莓点心（已有 %d）" % homestead.resources.berry, func():
 			var message: String = homestead.feed(farm.day)
 			pet.affection = 1.5
@@ -767,7 +788,7 @@ func _open_pet() -> void:
 			_save_game()
 			_open_pet()
 			life_panel.paragraph(message))
-	else: life_panel.paragraph("靠近麦麦后可以抚摸或喂食；它会在农场陪着你。")
+	else: life_panel.paragraph("靠近%s后可以抚摸或喂食；它会在农场陪着你。" % pet_name)
 	life_panel.action("回窝等我" if homestead.following else "跟我散步", func():
 		homestead.following = not homestead.following
 		_save_game()
@@ -1071,13 +1092,16 @@ func _change_map(next_map_id: String, next_cell: Vector2i) -> void:
 	world.configure(navigation, current_map_id, Vector2.ZERO, next_cell)
 	world.refresh_season()
 	collision_stream_center = Vector2i(-999, -999)
+	var is_farm_scene := current_map_id in ["farm_outdoor", "farmhouse_interior"]
+	if current_map_id == "valley_world":
+		is_farm_scene = navigation.zone_at(current_map_id, next_cell) == "farm_outdoor"
 	game_camera.limit_left = 0
-	game_camera.limit_top = 44
+	game_camera.limit_top = 0 if is_farm_scene else 44
 	game_camera.limit_right = int(map_size_px.x)
 	game_camera.limit_bottom = int(map_size_px.y)
-	game_camera.offset = Vector2.ZERO
 	player_cell = next_cell if navigation.is_walkable(current_map_id, next_cell) else navigation.get_spawn(current_map_id)
 	player_body.position = _avatar_position_for(player_cell)
+	_apply_scene_camera_profile()
 	# Teleport first, then reset smoothing. Otherwise the centre-light reveal can
 	# expose a frame interpolated from the previous map's unrelated coordinates.
 	game_camera.reset_smoothing()
@@ -1103,6 +1127,24 @@ func _change_map(next_map_id: String, next_cell: Vector2i) -> void:
 	_update_location()
 	_update_farm_hud()
 	_set_status("%s · WASD 行走，Shift 跑步；走到门口自动进入，F 与设施互动。" % _location_name())
+
+
+func _apply_scene_camera_profile() -> void:
+	var zoom_value: float = float(CAMERA_ZOOMS[camera_zoom_index])
+	var camera_offset := Vector2.ZERO
+	if current_map_id == "farmhouse_interior":
+		zoom_value = minf(zoom_value, 1.35)
+	else:
+		var is_farm := current_map_id == "farm_outdoor"
+		if current_map_id == "valley_world":
+			is_farm = navigation.zone_at(current_map_id, player_cell) == "farm_outdoor"
+		if is_farm:
+			zoom_value = float(FARM_CAMERA_ZOOMS[camera_zoom_index])
+			# Show the house, garden, well, pond, and south gate together at the
+			# farm entrance; keep the player below the farmhouse in the frame.
+			camera_offset = Vector2(0, -96)
+	game_camera.zoom = Vector2.ONE * zoom_value
+	game_camera.offset = camera_offset
 
 
 func _activate_world(map_id: String) -> void:
@@ -1286,7 +1328,7 @@ func _sync_chicken_actors() -> void:
 			actor.name = id
 			add_child(actor)
 			chicken_actors[id] = actor
-		actor.configure(id, index, _animal_map_offset())
+		actor.configure(id, index, _animal_map_offset(), str(entry.get("gender", "female")))
 		actor.visible = animals.coop_built and current_map_id in ["farm_outdoor", "valley_world"] and clock_minutes < 1200 and Calendar.weather(farm.day) != "雨"
 		retained[id] = true
 	for id in chicken_actors.keys():
@@ -1316,7 +1358,7 @@ func _sync_duck_actors() -> void:
 			actor.name = id
 			add_child(actor)
 			duck_actors[id] = actor
-		actor.configure(id, index, _animal_map_offset())
+		actor.configure(id, index, _animal_map_offset(), str(entry.get("gender", "female")))
 		actor.visible = animals.coop_built and current_map_id in ["farm_outdoor", "valley_world"] and clock_minutes < 1200 and Calendar.weather(farm.day) != "雨"
 		retained[id] = true
 	for id in duck_actors.keys():
@@ -1346,7 +1388,7 @@ func _sync_cow_actors() -> void:
 			actor.name = id
 			add_child(actor)
 			cow_actors[id] = actor
-		actor.configure(id, index, _animal_map_offset())
+		actor.configure(id, index, _animal_map_offset(), str(entry.get("gender", "female")))
 		actor.visible = animals.barn_built and current_map_id in ["farm_outdoor", "valley_world"] and clock_minutes < 1200 and Calendar.weather(farm.day) != "雨"
 		retained[id] = true
 	for id in cow_actors.keys():
@@ -1847,7 +1889,7 @@ func _set_sfx_volume(value: float) -> void:
 
 func _set_camera_zoom(index: int) -> void:
 	camera_zoom_index = clampi(index, 0, CAMERA_ZOOMS.size() - 1)
-	if is_instance_valid(game_camera): game_camera.zoom = Vector2.ONE * CAMERA_ZOOMS[camera_zoom_index]
+	if is_instance_valid(game_camera): _apply_scene_camera_profile()
 	_save_display_preferences()
 	_open_display_settings()
 
@@ -1931,7 +1973,8 @@ func _open_display_settings() -> void:
 	life_panel.content.add_child(zoom_row)
 	for index in CAMERA_ZOOMS.size():
 		var zoom_button := Button.new()
-		zoom_button.text = ["远景", "标准", "近景"][index] + "\n%.2f×" % CAMERA_ZOOMS[index]
+		var displayed_zoom: float = FARM_CAMERA_ZOOMS[index] if current_map_id == "farm_outdoor" else CAMERA_ZOOMS[index]
+		zoom_button.text = ["远景", "标准", "近景"][index] + "\n%.2f×" % displayed_zoom
 		zoom_button.custom_minimum_size = Vector2(120, 42)
 		zoom_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		zoom_button.set_meta("camera_zoom_index", index)
@@ -1953,7 +1996,7 @@ func _open_display_settings() -> void:
 	volume_row.add_child(_build_audio_volume_control("动作音效", sfx_volume_percent, _set_sfx_volume))
 	life_panel.section("操作速查")
 	var controls := Label.new()
-	controls.text = "移动 WASD / 方向键 · 奔跑 Shift · 工具 E · 互动/阅读 F\n背包 I · 角色卡 J · 地图 M · 制作 K · 技能 L · 设置 F10"
+	controls.text = "移动 WASD / 方向键 · 奔跑 Shift · 工具 E · 互动/阅读 F\n农场入门 H · 背包 I · 角色卡 J · 地图 M · 制作 K · 技能 L · 设置 F10"
 	controls.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	controls.add_theme_font_size_override("font_size", 16)
 	controls.add_theme_color_override("font_color", Color("684b35"))
@@ -2006,7 +2049,13 @@ func _build_audio_volume_control(title: String, initial_value: int, setter: Call
 
 func _update_location() -> void:
 	if hud_location != null:
-		hud_location.text = "花溪谷 · %s" % _location_name()
+		var place := _location_name()
+		if current_map_id == "farm_outdoor":
+			place = "农场外景"
+		if _is_farm_area() or current_map_id == "farmhouse_interior":
+			hud_location.text = "%s · %s" % [farm_name, place]
+		else:
+			hud_location.text = "花溪谷 · %s" % place
 
 
 func _location_name() -> String:
@@ -2050,9 +2099,40 @@ func _set_status(message: String) -> void:
 
 func _on_customization_confirmed(data: Dictionary) -> void:
 	player.set_customization(data)
+	if bool(data.get("new_game", false)):
+		player_name = str(data.get("player_name", "乡野旅人")).strip_edges()
+		farm_name = str(data.get("farm_name", "花溪农场")).strip_edges()
+		farm.reset()
+		_seed_starter_patch()
+		clock_minutes = 360
+		clock_elapsed = 0.0
+		energy = _energy_cap()
+		_change_map("farmhouse_interior", navigation.get_spawn("farmhouse_interior"))
+		creator.close()
+		_set_status("%s在%s的农舍里醒来了。走到门边出屋；按 H 查看种植、浇水和收获流程。" % [player_name, farm_name])
+		_save_game()
+		return
 	creator.close()
-	_set_status("角色已创建。沿农场西侧道路前往城镇，按 C 可编辑外观。")
+	_set_status("角色外观已保存；按 C 可继续编辑。")
 	_save_game()
+
+
+func _seed_starter_patch() -> void:
+	# A 6x6 square of real 32px soil cells matches the concept's larger crop
+	# bed. Nine parsnips sit on alternating cells so each plant has breathing
+	# room while the full tilled patch reads as a single square field.
+	var planted := 0
+	for y in range(14, 20):
+		for x in range(16, 22):
+			var cell := Vector2i(x, y)
+			var tilled: Dictionary = farm.till(cell)
+			if not bool(tilled.get("ok", false)):
+				continue
+			if x % 2 != 0 or y % 2 != 0 or planted >= 9:
+				continue
+			var planted_result: Dictionary = farm.plant(cell, "parsnip", 3)
+			if bool(planted_result.get("ok", false)):
+				planted += 1
 
 
 func _plant_sapling_action(tree_id: String) -> void:
@@ -2674,6 +2754,35 @@ func _open_calendar(month_day := -1) -> void:
 	if shown_day > 28: life_panel.action("上一季", _open_calendar.bind(maxi(1, shown_day - 28)))
 	life_panel.action("下一季", _open_calendar.bind(shown_day + 28))
 
+
+func _open_farm_guide() -> void:
+	life_panel.open("农场入门 · 耕种与经营")
+	var date: Dictionary = Calendar.date(farm.day)
+	var season_name: String = Calendar.SEASONS[int(date.season)]
+	life_panel.paragraph("第 %d 天 · %s季 · 今日天气：%s。按 H 可随时查看这份手册；种子图示会随当前季节更新。" % [int(date.day), season_name, Calendar.weather(farm.day)])
+	life_panel.section("一天的种植流程")
+	life_panel.item_card(_tool_texture("hoe"), "翻地", "快捷栏选锄头，面向农场可耕地按 E。")
+	life_panel.item_card(_tool_texture("seed"), "播种", "选种子袋，按 Q 切换种子；面向翻好的土地按 E。")
+	life_panel.item_card(_tool_texture("water"), "浇水", "选浇水壶并按 E。每天浇水会推进生长；雨天自动浇水。水井旁按 F 可补满水壶。")
+	life_panel.item_card(_tool_texture("harvest"), "收获与出货", "成熟后选采收篮或镰刀按 E。靠近出货箱按 F 出售收获，并取得金币。")
+	life_panel.paragraph("回农舍或留在农场按 N 休息进入下一天。作物只在适合的季节生长；换季后失去适合季节的作物会被清理。")
+	life_panel.section(season_name + "季可种作物")
+	var shown := 0
+	for seed_value in farm.crop_definitions.keys():
+		var seed_id := str(seed_value)
+		var crop: Dictionary = farm.get_crop_definition(seed_id)
+		if int(date.season) not in crop.get("seasons", []):
+			continue
+		var inventory: int = farm.get_seed_count(seed_id)
+		var detail := "%d 天成熟 · 种子库存 %d" % [int(crop.get("grow_days", 0)), inventory]
+		if inventory <= 0:
+			detail += " · 可去种子铺购买"
+		life_panel.item_card(_crop_icon(seed_id, 0), str(crop.get("label", seed_id)), detail)
+		shown += 1
+	if shown == 0:
+		life_panel.paragraph("这个季节暂无已配置作物。")
+
+
 func _open_date(day: int) -> void:
 	life_panel.open(Calendar.label(day))
 	life_panel.paragraph("天气：" + Calendar.weather(day))
@@ -2736,6 +2845,7 @@ func _gain_skill(skill: String, amount: int) -> String:
 
 func _open_character_card() -> void:
 	life_panel.open("角色卡 · 农场主人")
+	life_panel.paragraph("%s · %s" % [player_name, farm_name])
 	var portrait_frame := CenterContainer.new()
 	portrait_frame.custom_minimum_size = Vector2(90, 118)
 	var avatar = preload("res://scripts/avatar_renderer.gd").new()
@@ -3789,7 +3899,7 @@ func _join_festival() -> void:
 
 func _save_game() -> bool:
 	if not autosave_enabled: return false
-	var data := {"version": 1, "world_layout": 2 if continuous_world_enabled else 3, "farm": farm.snapshot(), "village": village.snapshot(), "homestead": homestead.snapshot(), "mining": mining.snapshot(), "fishing": fishing.snapshot(), "community": community.snapshot(), "crafting": crafting.snapshot(), "skills": skills.snapshot(), "animals": animals.snapshot(), "processing": processing.snapshot(), "combat": combat.snapshot(), "orchard": orchard.snapshot(), "inventory_layout": inventory_state.snapshot(), "map": current_map_id, "cell": [player_cell.x, player_cell.y], "appearance": player.get_customization(), "clock": clock_minutes, "energy": energy, "fish_count": fish_count}
+	var data := {"version": 1, "world_layout": 2 if continuous_world_enabled else 3, "farm": farm.snapshot(), "village": village.snapshot(), "homestead": homestead.snapshot(), "mining": mining.snapshot(), "fishing": fishing.snapshot(), "community": community.snapshot(), "crafting": crafting.snapshot(), "skills": skills.snapshot(), "animals": animals.snapshot(), "processing": processing.snapshot(), "combat": combat.snapshot(), "orchard": orchard.snapshot(), "inventory_layout": inventory_state.snapshot(), "map": current_map_id, "cell": [player_cell.x, player_cell.y], "appearance": player.get_customization(), "player_name": player_name, "farm_name": farm_name, "clock": clock_minutes, "energy": energy, "fish_count": fish_count}
 	var file := FileAccess.open(save_path + ".tmp", FileAccess.WRITE)
 	if file == null: return _save_failure()
 	file.store_string(JSON.stringify(data))
@@ -3811,8 +3921,8 @@ func _notification(what: int) -> void:
 		if not autosave_enabled or _save_game(): get_tree().quit()
 
 func _load_game() -> void:
-	if not FileAccess.file_exists(save_path): return
-	var data = _read_save(save_path)
+	if not FileAccess.file_exists(save_path) and not FileAccess.file_exists(save_path + ".bak"): return
+	var data = _read_save(save_path) if FileAccess.file_exists(save_path) else null
 	if not _valid_save(data):
 		data = _read_save(save_path + ".bak") if FileAccess.file_exists(save_path + ".bak") else null
 	if not _valid_save(data):
@@ -3841,6 +3951,8 @@ func _load_game() -> void:
 	energy = clampi(int(data.get("energy", 100)), 0, _energy_cap())
 	if data.has("inventory_layout"): inventory_state.restore(data.inventory_layout)
 	_sync_inventory()
+	player_name = str(data.get("player_name", "乡野旅人")).strip_edges()
+	farm_name = str(data.get("farm_name", "花溪农场")).strip_edges()
 	var restored_item: Dictionary = _inventory_items().get(str(inventory_state.hotbar[inventory_state.selected_hotbar]), {})
 	if str(restored_item.get("kind", "")) == "tool": current_tool = str(restored_item.get("tool_id", current_tool))
 	elif str(restored_item.get("kind", "")) == "sapling":
@@ -3875,6 +3987,8 @@ func _read_save(path: String):
 
 func _valid_save(data) -> bool:
 	if not data is Dictionary or not _save_number(data.get("version")) or int(data.version) != 1: return false
+	for profile_key in ["player_name", "farm_name"]:
+		if data.has(profile_key) and (not data[profile_key] is String or str(data[profile_key]).strip_edges().is_empty() or str(data[profile_key]).length() > 16): return false
 	if data.has("world_layout") and (not _save_number(data.world_layout) or int(data.world_layout) not in [1, 2, 3]): return false
 	if data.has("homestead") and not Homestead.valid(data.homestead): return false
 	if data.has("mining") and not Mining.valid(data.mining): return false

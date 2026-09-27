@@ -17,6 +17,8 @@ var pet_points := 0
 var pet_day := 0
 var fed_day := 0
 var following := true
+var pet_species := "dog"
+var pet_gender := "female"
 
 func available(map_id: String, day: int, navigation) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -64,7 +66,7 @@ func ship() -> int:
 	return earned
 
 func snapshot() -> Dictionary:
-	return {"resources": resources.duplicate(), "gathered": gathered.duplicate(), "water": water, "pet_points": pet_points, "pet_day": pet_day, "fed_day": fed_day, "following": following}
+	return {"resources": resources.duplicate(), "gathered": gathered.duplicate(), "water": water, "pet_points": pet_points, "pet_day": pet_day, "fed_day": fed_day, "following": following, "pet_species": pet_species, "pet_gender": pet_gender}
 
 func restore(data: Dictionary) -> void:
 	water = clampi(int(data.get("water", WATER_CAPACITY)), 0, WATER_CAPACITY)
@@ -72,6 +74,8 @@ func restore(data: Dictionary) -> void:
 	pet_day = maxi(0, int(data.get("pet_day", 0)))
 	fed_day = maxi(0, int(data.get("fed_day", 0)))
 	following = bool(data.get("following", true))
+	pet_species = str(data.get("pet_species", "dog")) if data.get("pet_species", "dog") in ["dog", "cat"] else "dog"
+	pet_gender = str(data.get("pet_gender", "female")) if data.get("pet_gender", "female") in ["female", "male"] else "female"
 	for kind in resources: resources[kind] = maxi(0, int(data.get("resources", {}).get(kind, 0)))
 	gathered = data.get("gathered", {}).duplicate()
 
@@ -80,6 +84,8 @@ static func valid(data) -> bool:
 	for key in ["water", "pet_points", "pet_day", "fed_day"]:
 		if data.has(key) and (not (data[key] is int or data[key] is float) or not is_finite(float(data[key])) or float(data[key]) < 0): return false
 	if data.has("following") and not data.following is bool: return false
+	if data.has("pet_species") and (not data.pet_species is String or data.pet_species not in ["dog", "cat"]): return false
+	if data.has("pet_gender") and (not data.pet_gender is String or data.pet_gender not in ["female", "male"]): return false
 	for key in ["resources", "gathered"]:
 		if not data.get(key, {}) is Dictionary: return false
 		for amount in data.get(key, {}).values():

@@ -1,0 +1,21 @@
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+WARNING: Loaded resource as image file, this will not work on export: 'res://assets/art/source_generated/farm_terrain_seasons_source_v1.png'. Instead, import the image file as an Image resource and load it normally as a resource.
+   at: load_from_file (core/io/image.cpp:2780)
+   GDScript backtrace (most recent call first):
+       [0] _init (res://design/qa/2026-09-26/character-farm-live/prepare_farm_art.gd:5)
+WARNING: Loaded resource as image file, this will not work on export: 'res://assets/art/source_generated/farm_flora_seasons_source_v1.png'. Instead, import the image file as an Image resource and load it normally as a resource.
+   at: load_from_file (core/io/image.cpp:2780)
+   GDScript backtrace (most recent call first):
+       [0] _init (res://design/qa/2026-09-26/character-farm-live/prepare_farm_art.gd:7)
+WARNING: Loaded resource as image file, this will not work on export: 'res://assets/art/runtime_generated/farm_coop_front_v1.png'. Instead, import the image file as an Image resource and load it normally as a resource.
+   at: load_from_file (core/io/image.cpp:2780)
+   GDScript backtrace (most recent call first):
+       [0] _trim_asset (res://design/qa/2026-09-26/character-farm-live/prepare_farm_art.gd:30)
+       [1] _init (res://design/qa/2026-09-26/character-farm-live/prepare_farm_art.gd:9)
+WARNING: Loaded resource as image file, this will not work on export: 'res://assets/art/runtime_generated/farm_barn_front_v1.png'. Instead, import the image file as an Image resource and load it normally as a resource.
+   at: load_from_file (core/io/image.cpp:2780)
+   GDScript backtrace (most recent call first):
+       [0] _trim_asset (res://design/qa/2026-09-26/character-farm-live/prepare_farm_art.gd:30)
+       [1] _init (res://design/qa/2026-09-26/character-farm-live/prepare_farm_art.gd:10)
+Prepared farm terrain/flora atlases (4x4, 32px per cell) and trimmed coop/barn anchors.

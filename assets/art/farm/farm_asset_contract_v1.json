@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "grid": {
+    "base_cell_px": 32,
+    "coordinates": "top-left origin; x right; y down",
+    "pixel_size_rule": "tile dimensions multiplied by base_cell_px"
+  },
+  "placement_rules": {
+    "visual_bounds": "pixel-art draw rectangle; may extend above the collision footprint",
+    "anchor": "bottom_center at the grounded foot or base line",
+    "collision_footprint": "a per-asset grid mask traced from the actual solid ground-contact/base area; never use a category default or the full visual rectangle",
+    "interaction_cells": "explicit standing cells, separate from blocking cells",
+    "depth_sort": "sort raised props and buildings by the grounded foot line, not the sprite top",
+    "no_stretch": "art must be authored to its declared aspect ratio; never stretch a square atlas cell into a tall prop"
+  },
+  "farmhouse_tiers": [
+    {
+      "id": "starter",
+      "label": "初始小屋",
+      "visual_size_tiles": [9, 8],
+      "visual_size_px": [288, 256],
+      "footprint_status": "measured_from_farmhouse_front_v3_foundation",
+      "footprint_mask_rows_top_to_bottom": ["000000000", "000000000", "000000000", "000000000", "000000000", "000000000", "000000000", "011111111"],
+      "footprint_cell_count": 8,
+      "collision_basis": "one bottom foundation row across eight occupied 32px cells, traced from the visible stone base; roof and upper walls are visual overhang",
+      "door_approach_cell_local": [5, 9],
+      "seasonal_art": "year_round_structure_with_four_season_roof_and_garden_overlays"
+    },
+    {
+      "id": "expanded",
+      "label": "扩建小屋",
+      "visual_size_tiles": [11, 8],
+      "visual_size_px": [352, 256],
+      "footprint_status": "pending_final_grid_alignment",
+      "footprint_mask_rows_top_to_bottom": null,
+      "footprint_cell_count": null,
+      "collision_basis": "trace only actual solid foundation cells after final sprite is aligned to the 32px grid; do not use the visual bounds as a preset",
+      "door_approach_cell_local": [5, 8],
+      "seasonal_art": "year_round_structure_with_four_season_roof_and_garden_overlays"
+    },
+    {
+      "id": "large",
+      "label": "大型农舍",
+      "visual_size_tiles": [13, 9],
+      "visual_size_px": [416, 288],
+      "footprint_status": "pending_final_grid_alignment",
+      "footprint_mask_rows_top_to_bottom": null,
+      "footprint_cell_count": null,
+      "collision_basis": "trace only actual solid foundation cells after final sprite is aligned to the 32px grid; do not use the visual bounds as a preset",
+      "door_approach_cell_local": [6, 9],
+      "seasonal_art": "year_round_structure_with_four_season_roof_and_garden_overlays"
+    }
+  ],
+  "prop_profiles": {
+    "well_v1": {
+      "status": "runtime_visual_and_base_footprint_integrated",
+      "runtime_art": "assets/art/runtime_generated/farm_well_v1.png",
+      "runtime_map_object": "farm_outdoor:v2_well",
+      "visual_size_tiles": [3, 4],
+      "visual_size_px": [96, 128],
+      "footprint_mask_rows_top_to_bottom": ["000", "000", "000", "111"],
+      "footprint_cell_count": 3,
+      "footprint_measurement": "the solid stone base reaches the ground across the three bottom-row cells of the 3x4 visual canvas; the roof and upper rim remain visual overhang",
+      "anchor": "bottom_center_of_measured_solid_base",
+      "seasonal_art": "year_round_stone_and_wood_with_four_season_detail_overlays",
+      "notes": "The roof, pulley, and posts are visible overhang. Only cells covered by the solid stone base enter the footprint mask."
+    },
+    "tree_large_v1": {
+      "visual_size_tiles": [3, 4],
+      "visual_size_px": [96, 128],
+      "footprint_status": "pending_final_grid_alignment",
+      "footprint_mask_rows_top_to_bottom": null,
+      "footprint_cell_count": null,
+      "collision_basis": "trace actual trunk/root ground-contact cells; do not infer from canopy size or assume one cell",
+      "anchor": "bottom_center",
+      "seasonal_art": "four_season_canopy_variants_with_shared_trunk_and_footprint"
+    },
+    "shipping_bin_v1": {
+      "visual_size_tiles": [2, 2],
+      "visual_size_px": [64, 64],
+      "footprint_status": "pending_final_grid_alignment",
+      "footprint_mask_rows_top_to_bottom": null,
+      "footprint_cell_count": null,
+      "collision_basis": "trace actual box base ground-contact cells after sprite alignment; do not assume a 2x1 preset",
+      "anchor": "bottom_center",
+      "seasonal_art": "year_round_structure_with_four_season_detail_overlays"
+    }
+  },
+  "season_profiles": {
+    "spring": {
+      "palette_direction": "fresh leaf greens, soft pink and cream blossoms, warm light soil",
+      "required_variants": ["terrain", "water_edges", "tree_canopies", "crops", "farmhouse_roof_and_garden", "small_props"]
+    },
+    "summer": {
+      "palette_direction": "full deeper greens, sun-warmed ochre paths, saturated crop greens",
+      "required_variants": ["terrain", "water_edges", "tree_canopies", "crops", "farmhouse_roof_and_garden", "small_props"]
+    },
+    "fall": {
+      "palette_direction": "amber, rust, muted olive foliage, dry warm paths and harvest accents",
+      "required_variants": ["terrain", "water_edges", "tree_canopies", "crops", "farmhouse_roof_and_garden", "small_props"]
+    },
+    "winter": {
+      "palette_direction": "snow-covered surfaces and roofs, blue-gray shadows, dark evergreen anchors",
+      "required_variants": ["terrain", "water_edges", "tree_canopies", "crops", "farmhouse_roof_and_garden", "small_props"]
+    }
+  },
+  "seasonal_invariants": [
+    "all seasonal variants keep identical visual dimensions, anchor, collision footprint, and interaction cells",
+    "seasonal swaps change color, foliage, snow, blossoms, and small decorations; they do not silently move walkable paths or doors",
+    "water remains non-walkable in every season unless a separate frozen-water gameplay rule explicitly changes navigation"
+  ]
+}

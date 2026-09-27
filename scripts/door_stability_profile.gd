@@ -38,7 +38,7 @@ func _run() -> void:
 	await process_frame
 	game.creator.hide()
 
-	var farm_door := game.navigation.to_contiguous_world("farm_outdoor", Vector2i(15, 10))
+	var farm_door := game.navigation.to_contiguous_world("farm_outdoor", Vector2i(27, 12))
 	var farm_arrival := Vector2i(15, 11)
 	var interior_spawn: Vector2i = game.navigation.get_spawn("farmhouse_interior")
 	game._change_map("valley_world", farm_door)

@@ -62,7 +62,7 @@ func buy_chicken(farm) -> Dictionary:
 	if farm.gold < CHICKEN_PRICE: return _failure("购买小鸡需要%d金币。" % CHICKEN_PRICE)
 	farm.gold -= CHICKEN_PRICE
 	var index := chickens.size()
-	var chicken := {"id": "chicken_%d" % next_id, "name": CHICKEN_NAMES[index], "age": 0, "affection": 0, "petted_day": 0, "fed_day": 0}
+	var chicken := {"id": "chicken_%d" % next_id, "name": CHICKEN_NAMES[index], "gender": "female" if index % 2 == 0 else "male", "age": 0, "affection": 0, "petted_day": 0, "fed_day": 0}
 	next_id += 1
 	chickens.append(chicken)
 	return {"ok": true, "id": chicken.id, "name": chicken.name, "message": "%s搬进了鸡舍。每天喂食和抚摸，成年后会产蛋。" % chicken.name}
@@ -74,7 +74,7 @@ func buy_duck(farm) -> Dictionary:
 	if farm.gold < DUCK_PRICE: return _failure("购买小鸭需要%d金币。" % DUCK_PRICE)
 	farm.gold -= DUCK_PRICE
 	var index := ducks.size()
-	var duck := {"id": "duck_%d" % next_id, "name": DUCK_NAMES[index % DUCK_NAMES.size()], "age": 0, "affection": 0, "petted_day": 0, "fed_day": 0}
+	var duck := {"id": "duck_%d" % next_id, "name": DUCK_NAMES[index % DUCK_NAMES.size()], "gender": "female" if index % 2 == 0 else "male", "age": 0, "affection": 0, "petted_day": 0, "fed_day": 0}
 	next_id += 1
 	ducks.append(duck)
 	return {"ok": true, "id": duck.id, "name": duck.name, "message": "%s搬进了鸡舍。喂养长大后会在巢箱留下鸭蛋。" % duck.name}
@@ -97,7 +97,7 @@ func buy_cow(farm) -> Dictionary:
 	if farm.gold < COW_PRICE: return _failure("购买奶牛需要%d金币。" % COW_PRICE)
 	farm.gold -= COW_PRICE
 	var index := cows.size()
-	var cow := {"id": "cow_%d" % next_id, "name": COW_NAMES[index], "age": 0, "affection": 0, "petted_day": 0, "fed_day": 0, "milked_day": 0}
+	var cow := {"id": "cow_%d" % next_id, "name": COW_NAMES[index], "gender": "female" if index % 2 == 0 else "male", "age": 0, "affection": 0, "petted_day": 0, "fed_day": 0, "milked_day": 0}
 	next_id += 1
 	cows.append(cow)
 	return {"ok": true, "id": cow.id, "name": cow.name, "message": "%s搬进了牛棚。每天喂食和抚摸，成年后可以挤奶。" % cow.name}
@@ -414,13 +414,22 @@ func restore(data: Dictionary) -> void:
 	next_id = maxi(1, int(data.get("next_id", 1)))
 	chickens.clear()
 	for value in data.get("chickens", []):
-		if value is Dictionary and chickens.size() < CAPACITY: chickens.append(value.duplicate(true))
+		if value is Dictionary and chickens.size() < CAPACITY:
+			var entry: Dictionary = value.duplicate(true)
+			entry["gender"] = str(entry.get("gender", "female"))
+			chickens.append(entry)
 	ducks.clear()
 	for value in data.get("ducks", []):
-		if value is Dictionary and chickens.size() + ducks.size() < CAPACITY: ducks.append(value.duplicate(true))
+		if value is Dictionary and chickens.size() + ducks.size() < CAPACITY:
+			var entry: Dictionary = value.duplicate(true)
+			entry["gender"] = str(entry.get("gender", "female"))
+			ducks.append(entry)
 	cows.clear()
 	for value in data.get("cows", []):
-		if value is Dictionary and cows.size() < BARN_CAPACITY: cows.append(value.duplicate(true))
+		if value is Dictionary and cows.size() < BARN_CAPACITY:
+			var entry: Dictionary = value.duplicate(true)
+			entry["gender"] = str(entry.get("gender", "female"))
+			cows.append(entry)
 
 
 static func valid(data) -> bool:
@@ -436,6 +445,7 @@ static func valid(data) -> bool:
 	var ids := {}
 	for entry in saved_chickens:
 		if not entry is Dictionary or not entry.has_all(["id", "name", "age", "affection", "petted_day", "fed_day"]): return false
+		if entry.has("gender") and (not entry.gender is String or entry.gender not in ["female", "male"]): return false
 		if not entry.id is String or entry.id.is_empty() or ids.has(entry.id) or not entry.name is String: return false
 		ids[entry.id] = true
 		for key in ["age", "affection", "petted_day", "fed_day"]:
@@ -443,6 +453,7 @@ static func valid(data) -> bool:
 		if int(entry.affection) > 1000: return false
 	for entry in saved_ducks:
 		if not entry is Dictionary or not entry.has_all(["id", "name", "age", "affection", "petted_day", "fed_day"]): return false
+		if entry.has("gender") and (not entry.gender is String or entry.gender not in ["female", "male"]): return false
 		if not entry.id is String or entry.id.is_empty() or ids.has(entry.id) or not entry.name is String: return false
 		ids[entry.id] = true
 		for key in ["age", "affection", "petted_day", "fed_day"]:
@@ -452,6 +463,7 @@ static func valid(data) -> bool:
 	if not saved_cows is Array or saved_cows.size() > BARN_CAPACITY: return false
 	for entry in saved_cows:
 		if not entry is Dictionary or not entry.has_all(["id", "name", "age", "affection", "petted_day", "fed_day", "milked_day"]): return false
+		if entry.has("gender") and (not entry.gender is String or entry.gender not in ["female", "male"]): return false
 		if not entry.id is String or entry.id.is_empty() or ids.has(entry.id) or not entry.name is String: return false
 		ids[entry.id] = true
 		for key in ["age", "affection", "petted_day", "fed_day", "milked_day"]:

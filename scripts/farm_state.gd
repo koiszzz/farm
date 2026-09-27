@@ -11,7 +11,7 @@ const Calendar = preload("res://scripts/life_calendar.gd")
 
 const DEFAULT_GOLD := 100
 const DEFAULT_SEEDS := {
-	"parsnip": 6,
+	"parsnip": 9,
 	"turnip": 4,
 	"tomato": 4,
 	"pumpkin": 2,
@@ -134,7 +134,7 @@ func till(cell: Vector2i) -> Dictionary:
 	return _success("till", {"cell": cell, "state": get_cell_state(cell)})
 
 
-func plant(cell: Vector2i, seed_id: String) -> Dictionary:
+func plant(cell: Vector2i, seed_id: String, starting_growth := 0) -> Dictionary:
 	if not _is_tillable(cell):
 		return _failure("plant", "not_tillable", "Only authored tillable cells can be planted.", cell)
 	if not crop_definitions.has(seed_id):
@@ -152,7 +152,7 @@ func plant(cell: Vector2i, seed_id: String) -> Dictionary:
 
 	seed_inventory[seed_id] = available - 1
 	plot["seed"] = seed_id
-	plot["growth"] = 0
+	plot["growth"] = clampi(starting_growth, 0, maxi(0, int(crop_definitions[seed_id].get("grow_days", 1)) - 1))
 	plot["mature"] = false
 	plot["watered"] = bool(plot.get("watered", false)) or Calendar.weather(day) == "雨"
 	_save_plot(cell, plot)

@@ -14,6 +14,10 @@ var facing := "down"
 var elapsed := 0.0
 var affection := 0.0
 var step_clock := 0.0
+var stride := 0.0
+var species := "dog"
+var gender := "female"
+var frame_columns := 4
 var walking := false
 var sleeping := false
 var grid := AStarGrid2D.new()
@@ -30,10 +34,17 @@ func _ready() -> void:
 	sprite.centered = false
 	sprite.region_enabled = true
 	add_child(sprite)
-	art = load("res://assets/art/runtime_generated/farm_dog_v1.png") if ResourceLoader.exists("res://assets/art/runtime_generated/farm_dog_v1.png") else null
-	sprite.texture = art
+	set_variant(str(model.pet_species) if model != null else "dog", str(model.pet_gender) if model != null else "female")
 	position = Vector2(home_cell) * 32 + Vector2(16, 16)
 	target = position
+
+func set_variant(p_species: String, p_gender: String) -> void:
+	species = "cat" if p_species == "cat" else "dog"
+	gender = "male" if p_gender == "male" else "female"
+	frame_columns = 8 if species == "cat" else 4
+	var path := "res://assets/art/runtime_generated/farm_cat_walk_v2.png" if species == "cat" else "res://assets/art/runtime_generated/farm_dog_male_walk_v2.png" if gender == "male" else "res://assets/art/runtime_generated/farm_dog_female_walk_v2.png"
+	art = load(path)
+	sprite.texture = art
 
 func rebuild_grid() -> void:
 	if not _grids.has(world_map_id):
@@ -88,7 +99,9 @@ func tick(delta: float, player_position: Vector2, minutes: int) -> void:
 		walking = true
 		var direction := target - position
 		facing = "left" if direction.x < -1 else "right" if direction.x > 1 else "up" if direction.y < 0 else "down"
+		var previous_position := position
 		position = position.move_toward(target, 88 * delta)
+		stride = fmod(stride + previous_position.distance_to(position) * 4.0 / 24.0, float(frame_columns))
 	else:
 		walking = false
 		cell = Vector2i(floori(position.x / 32), floori(position.y / 32))
@@ -116,7 +129,7 @@ func tick(delta: float, player_position: Vector2, minutes: int) -> void:
 	z_index = clampi(int(position.y), -4096, 4096)
 	if art != null:
 		var row := int({"down": 0, "left": 1, "right": 2, "up": 3}[facing])
-		var frame: Dictionary = Atlas.frame(art, Vector2i(4, 4), int(elapsed * 9) % 4 if walking else 0, row)
+		var frame: Dictionary = Atlas.frame(art, Vector2i(frame_columns, 4), int(stride) if walking else 0, row)
 		sprite.region_rect = frame.region
 		var pixel_scale := 36.0 / (art.get_height() / 4.0)
 		sprite.scale = Vector2(pixel_scale, pixel_scale * 0.72 if sleeping and cell == home_cell else pixel_scale)

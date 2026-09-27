@@ -1,7 +1,8 @@
 extends Node2D
 
 const TILE := 32.0
-const COW_ART: Texture2D = preload("res://assets/art/runtime_generated/cow_walk_v1.png")
+const FEMALE_ART: Texture2D = preload("res://assets/art/runtime_generated/farm_cow_female_walk_v2.png")
+const MALE_ART: Texture2D = preload("res://assets/art/runtime_generated/farm_cow_male_walk_v2.png")
 const Atlas = preload("res://scripts/sprite_atlas.gd")
 
 var _sprite := Sprite2D.new()
@@ -17,10 +18,11 @@ var moving := false
 var facing := "down"
 var affection := 0.0
 var stride := 0.0
+var art: Texture2D = FEMALE_ART
 
 
 func _init() -> void:
-	_sprite.texture = COW_ART
+	_sprite.texture = art
 	_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_sprite.centered = false
 	_sprite.region_enabled = true
@@ -30,8 +32,10 @@ func _init() -> void:
 	add_child(_sprite)
 
 
-func configure(id: String, index: int, offset: Vector2i) -> void:
+func configure(id: String, index: int, offset: Vector2i, gender := "female") -> void:
 	animal_id = id
+	art = MALE_ART if gender == "male" else FEMALE_ART
+	_sprite.texture = art
 	map_offset = offset
 	if local_cell == Vector2i.ZERO:
 		local_cell = Vector2i(52 + (index % 2) * 3, 39 + (index / 2) * 2)
@@ -87,7 +91,7 @@ func _update_position() -> void:
 func _update_sprite() -> void:
 	var rows := {"down": 0, "left": 1, "right": 2, "up": 3}
 	var column := int(stride) if moving else 0
-	var frame: Dictionary = Atlas.frame(COW_ART, Vector2i(4, 4), column, int(rows.get(facing, 0)))
+	var frame: Dictionary = Atlas.frame(art, Vector2i(4, 4), column, int(rows.get(facing, 0)))
 	var sprite_scale := 30.0 / maxf(frame.region.size.y, 1.0)
 	_sprite.region_rect = frame.region
 	_sprite.scale = Vector2.ONE * sprite_scale

@@ -31,7 +31,7 @@ func _run() -> void:
 	await process_frame
 	game.set_physics_process(false)
 	var entrances := {
-		"farmhouse_interior": ["farm_outdoor", Vector2i(15, 10)],
+		"farmhouse_interior": ["farm_outdoor", Vector2i(27, 12)],
 		"general_store_interior": ["town_square", Vector2i(10, 11)],
 		"clinic_interior": ["town_square", Vector2i(24, 9)],
 		"cafe_interior": ["town_square", Vector2i(38, 11)],
@@ -55,7 +55,7 @@ func _run() -> void:
 	expect(_unique_count(animations) == 4, "all four facade styles use different opening animations")
 	expect(_unique_count(rug_widths) >= 3, "interior rug widths follow the exterior door proportions")
 
-	var farm_door: Vector2i = game.navigation.to_contiguous_world("farm_outdoor", Vector2i(15, 10))
+	var farm_door: Vector2i = game.navigation.to_contiguous_world("farm_outdoor", Vector2i(27, 12))
 	game._change_map("valley_world", farm_door)
 	game._enter_door("farmhouse_interior", game.navigation.get_spawn("farmhouse_interior"), farm_door)
 	await create_timer(0.08).timeout
